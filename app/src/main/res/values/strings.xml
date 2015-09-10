@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Agam Tradelinks</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <array name="states">
+        <item>Gujarat</item>
+        <item>Maharashtra</item>
+        <item>Madhya Pradesh</item>
+        <item>Gujarat</item>
+        <item>Maharashtra</item>
+        <item>Madhya Pradesh</item>
+        <item>Gujarat</item>
+        <item>Maharashtra</item>
+        <item>Madhya Pradesh</item>
+        <item>Gujarat</item>
+        <item>Maharashtra</item>
+        <item>Madhya Pradesh</item>
+        <item>Gujarat</item>
+        <item>Maharashtra</item>
+        <item>Madhya Pradesh</item>
+        <item>Gujarat</item>
+        <item>Maharashtra</item>
+        <item>Madhya Pradesh</item>
+    </array>
+    <string name="title_activity_main_activity_another">MainActivityAnother</string>
+</resources>

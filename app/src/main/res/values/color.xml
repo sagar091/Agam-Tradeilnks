@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_button_darkred">#F1AB1C</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
+    <color name="button_bg">#F18F01</color>
+    <color name="button_ripple">#f3a533</color>
+
+    <color name="link_text">#0000FF</color>
+
+    <color name="primaryColor">#3498DB</color>
+    <color name="primaryColorDark">#1976D2</color>
+    <color name="colorAccent">#c0c0c0</color>
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorTextSecondary">#727272</color>
+    <color name="editText_hint_color">#d1d1d1</color>
+
+
+    <color name="quad_blue">#5A96CA</color>
+    <color name="quad_orange">#EE9621</color>
+    <color name="quad_green">#92C846</color>
+    <color name="quad_violate">#6B6BAC</color>
+
+    <integer-array name="gplus_colors">
+        <item>@color/gplus_color_1</item>
+        <item>@color/gplus_color_2</item>
+        <item>@color/gplus_color_3</item>
+        <item>@color/gplus_color_4</item>
+    </integer-array>
+
+    <color name="gplus_color_1">#3e802f</color>
+    <color name="gplus_color_2">#f4b400</color>
+    <color name="gplus_color_3">#000000</color>
+    <color name="gplus_color_4">#b23424</color>
+
+</resources>
