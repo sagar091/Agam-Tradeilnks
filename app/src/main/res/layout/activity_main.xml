@@ -14,43 +14,38 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <android.support.design.widget.TextInputLayout
+        <EditText
+            android:id="@+id/edtCompany"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintTextAppearance="@style/TextInputLayout">
-
-            <EditText
-                android:id="@+id/companySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Select Company"
-                android:textColorHint="@color/primaryColor" />
-        </android.support.design.widget.TextInputLayout>
+            android:background="@drawable/background"
+            android:focusable="false"
+            android:hint="Select Company"
+            android:padding="10dp"
+            android:textColorHint="@color/primaryColor" />
 
         <LinearLayout
             android:id="@+id/selectLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/edtModel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_margin="1dp"
                 android:layout_weight="0.8"
-                app:hintTextAppearance="@style/TextInputLayout">
-
-                <EditText
-                    android:id="@+id/modelSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Select Model"
-                    android:textColorHint="@color/primaryColor" />
-            </android.support.design.widget.TextInputLayout>
+                android:background="@drawable/background"
+                android:focusable="false"
+                android:hint="Select Model"
+                android:padding="10dp"
+                android:textColorHint="@color/primaryColor" />
 
             <com.rey.material.widget.Button
-                android:id="@+id/imgGo"
+                android:id="@+id/btnGo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
