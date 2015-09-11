@@ -28,11 +28,11 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name=".marketig.MarketingDrawerActivity"
+            android:name=".marketing.MarketingDrawerActivity"
             android:label="@string/title_activity_marketing_drawer" >
         </activity>
         <activity
-            android:name=".retail.RetailerDrawerActivity"
+            android:name=".retailer.RetailerDrawerActivity"
             android:label="@string/title_activity_retailer_drawer" >
         </activity>
     </application>

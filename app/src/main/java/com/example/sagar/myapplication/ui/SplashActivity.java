@@ -1,6 +1,5 @@
 package com.example.sagar.myapplication.ui;
 
-import android.app.LauncherActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.CountDownTimer;
@@ -9,10 +8,9 @@ import android.os.Bundle;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
-import com.example.sagar.myapplication.helper.Functions;
-import com.example.sagar.myapplication.marketig.MarketingDrawerActivity;
+import com.example.sagar.myapplication.marketing.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.UserProfile;
-import com.example.sagar.myapplication.retail.RetailerDrawerActivity;
+import com.example.sagar.myapplication.retailer.RetailerDrawerActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
