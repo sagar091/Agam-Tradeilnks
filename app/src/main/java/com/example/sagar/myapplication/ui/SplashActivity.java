@@ -1,14 +1,10 @@
 package com.example.sagar.myapplication.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import com.example.sagar.myapplication.MainActivityAnother;
 import com.example.sagar.myapplication.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -27,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
 
-                Intent i = new Intent(SplashActivity.this, MainActivityAnother.class);
+                Intent i = new Intent(SplashActivity.this, MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
                 finish();

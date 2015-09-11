@@ -27,10 +27,6 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="stateHidden" >
         </activity>
-        <activity
-            android:name=".MainActivityAnother"
-            android:label="@string/title_activity_main_activity_another" >
-        </activity>
     </application>
 
 </manifest>

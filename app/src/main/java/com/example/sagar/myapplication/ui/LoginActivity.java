@@ -57,6 +57,13 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         imgCart = (ImageView) findViewById(R.id.imgCart);
         imgCart.setVisibility(View.GONE);
 
