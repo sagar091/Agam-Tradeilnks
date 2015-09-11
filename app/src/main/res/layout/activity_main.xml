@@ -8,26 +8,23 @@
     <include layout="@layout/app_bar"></include>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/match_wrap_content"
         android:layout_below="@+id/toolbar"
         android:orientation="vertical"
         android:padding="10dp">
 
         <EditText
             android:id="@+id/edtCompany"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/match_wrap_content"
             android:background="@drawable/background"
             android:focusable="false"
             android:hint="Select Company"
-            android:padding="10dp"
+            android:padding="12dp"
             android:textColorHint="@color/primaryColor" />
 
         <LinearLayout
             android:id="@+id/selectLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/match_wrap_content"
             android:layout_marginTop="6dp"
             android:orientation="horizontal"
             android:weightSum="1">
@@ -36,12 +33,11 @@
                 android:id="@+id/edtModel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="1dp"
                 android:layout_weight="0.8"
                 android:background="@drawable/background"
                 android:focusable="false"
                 android:hint="Select Model"
-                android:padding="10dp"
+                android:padding="12dp"
                 android:textColorHint="@color/primaryColor" />
 
             <com.rey.material.widget.Button
@@ -49,20 +45,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="6dp"
                 android:layout_weight="0.2"
                 android:background="@color/button_bg"
                 android:text="Go"
                 android:textColor="#ffffff"
                 app:rd_enable="true"
                 app:rd_rippleColor="@color/button_ripple"
-                app:rd_rippleType="wave" />
+                app:rd_rippleType="touch" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        style="@style/both_match_parent"
         android:layout_margin="5dp"
         android:background="#ffffff"
         android:gravity="center"
@@ -72,14 +68,12 @@
 
         <LinearLayout
             android:id="@+id/linear1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            style="@style/both_match_parent"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/linear2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/match_wrap_content"
                 android:orientation="horizontal"
                 android:padding="3dp"
                 android:weightSum="3">
@@ -100,8 +94,7 @@
 
                     <LinearLayout
                         android:id="@+id/linear4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/match_wrap_content"
                         android:orientation="horizontal">
 
                         <TextView
@@ -114,16 +107,14 @@
 
                         <TextView
                             android:id="@+id/pBrand"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            style="@style/both_wrap_content"
                             android:text=""
                             android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linear4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/match_wrap_content"
                         android:orientation="horizontal">
 
                         <TextView
@@ -136,16 +127,14 @@
 
                         <TextView
                             android:id="@+id/pName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            style="@style/both_wrap_content"
                             android:text=""
                             android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linear5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/match_wrap_content"
                         android:orientation="horizontal">
 
                         <TextView
@@ -158,8 +147,7 @@
 
                         <TextView
                             android:id="@+id/pPrice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            style="@style/both_wrap_content"
                             android:text=""
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -168,8 +156,7 @@
 
             <LinearLayout
                 android:id="@+id/linear5"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                style="@style/both_match_parent"
                 android:orientation="vertical">
 
                 <TextView
@@ -183,20 +170,17 @@
                     android:textStyle="bold" />
 
                 <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/match_wrap_content"
                     android:fadeScrollbars="false">
 
                     <LinearLayout
                         android:id="@+id/linear5"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        style="@style/both_match_parent"
                         android:orientation="vertical">
 
                         <LinearLayout
                             android:id="@+id/displayLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -222,8 +206,7 @@
 
                         <LinearLayout
                             android:id="@+id/osLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -249,8 +232,7 @@
 
                         <LinearLayout
                             android:id="@+id/pcamLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -276,8 +258,7 @@
 
                         <LinearLayout
                             android:id="@+id/ramLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -303,8 +284,7 @@
 
                         <LinearLayout
                             android:id="@+id/expLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -330,8 +310,7 @@
 
                         <LinearLayout
                             android:id="@+id/fmLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -357,8 +336,7 @@
 
                         <LinearLayout
                             android:id="@+id/audioLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -383,8 +361,7 @@
 
                         <LinearLayout
                             android:id="@+id/processorLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -410,8 +387,7 @@
 
                         <LinearLayout
                             android:id="@+id/batteryLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -437,8 +413,7 @@
 
                         <LinearLayout
                             android:id="@+id/colorLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -463,8 +438,7 @@
 
                         <LinearLayout
                             android:id="@+id/btLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -489,8 +463,7 @@
 
                         <LinearLayout
                             android:id="@+id/flashLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">
@@ -515,8 +488,7 @@
 
                         <LinearLayout
                             android:id="@+id/specialLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/match_wrap_content"
                             android:layout_marginLeft="7dp"
                             android:orientation="horizontal"
                             android:weightSum="2">

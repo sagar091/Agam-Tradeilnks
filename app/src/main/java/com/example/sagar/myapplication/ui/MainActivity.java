@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.Constants;
@@ -22,9 +23,7 @@ import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.gson.GsonBuilder;
 import com.rey.material.widget.Button;
-import com.rey.material.widget.SnackBar;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnGo;
     CompanyData companyData;
     ModelData modelData;
+    int modelError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,20 +79,19 @@ public class MainActivity extends AppCompatActivity {
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Snackbar.make(v, selectModelId, Snackbar.LENGTH_SHORT);
                 if (selectCompanyId == null || selectModelId == null) {
                     Snackbar.make(edtModel, "Select company and model both", Snackbar.LENGTH_SHORT).show();
+
                 } else {
-
+                    new GetProductDetails().execute(selectModelId);
                 }
-
             }
         });
     }
 
     private void setModelDialog() {
-
-        if (modelData.model.size() > 0) {
+        if (modelError == 0) {
             ArrayList<String> models = new ArrayList<String>();
             for (int i = 0; i < modelData.model.size(); i++) {
                 models.add(modelData.model.get(i).name);
@@ -111,12 +110,11 @@ public class MainActivity extends AppCompatActivity {
                     selectModelId = modelData.model.get(position).id;
                     edtModel.setText(modelData.model.get(position).name);
                     dialog.dismiss();
-
                 }
             });
 
         } else {
-            Snackbar.make(edtModel, "No model data for select company", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(edtModel, "No model for selected company", Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -181,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
-                Log.e("response", obj.toString());
+                // Log.e("company_response", obj.toString());
                 companyData = new GsonBuilder().create().fromJson(obj.toString(), CompanyData.class);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -212,8 +210,11 @@ public class MainActivity extends AppCompatActivity {
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
-                Log.e("response", obj.toString());
-                modelData = new GsonBuilder().create().fromJson(obj.toString(), ModelData.class);
+                // Log.e("model_response", obj.toString());
+                modelError = obj.getInt("error");
+                if (modelError == 0) {
+                    modelData = new GsonBuilder().create().fromJson(obj.toString(), ModelData.class);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -223,6 +224,36 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String string) {
             super.onPostExecute(string);
+            pd.dismiss();
+        }
+    }
+
+    private class GetProductDetails extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = ProgressDialog.show(MainActivity.this, "Loading", "Please wait", false);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("form_type", "product_details");
+            map.put("cat_id", params[0]);
+            try {
+                HttpRequest req = new HttpRequest(Constants.BASE_URL);
+                JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
+                Log.e("product_details", obj.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
             pd.dismiss();
         }
     }

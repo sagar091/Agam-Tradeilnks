@@ -27,4 +27,6 @@
         <item>Madhya Pradesh</item>
     </array>
     <string name="title_activity_main_activity_another">MainActivityAnother</string>
+    <string name="title_activity_marketing_drawer">MarketingDrawerActivity</string>
+    <string name="title_activity_retailer_drawer">RetailerDrawerActivity</string>
 </resources>

@@ -27,6 +27,14 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="stateHidden" >
         </activity>
+        <activity
+            android:name=".marketig.MarketingDrawerActivity"
+            android:label="@string/title_activity_marketing_drawer" >
+        </activity>
+        <activity
+            android:name=".retail.RetailerDrawerActivity"
+            android:label="@string/title_activity_retailer_drawer" >
+        </activity>
     </application>
 
 </manifest>
