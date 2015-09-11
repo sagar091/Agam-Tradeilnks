@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
                     userType = currentUser.user_type;
 
                     if (userType.equals("1")) {
-                        intent = new Intent(SplashActivity.this, MarketingDrawerActivity.class);
+                        intent = new Intent(SplashActivity.this, CheckInActivity.class);
                     } else {
                         intent = new Intent(SplashActivity.this, RetailerDrawerActivity.class);
                     }

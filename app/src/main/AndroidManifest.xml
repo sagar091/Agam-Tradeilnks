@@ -35,6 +35,10 @@
             android:name=".retailer.RetailerDrawerActivity"
             android:label="@string/title_activity_retailer_drawer" >
         </activity>
+        <activity
+            android:name=".ui.CheckInActivity"
+            android:label="@string/title_activity_check_in" >
+        </activity>
     </application>
 
 </manifest>

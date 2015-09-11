@@ -1,0 +1,104 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.sagar.myapplication.ui.CheckInActivity">
+
+    <include
+        layout="@layout/app_bar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"></include>
+
+    <LinearLayout
+        style="@style/match_wrap_content"
+        android:layout_above="@+id/bottomBar"
+        android:layout_below="@+id/relative2"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            style="@style/match_wrap_content"
+            android:orientation="horizontal">
+
+            <com.rey.material.widget.Button
+                android:id="@+id/btnCheckIn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/button_bg"
+                android:text="Check In"
+                android:textColor="#ffffff"
+                app:rd_enable="true"
+                app:rd_rippleColor="@color/button_ripple"
+                app:rd_rippleType="touch" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_weight="0.03" />
+
+            <com.rey.material.widget.Button
+                android:id="@+id/btnSkip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/button_bg"
+                android:text="Skip"
+                android:textColor="#ffffff"
+                app:rd_enable="true"
+                app:rd_rippleColor="@color/button_ripple"
+                app:rd_rippleType="touch" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/usersListView"
+            style="@style/both_match_parent"
+            android:layout_marginTop="6dp"
+            android:divider="@color/primaryColor"
+            android:dividerHeight="1dp"
+            android:fadeScrollbars="false"></ListView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="horizontal">
+
+        <com.rey.material.widget.Button
+            android:id="@+id/btnNewRetailer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/button_bg"
+            android:text="Add New Retailer"
+            android:textColor="#ffffff"
+            app:rd_enable="true"
+            app:rd_rippleColor="@color/button_ripple"
+            app:rd_rippleType="touch" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="0.03" />
+
+        <com.rey.material.widget.Button
+            android:id="@+id/btnOffline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/button_bg"
+            android:text="Offline Orders"
+            android:textColor="#ffffff"
+            app:rd_enable="true"
+            app:rd_rippleColor="@color/button_ripple"
+            app:rd_rippleType="touch" />
+    </LinearLayout>
+</RelativeLayout>

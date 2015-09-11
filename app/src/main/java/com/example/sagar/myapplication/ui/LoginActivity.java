@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (userProfile.user_type.equals("1")) {
                         Snackbar.make(loginButton, "Login as Marketing Executive", Snackbar.LENGTH_LONG).show();
-                        Intent intent = new Intent(LoginActivity.this, MarketingDrawerActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, CheckInActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     } else {
