@@ -1,8 +1,11 @@
 package com.example.sagar.myapplication.ui;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,14 +14,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.model.CompanyData;
 import com.example.sagar.myapplication.model.ModelData;
+import com.example.sagar.myapplication.model.UserProfile;
+import com.example.sagar.myapplication.retailer.RetailerDrawerActivity;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.gson.GsonBuilder;
@@ -140,7 +145,17 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
                 edtModel.setText("");
                 selectModelId = null;
-                new GetModel().execute(selectCompanyId);
+                new CountDownTimer(900, 100) {
+                    @Override
+                    public void onTick(long l) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        new GetModel().execute(selectCompanyId);
+                    }
+                }.start();
             }
         });
     }
@@ -240,11 +255,12 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             HashMap<String, String> map = new HashMap<>();
             map.put("form_type", "product_details");
-            map.put("cat_id", params[0]);
+            map.put("product_id", params[0]);
+            Log.e("product_details req", map.toString());
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
-                Log.e("product_details", obj.toString());
+                Log.e("product_details res", obj.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }

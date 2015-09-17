@@ -211,7 +211,7 @@ public class ActionSheetDialog extends BottomBaseDialog {
 
         /** cancel btn */
         tv_cancel.setHeight(dp2px(itemHeight_DP));
-        tv_cancel.setText("取消");
+        tv_cancel.setText("Cancel");
         tv_cancel.setTextSize(TypedValue.COMPLEX_UNIT_SP, itemTextSize_SP);
         tv_cancel.setTextColor(itemTextColor);
         tv_cancel.setBackgroundDrawable(CornerUtils.listItemSelector(radius, lvBgColor, itemPressColor, 1, 0));

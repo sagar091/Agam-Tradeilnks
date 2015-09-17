@@ -6,6 +6,9 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_login">LoginActivity</string>
 
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
+
     <array name="states">
         <item>Gujarat</item>
         <item>Maharashtra</item>
@@ -30,4 +33,7 @@
     <string name="title_activity_marketing_drawer">MarketingDrawerActivity</string>
     <string name="title_activity_retailer_drawer">RetailerDrawerActivity</string>
     <string name="title_activity_check_in">CheckInActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

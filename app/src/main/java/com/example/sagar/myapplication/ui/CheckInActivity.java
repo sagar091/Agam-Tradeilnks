@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.example.sagar.myapplication.R;
-import com.example.sagar.myapplication.marketing.MarketingDrawerActivity;
+import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.rey.material.widget.Button;
 
@@ -49,8 +47,10 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()){
             case R.id.btnSkip:
                 Intent intent = new Intent(CheckInActivity.this, MarketingDrawerActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
         }
     }
 }

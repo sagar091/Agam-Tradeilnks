@@ -28,7 +28,7 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name=".marketing.MarketingDrawerActivity"
+            android:name=".marketing.activity.MarketingDrawerActivity"
             android:label="@string/title_activity_marketing_drawer" >
         </activity>
         <activity

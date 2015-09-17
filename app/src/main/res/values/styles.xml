@@ -10,7 +10,7 @@
         <item name="android:textColorSecondary">@color/colorTextSecondary</item>
     </style>
 
-    <style name="ToolBarStyle" parent="ToolBarStyle.Base"/>
+    <style name="ToolBarStyle" parent="ToolBarStyle.Base" />
 
     <style name="ToolBarStyle.Base" parent="">
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -51,6 +51,14 @@
     <style name="match_wrap_content">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="list_item_appearance">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="NavigationItemStyle" parent="@android:style/Widget.TextView">
+        <item name="android:paddingBottom">8dp</item>
     </style>
 
 </resources>

@@ -20,7 +20,6 @@ import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.HttpRequest;
-import com.example.sagar.myapplication.marketing.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.retailer.RetailerDrawerActivity;
 import com.google.gson.GsonBuilder;

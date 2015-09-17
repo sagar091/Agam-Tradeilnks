@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
-import com.example.sagar.myapplication.marketing.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.retailer.RetailerDrawerActivity;
 

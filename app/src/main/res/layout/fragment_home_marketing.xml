@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context="com.example.sagar.myapplication.marketing.fragment.HomeMarketingFragment">
+
+    <EditText
+        android:id="@+id/edtCompany"
+        style="@style/match_wrap_content"
+        android:background="@drawable/background"
+        android:focusable="false"
+        android:hint="Select Company"
+        android:padding="12dp"
+        android:textColorHint="@color/primaryColor" />
+
+    <ListView
+        android:id="@+id/productsListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
+        android:divider="@null"></ListView>
+
+</LinearLayout>

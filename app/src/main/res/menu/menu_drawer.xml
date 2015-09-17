@@ -1,0 +1,60 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.webmyne.kidscrown.ui.MyDrawerActivity">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_home"
+            android:checked="true"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/drawer_retailer"
+            android:title="Retailers" />
+
+        <item
+            android:id="@+id/drawer_stock"
+            android:title="Stock" />
+
+        <item
+            android:id="@+id/drawer_orders"
+            android:title="Orders" />
+
+        <item
+            android:id="@+id/drawer_add"
+            android:title="Add New Retailer" />
+        <item
+            android:id="@+id/drawer_payment"
+            android:title="Payment" />
+
+        <item
+            android:id="@+id/drawer_multi_payment"
+            android:title="Multiple Payment" />
+
+        <item
+            android:id="@+id/drawer_check_in"
+            android:title="Check In" />
+
+        <item
+            android:id="@+id/drawer_check_out"
+            android:title="Check Out" />
+
+        <item
+            android:id="@+id/drawer_agent"
+            android:title="Agents Activity" />
+
+        <item
+            android:id="@+id/drawer_download"
+            android:title="Download Sheet" />
+
+        <item
+            android:id="@+id/drawer_password"
+            android:title="Change Password" />
+
+        <item
+            android:id="@+id/drawer_log_out"
+            android:title="Logout" />
+
+    </group>
+</menu>
