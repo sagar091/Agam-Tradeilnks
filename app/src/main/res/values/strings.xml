@@ -9,6 +9,8 @@
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
 
+    <string name="Rs">\u20B9</string>
+
     <array name="states">
         <item>Gujarat</item>
         <item>Maharashtra</item>

@@ -7,21 +7,24 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.SearchAdapter;
+import com.example.sagar.myapplication.customComponent.TouchImageView;
 import com.example.sagar.myapplication.helper.Constants;
-import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.CompanyData;
@@ -30,6 +33,7 @@ import com.example.sagar.myapplication.model.ModelData;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.gson.GsonBuilder;
+import com.rey.material.app.Dialog;
 import com.rey.material.widget.Button;
 
 import org.json.JSONObject;
@@ -37,6 +41,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import me.gujun.android.taggroup.TagGroup;
 
 public class HomeMarketingFragment extends Fragment {
 
@@ -47,6 +53,7 @@ public class HomeMarketingFragment extends Fragment {
     int modelError;
     ModelData modelData;
     private ListView productsListView;
+    Dialog cartDialog;
 
     public static HomeMarketingFragment newInstance(String param1, String param2) {
         HomeMarketingFragment fragment = new HomeMarketingFragment();
@@ -212,12 +219,11 @@ public class HomeMarketingFragment extends Fragment {
         public MyAdapter(List<ModelClass> container, Context context) {
             super(container, context);
             filledContainer = container;
-            Log.e("filledContainer", filledContainer.size() + "--");
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final ViewHolder viewHolder;
 
             if (convertView == null) {
                 mInflater = (LayoutInflater) context
@@ -228,16 +234,84 @@ public class HomeMarketingFragment extends Fragment {
                 viewHolder.txtProductPrice = (TextView) convertView.findViewById(R.id.txtProductPrice);
                 viewHolder.txtProductStock = (TextView) convertView.findViewById(R.id.txtProductStock);
                 viewHolder.imgProduct = (ImageView) convertView.findViewById(R.id.imgProduct);
-
+                viewHolder.btnAddCart = (Button) convertView.findViewById(R.id.btnAddCart);
                 convertView.setTag(viewHolder);
+
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
+            viewHolder.imgProduct.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String imageURL = filledContainer.get(position).image;
+
+                    final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+                    dialog.setContentView(R.layout.image_dialog);
+                    dialog.getWindow().setLayout(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    TouchImageView bigImage = (TouchImageView) dialog.findViewById(R.id.bigImage);
+                    Glide.with(context).load(imageURL).thumbnail(0.1f).placeholder(R.drawable.loading).into(bigImage);
+
+                    dialog.show();
+                }
+            });
+
+            viewHolder.btnAddCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String selectedModel = filledContainer.get(position).name;
+                    String selectedModelId = filledContainer.get(position).id;
+                    final String selectModelUnitPrice = filledContainer.get(position).price;
+                    Log.e(selectedModelId, selectedModel);
+
+                    cartDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+                    cartDialog.setContentView(R.layout.add_cart_dialog);
+                    WindowManager.LayoutParams params = cartDialog.getWindow().getAttributes();
+                    params.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    cartDialog.getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+
+                    TextView unitPrice = (TextView) cartDialog.findViewById(R.id.unitPrice);
+                    final TextView unitQty = (TextView) cartDialog.findViewById(R.id.unitQty);
+                    final TextView unitTotalPrice = (TextView) cartDialog.findViewById(R.id.unitTotalPrice);
+                    //  TagGroup mTagGroup = (TagGroup)dialog.findViewById(R.id.tag_group);
+
+                    unitPrice.setText(getResources().getString(R.string.Rs) + " " + selectModelUnitPrice);
+                    unitQty.setText("x 1 Qty");
+                    unitTotalPrice.setText("= " + getResources().getString(R.string.Rs) + " " + selectModelUnitPrice);
+
+                    SeekBar seekBar = (SeekBar) cartDialog.findViewById(R.id.seekBar);
+                    seekBar.setMax(100);
+                    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                        @Override
+                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                            if (progress != 0) {
+                                unitQty.setText("x " + progress + " Qty");
+                                unitTotalPrice.setText("= " + getResources().getString(R.string.Rs) + " " + String.valueOf(Integer.parseInt(selectModelUnitPrice) * progress));
+                            }
+                        }
+
+                        @Override
+                        public void onStartTrackingTouch(SeekBar seekBar) {
+
+                        }
+
+                        @Override
+                        public void onStopTrackingTouch(SeekBar seekBar) {
+
+                        }
+                    });
+
+                    cartDialog.show();
+                }
+            });
+
             viewHolder.txtProductName.setText(filledContainer.get(position).name);
-            viewHolder.txtProductPrice.setText(filledContainer.get(position).price);
-            Glide.with(context).load(filledContainer.get(position).image).into(viewHolder.imgProduct);
-            viewHolder.txtProductStock.setText(filledContainer.get(position).stock);
+            viewHolder.txtProductPrice.setText(getResources().getString(R.string.Rs)
+                    + filledContainer.get(position).price);
+            Glide.with(context).load(filledContainer.get(position).image).thumbnail(0.1f).placeholder(R.drawable.loading).into(viewHolder.imgProduct);
+            viewHolder.txtProductStock.setText("Stock: " + filledContainer.get(position).stock);
 
             return convertView;
         }

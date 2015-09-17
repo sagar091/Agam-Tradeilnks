@@ -19,6 +19,8 @@
             android:layout_width="80dp"
             android:layout_height="100dp"
             android:layout_gravity="top"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_launcher" />
 
         <LinearLayout
@@ -32,16 +34,19 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_marginRight="4dp"
+                android:layout_weight="1.2"
+                android:orientation="vertical"
+                android:paddingLeft="2dp">
 
                 <TextView
                     android:id="@+id/txtProductName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Product Name"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtProductPrice"
@@ -49,7 +54,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:maxLines="2"
-                    android:text="Description" />
+                    android:text="Description"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/txtProductStock"
@@ -57,36 +63,40 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:maxLines="2"
-                    android:text="Description" />
+                    android:text="Description"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <com.rey.material.widget.Button
                     android:id="@+id/btnScheme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="1dp"
                     android:background="@color/button_bg"
                     android:text="Scheme"
                     android:textColor="#ffffff"
+                    android:textSize="12sp"
                     app:rd_enable="true"
                     app:rd_rippleColor="@color/button_ripple"
                     app:rd_rippleType="touch" />
 
                 <com.rey.material.widget.Button
                     android:id="@+id/btnAddCart"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="1dp"
                     android:background="@color/button_bg"
                     android:text="Add to Cart"
                     android:textColor="#ffffff"
+                    android:textSize="12sp"
                     app:rd_enable="true"
                     app:rd_rippleColor="@color/button_ripple"
                     app:rd_rippleType="touch" />
