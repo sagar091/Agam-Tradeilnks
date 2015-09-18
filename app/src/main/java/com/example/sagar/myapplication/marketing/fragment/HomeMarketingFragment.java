@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.AddCartDialog;
 import com.example.sagar.myapplication.customComponent.SearchAdapter;
 import com.example.sagar.myapplication.customComponent.TouchImageView;
 import com.example.sagar.myapplication.helper.Constants;
@@ -266,11 +267,17 @@ public class HomeMarketingFragment extends Fragment {
                     final String selectModelUnitPrice = filledContainer.get(position).price;
                     Log.e(selectedModelId, selectedModel);
 
-                    cartDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
-                    cartDialog.setContentView(R.layout.add_cart_dialog);
+                    AddCartDialog custom5 = new AddCartDialog(getActivity(), R.style.CustomDialogsTheme);
+                    custom5.show();
+
+                    /*View dialogView = getActivity().getLayoutInflater().inflate(R.layout.add_cart_dialog, null);
+                    cartDialog = new Dialog(getActivity(), R.style.CustomDialogsTheme);
+                    cartDialog.setContentView(dialogView);
+
+                    *//*cartDialog.setContentView(R.layout.add_cart_dialog);
                     WindowManager.LayoutParams params = cartDialog.getWindow().getAttributes();
                     params.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    cartDialog.getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+                    cartDialog.getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);*//*
 
                     TextView unitPrice = (TextView) cartDialog.findViewById(R.id.unitPrice);
                     final TextView unitQty = (TextView) cartDialog.findViewById(R.id.unitQty);
@@ -303,7 +310,7 @@ public class HomeMarketingFragment extends Fragment {
                         }
                     });
 
-                    cartDialog.show();
+                    cartDialog.show();*/
                 }
             });
 
