@@ -2,6 +2,7 @@ package com.example.sagar.myapplication.marketing.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -9,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.AddCartDialog;
+import com.example.sagar.myapplication.customComponent.CustomBaseDialog;
 import com.example.sagar.myapplication.customComponent.SearchAdapter;
 import com.example.sagar.myapplication.customComponent.TouchImageView;
 import com.example.sagar.myapplication.helper.Constants;
@@ -267,8 +270,18 @@ public class HomeMarketingFragment extends Fragment {
                     final String selectModelUnitPrice = filledContainer.get(position).price;
                     Log.e(selectedModelId, selectedModel);
 
-                    AddCartDialog custom5 = new AddCartDialog(getActivity(), R.style.CustomDialogsTheme);
-                    custom5.show();
+                    ArrayList<String> productDetails = new ArrayList<String>();
+                    productDetails.add(selectedModel);
+                    productDetails.add(selectedModelId);
+                    productDetails.add(selectModelUnitPrice);
+
+                    CustomBaseDialog dialog = new CustomBaseDialog(getActivity(), productDetails);
+                    dialog.show();
+
+//                    dialog.setCanceledOnTouchOutside(false);
+
+                    /*AddCartDialog custom5 = new AddCartDialog(getActivity(), R.style.CustomDialogsTheme);
+                    custom5.show();*/
 
                     /*View dialogView = getActivity().getLayoutInflater().inflate(R.layout.add_cart_dialog, null);
                     cartDialog = new Dialog(getActivity(), R.style.CustomDialogsTheme);

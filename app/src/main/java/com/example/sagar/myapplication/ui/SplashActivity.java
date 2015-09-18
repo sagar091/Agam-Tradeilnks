@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
+import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.retailer.RetailerDrawerActivity;
 
@@ -39,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
                     userType = currentUser.user_type;
 
                     if (userType.equals("1")) {
-                        intent = new Intent(SplashActivity.this, CheckInActivity.class);
+                        intent = new Intent(SplashActivity.this, MarketingDrawerActivity.class);
                     } else {
                         intent = new Intent(SplashActivity.this, RetailerDrawerActivity.class);
                     }

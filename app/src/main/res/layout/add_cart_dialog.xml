@@ -24,7 +24,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="Pricing"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -41,7 +41,8 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Rs. 90908"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/unitQty"
@@ -50,7 +51,8 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="x 1 Qty"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/unitTotalPrice"
@@ -60,15 +62,18 @@
                 android:gravity="center"
                 android:text="= Rs. 90908"
                 android:textColor="@color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <SeekBar
-            android:id="@+id/seekBar"
+            android:id="@+id/seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:thumbTint="@color/white" />
+            android:max="100"
+            android:progressDrawable="@drawable/progress"
+            android:thumb="@drawable/ic_thumb" />
     </LinearLayout>
 </LinearLayout>
