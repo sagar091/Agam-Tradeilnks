@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/button_bg"
+        android:background="#FFE4E1"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -24,7 +24,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="10dp"
                 android:text="Pricing"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Rs. 90908"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
             <TextView
@@ -52,7 +52,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="x 1 Qty"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
             <TextView
@@ -62,7 +62,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="= Rs. 90908"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Colors"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -97,27 +97,30 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal">
 
             <com.rey.material.widget.Button
+                android:id="@+id/btnOK"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
                 android:layout_weight="1"
                 android:background="@color/button_bg"
-                android:text="Login"
+                android:text="OK"
                 android:textColor="#ffffff"
                 app:rd_enable="true"
                 app:rd_rippleColor="@color/button_ripple"
                 app:rd_rippleType="touch" />
 
             <com.rey.material.widget.Button
+                android:id="@+id/btnCancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginLeft="6dp"
                 android:layout_weight="1"
                 android:background="@color/button_bg"
-                android:text="Login"
+                android:text="Cancel"
                 android:textColor="#ffffff"
                 app:rd_enable="true"
                 app:rd_rippleColor="@color/button_ripple"
