@@ -29,6 +29,8 @@ import com.example.sagar.myapplication.customComponent.CustomBaseDialog;
 import com.example.sagar.myapplication.customComponent.SearchAdapter;
 import com.example.sagar.myapplication.customComponent.TouchImageView;
 import com.example.sagar.myapplication.helper.Constants;
+import com.example.sagar.myapplication.helper.DatabaseHandler;
+import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.CompanyData;
@@ -57,7 +59,6 @@ public class HomeMarketingFragment extends Fragment {
     int modelError;
     ModelData modelData;
     private ListView productsListView;
-    Dialog cartDialog;
 
     public static HomeMarketingFragment newInstance(String param1, String param2) {
         HomeMarketingFragment fragment = new HomeMarketingFragment();
@@ -66,7 +67,7 @@ public class HomeMarketingFragment extends Fragment {
 
     public HomeMarketingFragment() {
         // Required empty public constructor
-    }
+}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -150,6 +151,7 @@ public class HomeMarketingFragment extends Fragment {
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
+                Log.e("company_response", obj.toString());
                 companyData = new GsonBuilder().create().fromJson(obj.toString(), CompanyData.class);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -213,6 +215,8 @@ public class HomeMarketingFragment extends Fragment {
 
         List<ModelClass> filledContainer;
         LayoutInflater mInflater;
+        Context context;
+        DatabaseHandler handler;
 
         class ViewHolder {
             TextView txtProductName, txtProductPrice, txtProductStock;
@@ -223,6 +227,9 @@ public class HomeMarketingFragment extends Fragment {
         public MyAdapter(List<ModelClass> container, Context context) {
             super(container, context);
             filledContainer = container;
+            this.context = context;
+            handler = new DatabaseHandler(context);
+
         }
 
         @Override
@@ -265,65 +272,24 @@ public class HomeMarketingFragment extends Fragment {
             viewHolder.btnAddCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String selectedModel = filledContainer.get(position).name;
-                    String selectedModelId = filledContainer.get(position).id;
-                    final String selectModelUnitPrice = filledContainer.get(position).price;
-                    Log.e(selectedModelId, selectedModel);
+                    String modelName = filledContainer.get(position).name;
+                    String modelId = filledContainer.get(position).id;
+                    String modelPrice = filledContainer.get(position).price;
 
-                    ArrayList<String> productDetails = new ArrayList<String>();
-                    productDetails.add(selectedModel);
-                    productDetails.add(selectedModelId);
-                    productDetails.add(selectModelUnitPrice);
+                    if (handler.productExist(modelId)) {
+                        Functions.snack(v, "Product is already added in the cart.");
+                    } else {
+                        Log.e(modelId, modelName);
 
-                    CustomBaseDialog dialog = new CustomBaseDialog(getActivity(), productDetails);
-                    dialog.show();
+                        ArrayList<String> productDetails = new ArrayList<String>();
+                        productDetails.add(modelId);
+                        productDetails.add(modelName);
+                        productDetails.add(modelPrice);
 
-//                    dialog.setCanceledOnTouchOutside(false);
+                        CustomBaseDialog dialog = new CustomBaseDialog(getActivity(), productDetails);
+                        dialog.show();
+                    }
 
-                    /*AddCartDialog custom5 = new AddCartDialog(getActivity(), R.style.CustomDialogsTheme);
-                    custom5.show();*/
-
-                    /*View dialogView = getActivity().getLayoutInflater().inflate(R.layout.add_cart_dialog, null);
-                    cartDialog = new Dialog(getActivity(), R.style.CustomDialogsTheme);
-                    cartDialog.setContentView(dialogView);
-
-                    *//*cartDialog.setContentView(R.layout.add_cart_dialog);
-                    WindowManager.LayoutParams params = cartDialog.getWindow().getAttributes();
-                    params.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    cartDialog.getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);*//*
-
-                    TextView unitPrice = (TextView) cartDialog.findViewById(R.id.unitPrice);
-                    final TextView unitQty = (TextView) cartDialog.findViewById(R.id.unitQty);
-                    final TextView unitTotalPrice = (TextView) cartDialog.findViewById(R.id.unitTotalPrice);
-                    //  TagGroup mTagGroup = (TagGroup)dialog.findViewById(R.id.tag_group);
-
-                    unitPrice.setText(getResources().getString(R.string.Rs) + " " + selectModelUnitPrice);
-                    unitQty.setText("x 1 Qty");
-                    unitTotalPrice.setText("= " + getResources().getString(R.string.Rs) + " " + selectModelUnitPrice);
-
-                    SeekBar seekBar = (SeekBar) cartDialog.findViewById(R.id.seekBar);
-                    seekBar.setMax(100);
-                    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            if (progress != 0) {
-                                unitQty.setText("x " + progress + " Qty");
-                                unitTotalPrice.setText("= " + getResources().getString(R.string.Rs) + " " + String.valueOf(Integer.parseInt(selectModelUnitPrice) * progress));
-                            }
-                        }
-
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
-
-                        }
-
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-
-                        }
-                    });
-
-                    cartDialog.show();*/
                 }
             });
 

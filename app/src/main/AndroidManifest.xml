@@ -21,6 +21,7 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.LoginActivity"
@@ -29,15 +30,22 @@
         </activity>
         <activity
             android:name=".marketing.activity.MarketingDrawerActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_marketing_drawer" >
         </activity>
         <activity
             android:name=".retailer.RetailerDrawerActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_retailer_drawer" >
         </activity>
         <activity
             android:name=".ui.CheckInActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_check_in" >
+        </activity>
+        <activity
+            android:name=".marketing.activity.CartActivity"
+            android:label="@string/title_activity_cart" >
         </activity>
     </application>
 

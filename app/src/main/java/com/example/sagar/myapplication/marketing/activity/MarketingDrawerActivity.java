@@ -1,6 +1,6 @@
 package com.example.sagar.myapplication.marketing.activity;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,14 +19,16 @@ import android.widget.ImageView;
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.fragment.HomeMarketingFragment;
+import com.example.sagar.myapplication.marketing.fragment.RetailerMarketingFragment;
 
 public class MarketingDrawerActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private NavigationView view;
+    private NavigationView navigationView;
     private ImageView imgCart;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         // ft.addToBackStack(null);
         ft.commit();
 
-        view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
 
@@ -56,7 +59,20 @@ public class MarketingDrawerActivity extends AppCompatActivity {
     }
 
     private void setDrawerClick(int itemId) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+            switch (itemId){
+                case R.id.drawer_home:
+                    ft.replace(R.id.content, new HomeMarketingFragment(), "Home");
+                    ft.commit();
+                    break;
 
+                case R.id.drawer_retailer:
+                    ft.replace(R.id.content, new RetailerMarketingFragment(), "Retailers");
+                    ft.commit();
+                    break;
+
+            }
     }
 
     public Toolbar getToolbar() {
@@ -105,12 +121,24 @@ public class MarketingDrawerActivity extends AppCompatActivity {
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);
+
+        preferences = getSharedPreferences("login", MODE_PRIVATE);
+        if (preferences.contains("offline")) {
+            Log.e("offline", preferences.getString("offline", null));
+            MenuItem item = navigationView.getMenu().getItem(7);
+            item.setVisible(false);
+        } else {
+            Log.e("offline", "blank");
+            MenuItem item = navigationView.getMenu().getItem(8);
+            item.setVisible(false);
+        }
+
     }
 
     private void init() {
         toolbar = (Toolbar) findViewById(R.id.toolbar2);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        view = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         if (toolbar != null) {
             toolbar.setTitle("Agam Tradelinks");
@@ -122,6 +150,7 @@ public class MarketingDrawerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Functions.snack(v, "Cart");
+                Functions.fireIntent(MarketingDrawerActivity.this, CartActivity.class);
             }
         });
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -130,6 +159,12 @@ public class MarketingDrawerActivity extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

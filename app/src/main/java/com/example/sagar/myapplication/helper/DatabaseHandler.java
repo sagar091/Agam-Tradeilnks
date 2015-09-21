@@ -2,9 +2,11 @@ package com.example.sagar.myapplication.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
+
+import com.example.sagar.myapplication.model.ProductCart;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -101,18 +103,58 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return dbFile.exists();
     }
 
-    public boolean addCartProduct(ArrayList<String> productDetails) {
+    public boolean addCartProduct(ArrayList<String> cartProductDetails) {
 
         myDataBase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("product_id", Integer.parseInt(productDetails.get(0)));
-        values.put("product_qty", Integer.parseInt(productDetails.get(1)));
-        values.put("product_colors", productDetails.get(2));
+        values.put("product_id", Integer.parseInt(cartProductDetails.get(0))); // id
+        values.put("name", cartProductDetails.get(1)); // name
+        values.put("price", Integer.parseInt(cartProductDetails.get(2))); // price
+        values.put("qty", Integer.parseInt(cartProductDetails.get(3))); // qty
+        values.put("colors", cartProductDetails.get(4)); // colors
         myDataBase.insert(TABLE_CART_ITEM, null, values);
 
         return true;
 
+    }
+
+    public boolean productExist(String productID) {
+        boolean available = false;
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor;
+        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM + " WHERE product_id =" + productID;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            available = true;
+            cursor.moveToFirst();
+        }
+        return available;
+    }
+
+    public ArrayList<ProductCart> getProducts() {
+        ArrayList<ProductCart> products = new ArrayList<>();
+
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor;
+        String selectQuery = "SELECT * FROM " + TABLE_CART_ITEM;
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        if (cursor.getCount() > 0) {
+            do {
+                ProductCart cart = new ProductCart();
+                cart.setName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+                cart.setPrice(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("price"))));
+                cart.setProductId(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("product_id"))));
+                cart.setQty(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("qty"))));
+                cart.setColors(cursor.getString(cursor.getColumnIndexOrThrow("colors")));
+                products.add(cart);
+            } while (cursor.moveToNext());
+        }
+
+        return products;
     }
 
 }

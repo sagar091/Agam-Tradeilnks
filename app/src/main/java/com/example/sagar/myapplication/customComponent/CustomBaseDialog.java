@@ -1,10 +1,12 @@
 package com.example.sagar.myapplication.customComponent;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.DatabaseHandler;
@@ -31,6 +33,8 @@ public class CustomBaseDialog extends BaseDialog {
     private TagGroup mTagGroup;
     DatabaseHandler handler;
     StringBuilder sb;
+    View customView;
+    View parentView;
 
     public CustomBaseDialog(Context context, ArrayList<String> productDetails) {
         super(context);
@@ -42,7 +46,7 @@ public class CustomBaseDialog extends BaseDialog {
         widthScale(0.9f);
         showAnim(new FadeEnter());
 
-        View customView = View.inflate(context, R.layout.add_cart_dialog, null);
+        customView = View.inflate(context, R.layout.add_cart_dialog, null);
         init(customView);
 
         handler = new DatabaseHandler(context);
@@ -65,31 +69,37 @@ public class CustomBaseDialog extends BaseDialog {
             @Override
             public void onClick(View v) {
                 cartProductDetails = new ArrayList<String>();
+                seekbar.setProgress(1);
                 if (seekbar.getProgress() == 0) {
-                    Functions.snack(v, "Invalid Quantity");
+                    Functions.snack(customView, "Invalid Quantity");
                 } else if (mTagGroup.getTags().length == 0) {
-                    Functions.snack(v, "Add atleast one color for model");
+                    Functions.snack(customView, "Add atleast one color for model");
                 } else {
-                    Log.e("productDetails", productDetails.toString());
+                    Log.e("retailerData", productDetails.toString());
                     Log.e("qty", seekbar.getProgress() + " Qty");
                     sb = new StringBuilder();
                     for (int i = 0; i < mTagGroup.getTags().length; i++) {
                         Log.e("colors", mTagGroup.getTags()[i]);
-                        sb.append(mTagGroup.getTags()[i]);
+                        sb.append(mTagGroup.getTags()[i] + ", ");
                     }
 
-                    cartProductDetails.add(productDetails.get(1));
-                    cartProductDetails.add(seekbar.getProgress() + "");
-                    cartProductDetails.add(sb.toString());
+                    cartProductDetails.add(productDetails.get(0)); // id
+                    cartProductDetails.add(productDetails.get(1)); // name
+                    cartProductDetails.add(productDetails.get(2)); // price
+                    cartProductDetails.add(seekbar.getProgress() + ""); // qty
+                    String colors = sb.toString().substring(0, sb.toString().length() - 2);
+                    cartProductDetails.add(colors); // colors
 
                     try {
                         handler.openDataBase();
                         boolean save = handler.addCartProduct(cartProductDetails);
                         if (save) {
+//                            Functions.snack(parentView, "Product added successfully");
+                            Toast.makeText(context, "Product added successfully.", Toast.LENGTH_LONG).show();
                             dismiss();
-                            Functions.snack(v, "Product added successfully");
                         } else {
-                            Functions.snack(v, "Something went wrong");
+//                            Functions.snack(parentView,"Something went wrong");
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show();
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -104,6 +114,7 @@ public class CustomBaseDialog extends BaseDialog {
     }
 
     private void init(View customView) {
+        parentView = (View) findViewById(android.R.id.content);
         mTagGroup = (TagGroup) customView.findViewById(R.id.tag_group);
         btnOK = (Button) customView.findViewById(R.id.btnOK);
         btnCancel = (Button) customView.findViewById(R.id.btnCancel);
@@ -138,4 +149,5 @@ public class CustomBaseDialog extends BaseDialog {
         });
         return false;
     }
+
 }

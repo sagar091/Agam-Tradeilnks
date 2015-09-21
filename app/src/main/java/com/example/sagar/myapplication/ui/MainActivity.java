@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         edtCompany.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (companyData.company.size() > 0) {
                     setCompanyDialog();
                 } else {
