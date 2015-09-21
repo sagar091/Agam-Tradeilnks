@@ -32,6 +32,7 @@ import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivit
 import com.example.sagar.myapplication.model.Retailer;
 import com.example.sagar.myapplication.model.RetailerData;
 import com.example.sagar.myapplication.model.UserProfile;
+import com.flyco.animation.BounceEnter.BounceBottomEnter;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.gson.GsonBuilder;

@@ -1,19 +1,27 @@
 package com.example.sagar.myapplication.customComponent;
 
 import android.content.Context;
-import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SeekBar;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.model.RetailerData;
+import com.flyco.animation.Attention.RubberBand;
+import com.flyco.animation.Attention.Swing;
+import com.flyco.animation.Attention.Tada;
+import com.flyco.animation.BounceEnter.BounceBottomEnter;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
 import com.flyco.animation.FadeEnter.FadeEnter;
+import com.flyco.animation.FadeExit.FadeExit;
+import com.flyco.animation.FallEnter.FallEnter;
+import com.flyco.animation.Jelly;
+import com.flyco.animation.SlideEnter.SlideBottomEnter;
 import com.flyco.dialog.widget.base.BaseDialog;
-import com.rey.material.app.Dialog;
 
 import java.util.ArrayList;
 
@@ -27,7 +35,7 @@ public class OfflineRetailerDialog extends BaseDialog {
     RetailerData retailerData;
     private String selectRetailerId, selectRetailerName;
     ListView offlineListView;
-    SearchView searchView;
+    EditText edtSearch;
 
     public void setOnSelectRetailerListner(OfflineRetailerDialog.onSelectRetailerListner onSelectRetailerListner) {
         this.onSelectRetailerListner = onSelectRetailerListner;
@@ -61,38 +69,38 @@ public class OfflineRetailerDialog extends BaseDialog {
     private void init(View customView) {
         parentView = (View) findViewById(android.R.id.content);
 
+        edtSearch = (EditText) customView.findViewById(R.id.edtSearch);
         offlineListView = (ListView) customView.findViewById(R.id.offlineList);
-        searchView = (SearchView) customView.findViewById(R.id.searchView);
-        searchView.setIconifiedByDefault(false);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText)) {
-                    offlineListView.clearTextFilter();
-                } else {
-                    offlineListView.setFilterText(newText);
-                }
-
-                return true;
-            }
-        });
-        searchView.setSubmitButtonEnabled(false);
-        searchView.setQueryHint("Search Retailer");
 
         ArrayList<String> retailers = new ArrayList<>();
         for (int i = 0; i < retailerData.retailers.size(); i++) {
             retailers.add(retailerData.retailers.get(i).retailer.retailerName);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_single_choice, retailers);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_single_choice, retailers);
 
         offlineListView.setAdapter(adapter);
         offlineListView.setTextFilterEnabled(true);
+
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0)
+                    adapter.getFilter().filter(s.toString().trim());
+                else
+                    offlineListView.clearTextFilter();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         offlineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

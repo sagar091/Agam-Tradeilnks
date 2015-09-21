@@ -18,8 +18,11 @@ import android.widget.ImageView;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.Functions;
+import com.example.sagar.myapplication.marketing.fragment.AddNewRetailerFragment;
 import com.example.sagar.myapplication.marketing.fragment.HomeMarketingFragment;
+import com.example.sagar.myapplication.marketing.fragment.OrderMarketingFragment;
 import com.example.sagar.myapplication.marketing.fragment.RetailerMarketingFragment;
+import com.example.sagar.myapplication.marketing.fragment.StockFragment;
 
 public class MarketingDrawerActivity extends AppCompatActivity {
 
@@ -61,18 +64,58 @@ public class MarketingDrawerActivity extends AppCompatActivity {
     private void setDrawerClick(int itemId) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
-            switch (itemId){
-                case R.id.drawer_home:
-                    ft.replace(R.id.content, new HomeMarketingFragment(), "Home");
-                    ft.commit();
-                    break;
+        switch (itemId) {
+            case R.id.drawer_home:
+                ft.replace(R.id.content, new HomeMarketingFragment(), "Home");
+                ft.commit();
+                break;
 
-                case R.id.drawer_retailer:
-                    ft.replace(R.id.content, new RetailerMarketingFragment(), "Retailers");
-                    ft.commit();
-                    break;
+            case R.id.drawer_retailer:
+                ft.replace(R.id.content, new RetailerMarketingFragment(), "Retailers");
+                ft.commit();
+                break;
 
-            }
+            case R.id.drawer_stock:
+                ft.replace(R.id.content, new StockFragment(), "Stock");
+                ft.commit();
+                break;
+
+            case R.id.drawer_orders:
+                ft.replace(R.id.content, new OrderMarketingFragment(), "Orders");
+                ft.commit();
+                break;
+
+            case R.id.drawer_add:
+                ft.replace(R.id.content, new AddNewRetailerFragment(), "Add New Retailer");
+                ft.commit();
+                break;
+
+            case R.id.drawer_payment:
+                break;
+
+            case R.id.drawer_multi_payment:
+                break;
+
+            case R.id.drawer_check_in:
+                break;
+
+            case R.id.drawer_check_out:
+                break;
+
+            case R.id.drawer_agent:
+                break;
+
+            case R.id.drawer_download:
+                break;
+
+            case R.id.drawer_password:
+                break;
+
+            case R.id.drawer_log_out:
+                break;
+
+
+        }
     }
 
     public Toolbar getToolbar() {

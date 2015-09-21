@@ -1,32 +1,34 @@
 package com.example.sagar.myapplication.marketing.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
+import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
+import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.RetailerData;
 
 import java.util.ArrayList;
 
 
-public class RetailerMarketingFragment extends android.support.v4.app.Fragment {
+public class RetailerMarketingFragment extends Fragment {
 
     View customView;
     View parentView;
     RetailerData finalRetailerData;
     private String selectRetailerId, selectRetailerName;
     ListView offlineListView;
-    SearchView searchView;
+    EditText edtSearch;
     private ComplexPreferences complexPreferences;
 
     public static RetailerMarketingFragment newInstance(String param1, String param2) {
@@ -55,30 +57,11 @@ public class RetailerMarketingFragment extends android.support.v4.app.Fragment {
     }
 
     private void init(View customView) {
+        ((MarketingDrawerActivity) getActivity()).setTitle("Retailers");
         parentView = (View) customView.findViewById(android.R.id.content);
 
+        edtSearch = (EditText) customView.findViewById(R.id.edtSearch);
         offlineListView = (ListView) customView.findViewById(R.id.offlineList);
-        searchView = (SearchView) customView.findViewById(R.id.searchView);
-        searchView.setIconifiedByDefault(false);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText)) {
-                    offlineListView.clearTextFilter();
-                } else {
-                    offlineListView.setFilterText(newText);
-                }
-
-                return true;
-            }
-        });
-        searchView.setSubmitButtonEnabled(false);
-        searchView.setQueryHint("Search Retailer");
 
         finalRetailerData = new RetailerData();
         complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
@@ -90,10 +73,30 @@ public class RetailerMarketingFragment extends android.support.v4.app.Fragment {
             retailers.add(finalRetailerData.retailers.get(i).retailer.retailerName);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, retailers);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, retailers);
 
         offlineListView.setAdapter(adapter);
         offlineListView.setTextFilterEnabled(true);
+
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0)
+                    adapter.getFilter().filter(s.toString().trim());
+                else
+                    offlineListView.clearTextFilter();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         offlineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
