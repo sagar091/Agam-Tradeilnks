@@ -146,6 +146,11 @@ public class MarketingDrawerActivity extends AppCompatActivity {
                 complexPreferences.putObject("current-user", blankUser);
                 complexPreferences.commit();
 
+                SharedPreferences preferences2 = getSharedPreferences("login", MODE_PRIVATE);
+                SharedPreferences.Editor editor2 = preferences2.edit();
+                editor2.remove("isUserLogin");
+                editor2.commit();
+
                 Intent i = new Intent(this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
                         | Intent.FLAG_ACTIVITY_NEW_TASK);

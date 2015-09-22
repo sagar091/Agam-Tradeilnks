@@ -2,32 +2,27 @@ package com.example.sagar.myapplication.marketing.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sagar.myapplication.R;
-import com.example.sagar.myapplication.customComponent.AddCartDialog;
 import com.example.sagar.myapplication.customComponent.CustomBaseDialog;
 import com.example.sagar.myapplication.customComponent.SearchAdapter;
 import com.example.sagar.myapplication.customComponent.TouchImageView;
+import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.DatabaseHandler;
 import com.example.sagar.myapplication.helper.Functions;
@@ -48,8 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import me.gujun.android.taggroup.TagGroup;
-
 public class HomeMarketingFragment extends Fragment {
 
     private EditText edtCompany;
@@ -59,6 +52,7 @@ public class HomeMarketingFragment extends Fragment {
     int modelError;
     ModelData modelData;
     private ListView productsListView;
+    private ComplexPreferences complexPreferences;
 
     public static HomeMarketingFragment newInstance(String param1, String param2) {
         HomeMarketingFragment fragment = new HomeMarketingFragment();
@@ -82,7 +76,11 @@ public class HomeMarketingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_marketing, container, false);
         init(view);
 
-        new GetCompany().execute();
+        //new GetCompany().execute();
+
+        companyData = new CompanyData();
+        complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
+        companyData = complexPreferences.getObject("mobile_companies", CompanyData.class);
 
         edtCompany.setOnClickListener(new View.OnClickListener() {
             @Override

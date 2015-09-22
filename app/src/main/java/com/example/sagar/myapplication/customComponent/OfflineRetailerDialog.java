@@ -3,6 +3,7 @@ package com.example.sagar.myapplication.customComponent;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -105,9 +106,17 @@ public class OfflineRetailerDialog extends BaseDialog {
         offlineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectRetailerId = retailerData.retailers.get(position).retailer.retailerId;
-                selectRetailerName = retailerData.retailers.get(position).retailer.retailerName;
+                selectRetailerName = parent.getItemAtPosition(position) + "";
+                for (int i = 0; i < retailerData.retailers.size(); i++) {
+                    if (retailerData.retailers.get(i).retailer.retailerName.equals(selectRetailerName)) {
+                        selectRetailerId = retailerData.retailers.get(i).retailer.retailerId;
+                        break;
+                    }
+                }
+                Log.e(selectRetailerId, selectRetailerName);
+
                 if (onSelectRetailerListner != null) {
+                    dismiss();
                     onSelectRetailerListner.OnClickRetailer(selectRetailerId, selectRetailerName);
                 }
             }

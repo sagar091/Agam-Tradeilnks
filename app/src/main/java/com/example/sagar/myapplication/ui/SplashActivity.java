@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
@@ -37,10 +38,11 @@ public class SplashActivity extends AppCompatActivity {
                     complexPreferences = ComplexPreferences.getComplexPreferences(SplashActivity.this, "user_pref", 0);
                     UserProfile currentUser = new UserProfile();
                     currentUser = complexPreferences.getObject("current-user", UserProfile.class);
+
                     userType = currentUser.user_type;
 
                     if (userType.equals("1")) {
-                        intent = new Intent(SplashActivity.this, CheckInActivity.class);
+                        intent = new Intent(SplashActivity.this, MarketingDrawerActivity.class);
                     } else {
                         intent = new Intent(SplashActivity.this, RetailerDrawerActivity.class);
                     }

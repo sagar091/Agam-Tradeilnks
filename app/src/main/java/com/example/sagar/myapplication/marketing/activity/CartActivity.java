@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.DatabaseHandler;
@@ -21,6 +22,7 @@ public class CartActivity extends AppCompatActivity {
     ArrayList<ProductCart> products = new ArrayList<>();
     private Toolbar toolbar;
     private ImageView imgCart;
+    private TextView emptyCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +36,16 @@ public class CartActivity extends AppCompatActivity {
         products = handler.getProducts();
 
         Log.e("products", products.size() + "--");
+        if (products.size() == 0) {
+            emptyCart.setVisibility(View.VISIBLE);
+        } else {
+            emptyCart.setVisibility(View.GONE);
+        }
 
     }
 
     private void init() {
+        emptyCart = (TextView) findViewById(R.id.emptyCart);
         toolbar = (Toolbar) findViewById(R.id.toolbar2);
         if (toolbar != null) {
             toolbar.setTitle("Your Cart");

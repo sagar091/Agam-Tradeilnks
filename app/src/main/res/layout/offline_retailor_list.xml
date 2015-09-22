@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f1f1f1"
+    android:background="#FFE4E1"
     android:orientation="vertical"
     android:padding="4dp">
 
@@ -10,7 +10,9 @@
         android:id="@+id/edtSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search Retailer"></EditText>
+        android:background="#f1f1f1"
+        android:hint="Search Retailer"
+        android:padding="10dp"></EditText>
 
     <ListView
         android:id="@+id/offlineList"

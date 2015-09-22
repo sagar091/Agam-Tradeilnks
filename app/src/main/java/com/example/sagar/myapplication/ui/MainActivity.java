@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     CompanyData companyData;
     ModelData modelData;
     int modelError;
+    private ComplexPreferences complexPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +196,11 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
                 // Log.e("company_response", obj.toString());
                 companyData = new GsonBuilder().create().fromJson(obj.toString(), CompanyData.class);
+                if (companyData.company.size() > 0) {
+                    complexPreferences = ComplexPreferences.getComplexPreferences(MainActivity.this, "user_pref", 0);
+                    complexPreferences.putObject("mobile_companies", companyData);
+                    complexPreferences.commit();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

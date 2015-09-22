@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
+import com.example.sagar.myapplication.model.Retailer;
 import com.example.sagar.myapplication.model.RetailerData;
 
 import java.util.ArrayList;
@@ -67,7 +68,6 @@ public class RetailerMarketingFragment extends Fragment {
         complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         finalRetailerData = complexPreferences.getObject("offline_retailers", RetailerData.class);
 
-
         ArrayList<String> retailers = new ArrayList<>();
         for (int i = 0; i < finalRetailerData.retailers.size(); i++) {
             retailers.add(finalRetailerData.retailers.get(i).retailer.retailerName);
@@ -86,10 +86,15 @@ public class RetailerMarketingFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0)
+                if (s.toString().trim().length() > 0) {
+                    adapter.notifyDataSetChanged();
                     adapter.getFilter().filter(s.toString().trim());
-                else
+                }
+
+                if (s.toString().length() == 0) {
+                    adapter.getFilter().filter("");
                     offlineListView.clearTextFilter();
+                }
             }
 
             @Override
@@ -101,8 +106,14 @@ public class RetailerMarketingFragment extends Fragment {
         offlineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectRetailerId = finalRetailerData.retailers.get(position).retailer.retailerId;
-                selectRetailerName = finalRetailerData.retailers.get(position).retailer.retailerName;
+
+                selectRetailerName = parent.getItemAtPosition(position) + "";
+                for (int i = 0; i < finalRetailerData.retailers.size(); i++) {
+                    if (finalRetailerData.retailers.get(i).retailer.retailerName.equals(selectRetailerName)) {
+                        selectRetailerId = finalRetailerData.retailers.get(i).retailer.retailerId;
+                        break;
+                    }
+                }
                 Log.e(selectRetailerId, selectRetailerName);
 
             }
