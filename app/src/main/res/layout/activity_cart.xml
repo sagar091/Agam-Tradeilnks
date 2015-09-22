@@ -6,4 +6,15 @@
 
     <include layout="@layout/app_bar2"></include>
 
+    <TextView
+        android:id="@+id/emptyCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/add_buy_plus_shopping_cart_512"
+        android:gravity="center"
+        android:text="Your cart is empty"
+        android:textSize="20sp" />
+
 </RelativeLayout>

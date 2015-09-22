@@ -1,5 +1,6 @@
 package com.example.sagar.myapplication.marketing.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.design.widget.NavigationView;
@@ -17,12 +18,20 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.fragment.AddNewRetailerFragment;
+import com.example.sagar.myapplication.marketing.fragment.AgentFragment;
+import com.example.sagar.myapplication.marketing.fragment.DownloadSheetFragment;
 import com.example.sagar.myapplication.marketing.fragment.HomeMarketingFragment;
+import com.example.sagar.myapplication.marketing.fragment.MultipleOrdersPaymentFragment;
 import com.example.sagar.myapplication.marketing.fragment.OrderMarketingFragment;
+import com.example.sagar.myapplication.marketing.fragment.PaymentFragment;
 import com.example.sagar.myapplication.marketing.fragment.RetailerMarketingFragment;
 import com.example.sagar.myapplication.marketing.fragment.StockFragment;
+import com.example.sagar.myapplication.model.UserProfile;
+import com.example.sagar.myapplication.ui.CheckInActivity;
+import com.example.sagar.myapplication.ui.MainActivity;
 
 public class MarketingDrawerActivity extends AppCompatActivity {
 
@@ -32,6 +41,7 @@ public class MarketingDrawerActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private ImageView imgCart;
     SharedPreferences preferences;
+    private ComplexPreferences complexPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,27 +101,56 @@ public class MarketingDrawerActivity extends AppCompatActivity {
                 break;
 
             case R.id.drawer_payment:
+                ft.replace(R.id.content, new PaymentFragment(), "Payment");
+                ft.commit();
                 break;
 
             case R.id.drawer_multi_payment:
+                ft.replace(R.id.content, new MultipleOrdersPaymentFragment(), "Multiple Orders Payment");
+                ft.commit();
                 break;
 
             case R.id.drawer_check_in:
+                Functions.fireIntent(MarketingDrawerActivity.this, CheckInActivity.class);
                 break;
 
             case R.id.drawer_check_out:
+                SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove("offline");
+                editor.commit();
+
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+
                 break;
 
             case R.id.drawer_agent:
+                ft.replace(R.id.content, new AgentFragment(), "Agents Activity");
+                ft.commit();
                 break;
 
             case R.id.drawer_download:
+                ft.replace(R.id.content, new DownloadSheetFragment(), "Download Sheet");
+                ft.commit();
                 break;
 
             case R.id.drawer_password:
+
                 break;
 
             case R.id.drawer_log_out:
+                complexPreferences = ComplexPreferences.getComplexPreferences(MarketingDrawerActivity.this, "user_pref", 0);
+                UserProfile blankUser = new UserProfile();
+                complexPreferences.putObject("current-user", blankUser);
+                complexPreferences.commit();
+
+                Intent i = new Intent(this, MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+
                 break;
 
 
@@ -165,6 +204,7 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         };
         drawerLayout.setDrawerListener(drawerToggle);
 
+        // Set CheckIn CheckOut option visibility
         preferences = getSharedPreferences("login", MODE_PRIVATE);
         if (preferences.contains("offline")) {
             Log.e("offline", preferences.getString("offline", null));
@@ -192,7 +232,6 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Functions.snack(v, "Cart");
                 Functions.fireIntent(MarketingDrawerActivity.this, CartActivity.class);
             }
         });

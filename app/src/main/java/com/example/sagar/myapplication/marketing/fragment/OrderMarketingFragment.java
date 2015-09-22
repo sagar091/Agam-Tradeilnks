@@ -42,7 +42,7 @@ public class OrderMarketingFragment extends Fragment {
     }
 
     private void init(View customView) {
-        ((MarketingDrawerActivity) getActivity()).setTitle("Stock");
+        ((MarketingDrawerActivity) getActivity()).setTitle("Orders");
     }
 
 }
