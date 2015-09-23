@@ -30,7 +30,7 @@
 
         <item
             android:id="@+id/drawer_multi_payment"
-            android:title="Multiple Payment" />
+            android:title="Multiple Orders Payment" />
 
         <item
             android:id="@+id/drawer_check_in"

@@ -170,6 +170,10 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         toolbar.setTitle(title);
     }
 
+    public void setSubtitle(String subtitle) {
+        toolbar.setSubtitle(subtitle);
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
