@@ -2,6 +2,7 @@ package com.example.sagar.myapplication.marketing.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -59,7 +60,7 @@ public class OrderPendingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View parentView = inflater.inflate(R.layout.fragment_order_pending, container, false);
+        parentView = inflater.inflate(R.layout.fragment_order_pending, container, false);
         init(parentView);
 
         return parentView;
@@ -87,7 +88,7 @@ public class OrderPendingFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pd = ProgressDialog.show(getActivity(), "Loading", "Fetching Pending Orders.", false);
+            pd = ProgressDialog.show(getActivity(), "Loading", "Fetching Orders.", false);
         }
 
         @Override
@@ -98,7 +99,7 @@ public class OrderPendingFragment extends Fragment {
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
-                Log.e("order_pending_response", obj.toString());
+                //Log.e("order_pending_response", obj.toString());
                 orderError = obj.getInt("error");
                 if (orderError == 0) {
                     orderData = new GsonBuilder().create().fromJson(obj.toString(), OrderMarketingData.class);
@@ -115,6 +116,7 @@ public class OrderPendingFragment extends Fragment {
             pd.dismiss();
             if (orderData.orders.size() > 0) {
                 adapter = new PendingOrderAdapter(getActivity(), orderData.orders);
+                listView.setAdapter(adapter);
             }
 
         }
@@ -124,7 +126,7 @@ public class OrderPendingFragment extends Fragment {
 
         Context context;
         LayoutInflater mInflater;
-        List<ModelClass> orders;
+        List<OrderModel> orders;
 
         public PendingOrderAdapter(Context context, List<OrderModel> orders) {
             this.context = context;
@@ -168,23 +170,25 @@ public class OrderPendingFragment extends Fragment {
                 mHolder = (ViewHolder) convertView.getTag();
             }
 
-            mHolder.orderid.setText(orders.get(position).id);
-            mHolder.retailer.setText(orders.get(position).name);
+            mHolder.orderid.setText(orders.get(position).order.order_id);
+            mHolder.retailer.setText(orders.get(position).order.retailor_id);
             mHolder.orderdate
-                    .setText(resultp.get(OrderActivity.TAG_ORDER_DATE));
-            convertView.setOnClickListener(new OnClickListener() {
+                    .setText(orders.get(position).order.order_date);
+
+            convertView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
-                    resultp = orderList.get(position);
+                    /*resultp = orderList.get(position);
                     Intent i = new Intent(OrderActivity.this,
                             OrderDetails.class);
                     app.setOrder(resultp.get(OrderActivity.TAG_ORDER_ID));
                     i.putExtra("select", select);
-                    startActivity(i);
+                    startActivity(i);*/
                 }
             });
+
             return convertView;
         }
 

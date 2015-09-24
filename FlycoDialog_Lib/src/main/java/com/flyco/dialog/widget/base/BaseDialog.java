@@ -365,4 +365,5 @@ public abstract class BaseDialog extends Dialog {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }
+
 }

@@ -47,6 +47,8 @@ public class OrderMarketingFragment extends Fragment {
 
     private void init(View customView) {
         ((MarketingDrawerActivity) getActivity()).setTitle("Orders");
+        ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
+
         tabLayout = (TabLayout) customView.findViewById(R.id.tab_layout);
         viewPager = (ViewPager) customView.findViewById(R.id.pager);
 

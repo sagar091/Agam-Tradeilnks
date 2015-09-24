@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
+import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.retailer.RetailerDrawerActivity;
@@ -65,9 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(view.getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
+                Functions.closeKeyPad(LoginActivity.this, view);
                 processLogin();
             }
         });

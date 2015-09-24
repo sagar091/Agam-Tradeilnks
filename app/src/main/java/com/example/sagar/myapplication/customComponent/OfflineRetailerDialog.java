@@ -37,12 +37,11 @@ public class OfflineRetailerDialog extends BaseDialog {
     private String selectRetailerId, selectRetailerName;
     ListView offlineListView;
     EditText edtSearch;
+    onSelectRetailerListner onSelectRetailerListner;
 
     public void setOnSelectRetailerListner(OfflineRetailerDialog.onSelectRetailerListner onSelectRetailerListner) {
         this.onSelectRetailerListner = onSelectRetailerListner;
     }
-
-    onSelectRetailerListner onSelectRetailerListner;
 
     public OfflineRetailerDialog(Context context, RetailerData retailerData) {
         super(context);

@@ -1,10 +1,56 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
     tools:context="com.example.sagar.myapplication.marketing.fragment.DownloadSheetFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <EditText
+        android:id="@+id/edtCompany"
+        style="@style/match_wrap_content"
+        android:background="@drawable/background"
+        android:focusable="false"
+        android:hint="Select Company"
+        android:padding="12dp"
+        android:textColorHint="@color/primaryColor" />
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/linearButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cb2"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.rey.material.widget.Button
+            android:id="@+id/btnDownload"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
+            android:layout_weight="0.5"
+            android:background="@color/button_bg"
+            android:text="Download"
+            android:textColor="#ffffff"
+            app:rd_enable="true"
+            app:rd_rippleColor="@color/button_ripple"
+            app:rd_rippleType="touch" />
+
+        <com.rey.material.widget.Button
+            android:id="@+id/btnView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_weight="0.5"
+            android:background="@color/button_bg"
+            android:text="View"
+            android:textColor="#ffffff"
+            app:rd_enable="true"
+            app:rd_rippleColor="@color/button_ripple"
+            app:rd_rippleType="touch" />
+
+    </LinearLayout>
+
+</LinearLayout>

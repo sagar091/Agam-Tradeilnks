@@ -59,6 +59,8 @@ public class RetailerMarketingFragment extends Fragment {
 
     private void init(View customView) {
         ((MarketingDrawerActivity) getActivity()).setTitle("Retailers");
+        ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
+
         parentView = (View) customView.findViewById(android.R.id.content);
 
         edtSearch = (EditText) customView.findViewById(R.id.edtSearch);

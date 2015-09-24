@@ -1,5 +1,6 @@
 package com.example.sagar.myapplication.marketing.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.example.sagar.myapplication.R;
@@ -128,6 +130,10 @@ public class MarketingDrawerActivity extends AppCompatActivity {
 
             case R.id.drawer_agent:
                 ft.replace(R.id.content, new AgentFragment(), "Agents Activity");
+               /* preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                if (!preferences.contains("offline")) {
+                    ft.addToBackStack(null);
+                }*/
                 ft.commit();
                 break;
 
@@ -171,7 +177,12 @@ public class MarketingDrawerActivity extends AppCompatActivity {
     }
 
     public void setSubtitle(String subtitle) {
-        toolbar.setSubtitle(subtitle);
+        if (subtitle.equalsIgnoreCase("no")) {
+            toolbar.setSubtitle(null);
+        } else {
+            toolbar.setSubtitle(subtitle);
+        }
+
     }
 
     @Override
@@ -203,12 +214,14 @@ public class MarketingDrawerActivity extends AppCompatActivity {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                Functions.closeKeyPad(MarketingDrawerActivity.this, drawerView);
 
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                Functions.closeKeyPad(MarketingDrawerActivity.this, drawerView);
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);

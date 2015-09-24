@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import java.math.BigInteger;
@@ -45,11 +46,11 @@ public class Functions {
     }
 
     public static void logE(final String tag, final String logMsg) {
-            if (logMsg.length() > 4000) {
-                Log.e(tag, logMsg.substring(0, 4000));
-                logE(tag, logMsg.substring(4000));
-            } else
-                Log.e(tag, logMsg);
+        if (logMsg.length() > 4000) {
+            Log.e(tag, logMsg.substring(0, 4000));
+            logE(tag, logMsg.substring(4000));
+        } else
+            Log.e(tag, logMsg);
     }
 
     public static void displayMessage(Context ctx, String msg) {
@@ -138,5 +139,11 @@ public class Functions {
 
     public static void snack(View v, String msg) {
         Snackbar.make(v, msg, Snackbar.LENGTH_LONG).show();
+    }
+
+    public static void closeKeyPad(Context context, View view) {
+        InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(view.getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

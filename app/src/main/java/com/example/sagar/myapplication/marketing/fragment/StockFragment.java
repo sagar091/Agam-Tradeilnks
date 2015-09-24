@@ -41,6 +41,7 @@ public class StockFragment extends Fragment {
 
     private void init(View customView) {
         ((MarketingDrawerActivity) getActivity()).setTitle("Stock");
+        ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
 
     }
 

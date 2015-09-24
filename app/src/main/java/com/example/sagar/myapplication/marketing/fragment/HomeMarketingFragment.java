@@ -166,6 +166,7 @@ public class HomeMarketingFragment extends Fragment {
 
     private void init(View view) {
         ((MarketingDrawerActivity) getActivity()).setTitle("Products");
+        ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
         productsListView = (ListView) view.findViewById(R.id.productsListView);
         edtCompany = (EditText) view.findViewById(R.id.edtCompany);
     }
