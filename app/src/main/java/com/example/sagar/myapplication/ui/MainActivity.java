@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
-                // Log.e("company_response", obj.toString());
+//                Log.e("company_response", obj.toString());
                 companyData = new GsonBuilder().create().fromJson(obj.toString(), CompanyData.class);
                 if (companyData.company.size() > 0) {
                     complexPreferences = ComplexPreferences.getComplexPreferences(MainActivity.this, "user_pref", 0);
