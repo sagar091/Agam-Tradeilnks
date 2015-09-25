@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
+import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.marketing.activity.RetailerOrdersActivity;
 import com.example.sagar.myapplication.model.Retailer;
@@ -110,6 +111,8 @@ public class RetailerMarketingFragment extends Fragment {
         offlineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Functions.hideKeyPad(getActivity(), view);
 
                 selectRetailerName = parent.getItemAtPosition(position) + "";
                 for (int i = 0; i < finalRetailerData.retailers.size(); i++) {

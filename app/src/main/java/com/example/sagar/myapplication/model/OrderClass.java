@@ -24,4 +24,10 @@ public class OrderClass {
 
     @SerializedName("order_id")
     public String order_id;
+
+    @SerializedName("dilivery_pending")
+    public String dilivery_pending;
+
+    @SerializedName("payment_pending")
+    public String payment_pending;
 }

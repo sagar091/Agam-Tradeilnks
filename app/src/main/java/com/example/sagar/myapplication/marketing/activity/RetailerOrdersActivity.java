@@ -1,27 +1,40 @@
 package com.example.sagar.myapplication.marketing.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
+import com.example.sagar.myapplication.model.OrderMarketingData;
+import com.example.sagar.myapplication.model.OrderModel;
 import com.example.sagar.myapplication.model.UserProfile;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class RetailerOrdersActivity extends AppCompatActivity {
 
@@ -34,6 +47,9 @@ public class RetailerOrdersActivity extends AppCompatActivity {
     private String userId;
     ComplexPreferences complexPreferences;
     ProgressDialog pd;
+    OrderMarketingData orderData;
+    OrdersAdapter adapter;
+    ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +67,11 @@ public class RetailerOrdersActivity extends AppCompatActivity {
         userId = userProfile.user_id;
 
         new GetOrders().execute();
+
     }
 
     private void init() {
+        listview = (ListView) findViewById(R.id.listview);
         parentView = findViewById(android.R.id.content);
         noData = (TextView) findViewById(R.id.noData);
         toolbar = (Toolbar) findViewById(R.id.toolbar2);
@@ -98,7 +116,7 @@ public class RetailerOrdersActivity extends AppCompatActivity {
                 Log.e("order_response", obj.toString());
                 orderError = obj.getString("error");
                 if (orderError.equals("0")) {
-
+                    orderData = new GsonBuilder().create().fromJson(obj.toString(), OrderMarketingData.class);
                 }
             } catch (Exception e) {
                 Functions.snack(parentView, e.getMessage());
@@ -110,6 +128,98 @@ public class RetailerOrdersActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             pd.dismiss();
+            if (orderError.equals("0")) {
+                adapter = new OrdersAdapter(RetailerOrdersActivity.this, orderData.orders);
+                listview.setAdapter(adapter);
+
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(RetailerOrdersActivity.this,"Clicked"+position,Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            } else {
+                noData.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private class OrdersAdapter extends BaseAdapter {
+
+        Context context;
+        LayoutInflater mInflater;
+        List<OrderModel> orders;
+
+        public OrdersAdapter(Context context, List<OrderModel> orders) {
+            this.context = context;
+            this.orders = orders;
+        }
+
+        @Override
+        public int getCount() {
+            return orders.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+
+            // TODO Auto-generated method stub
+            final ViewHolder mHolder;
+            if (convertView == null) {
+                mInflater = (LayoutInflater) context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = mInflater.inflate(R.layout.ret_order_row,
+                        parent, false);
+                mHolder = new ViewHolder();
+                mHolder.fullLayout = (LinearLayout) convertView.findViewById(R.id.fullLayout);
+                mHolder.txtOrderId = (TextView) convertView
+                        .findViewById(R.id.txtOrderId);
+                mHolder.txtOrderTotal = (TextView) convertView
+                        .findViewById(R.id.txtOrderTotal);
+                convertView.setTag(mHolder);
+            } else {
+                mHolder = (ViewHolder) convertView.getTag();
+            }
+
+            mHolder.txtOrderId.setText(orders.get(position).order.order_id);
+            mHolder.txtOrderTotal.setText(orders.get(position).order.order_total);
+
+            // Pending Order
+            if (orders.get(position).order.dilivery_pending.equals("1")) { // Completed Order
+                mHolder.fullLayout.setBackgroundResource(R.color.quad_blue);
+
+            } else {
+                mHolder.fullLayout.setBackgroundResource(R.color.quad_green);
+            }
+
+           /* convertView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    *//*Toast.makeText(RetailerOrdersActivity.this, "position " + position, Toast.LENGTH_LONG).show();
+                    Log.e("position", position + "-##");
+                    Log.e("Order ", orderData.orders.get(position).order.order_id);*//*
+                }
+            });*/
+
+            return convertView;
+        }
+
+        private class ViewHolder {
+            TextView txtOrderTotal, txtOrderId;
+            LinearLayout fullLayout;
         }
     }
 }
