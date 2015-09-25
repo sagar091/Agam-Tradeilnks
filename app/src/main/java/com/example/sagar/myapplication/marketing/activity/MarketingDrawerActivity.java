@@ -1,6 +1,5 @@
 package com.example.sagar.myapplication.marketing.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -16,10 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.ChangePasswordDialog;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.fragment.AddNewRetailerFragment;
@@ -143,7 +142,8 @@ public class MarketingDrawerActivity extends AppCompatActivity {
                 break;
 
             case R.id.drawer_password:
-
+                ChangePasswordDialog dialog = new ChangePasswordDialog(MarketingDrawerActivity.this);
+                dialog.show();
                 break;
 
             case R.id.drawer_log_out:
@@ -214,14 +214,14 @@ public class MarketingDrawerActivity extends AppCompatActivity {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                Functions.closeKeyPad(MarketingDrawerActivity.this, drawerView);
+                Functions.hideKeyPad(MarketingDrawerActivity.this, drawerView);
 
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                Functions.closeKeyPad(MarketingDrawerActivity.this, drawerView);
+                Functions.hideKeyPad(MarketingDrawerActivity.this, drawerView);
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);

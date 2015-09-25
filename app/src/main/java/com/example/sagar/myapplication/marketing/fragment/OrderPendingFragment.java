@@ -99,7 +99,7 @@ public class OrderPendingFragment extends Fragment {
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
-                //Log.e("order_pending_response", obj.toString());
+                Log.e("order_pending_response", obj.toString());
                 orderError = obj.getInt("error");
                 if (orderError == 0) {
                     orderData = new GsonBuilder().create().fromJson(obj.toString(), OrderMarketingData.class);

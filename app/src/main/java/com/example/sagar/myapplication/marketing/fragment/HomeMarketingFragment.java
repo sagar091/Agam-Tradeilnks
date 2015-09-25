@@ -61,7 +61,7 @@ public class HomeMarketingFragment extends Fragment {
 
     public HomeMarketingFragment() {
         // Required empty public constructor
-}
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -296,7 +296,12 @@ public class HomeMarketingFragment extends Fragment {
             viewHolder.txtProductPrice.setText(getResources().getString(R.string.Rs)
                     + filledContainer.get(position).price);
             Glide.with(context).load(filledContainer.get(position).image).thumbnail(0.1f).placeholder(R.drawable.loading).into(viewHolder.imgProduct);
-            viewHolder.txtProductStock.setText("Stock: " + filledContainer.get(position).stock);
+            if (filledContainer.get(position).stock.equals("")) {
+                viewHolder.txtProductStock.setVisibility(View.GONE);
+            } else {
+                viewHolder.txtProductStock.setVisibility(View.VISIBLE);
+                viewHolder.txtProductStock.setText("Stock: " + filledContainer.get(position).stock);
+            }
 
             return convertView;
         }

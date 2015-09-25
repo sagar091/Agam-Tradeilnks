@@ -110,6 +110,7 @@ public class DownloadSheetFragment extends Fragment {
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 webView.loadUrl("https://docs.google.com/viewer?embedded=true&url=" + sheetURL);
             }
         });
@@ -117,21 +118,17 @@ public class DownloadSheetFragment extends Fragment {
         btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (download)
-                    openFolder();
-                else
+                if (download) {
+                    Functions.snack(customView, "File already downloaded in Internal Storage -> Agam Downloads folder.");
+                } else {
                     new DownloadSheet().execute();
+                }
             }
+
+
         });
 
         return customView;
-    }
-
-    private void openFolder() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        final Uri uri = Uri.parse(dir.getAbsolutePath());
-        intent.setDataAndType(uri, null);
-        startActivity(Intent.createChooser(intent, "Open folder"));
     }
 
     private void setCompanyDialog() {
@@ -151,6 +148,8 @@ public class DownloadSheetFragment extends Fragment {
         dialog.setOnOperItemClickL(new OnOperItemClickL() {
             @Override
             public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                download = false;
+                btnDownload.setText("Download");
                 selectCompanyId = companyData.company.get(position).cat_id;
                 selectCompanyName = companyData.company.get(position).cat_name;
                 edtCompany.setText(selectCompanyName);
@@ -163,6 +162,7 @@ public class DownloadSheetFragment extends Fragment {
 
                     @Override
                     public void onFinish() {
+                        webView.setVisibility(View.GONE);
                         new GetSheetLink().execute(selectCompanyId);
                     }
                 }.start();
@@ -246,6 +246,12 @@ public class DownloadSheetFragment extends Fragment {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
         }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            webView.setVisibility(View.VISIBLE);
+            super.onPageFinished(view, url);
+        }
     }
 
     private class DownloadSheet extends AsyncTask<String, String, String> {
@@ -313,7 +319,7 @@ public class DownloadSheetFragment extends Fragment {
             super.onProgressUpdate(values);
             btnDownload.setText(values[0] + "%");
             if (values[0].equals("100"))
-                btnDownload.setText("Open");
+                btnDownload.setText("Downloaded");
 
         }
     }

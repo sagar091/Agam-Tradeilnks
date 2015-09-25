@@ -1,5 +1,6 @@
 package com.example.sagar.myapplication.marketing.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -16,6 +17,7 @@ import android.widget.ListView;
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
+import com.example.sagar.myapplication.marketing.activity.RetailerOrdersActivity;
 import com.example.sagar.myapplication.model.Retailer;
 import com.example.sagar.myapplication.model.RetailerData;
 
@@ -116,7 +118,13 @@ public class RetailerMarketingFragment extends Fragment {
                         break;
                     }
                 }
+
                 Log.e(selectRetailerId, selectRetailerName);
+
+                Intent i = new Intent(getActivity(), RetailerOrdersActivity.class);
+                i.putExtra("selectRetailerId", selectRetailerId);
+                i.putExtra("selectRetailerName", selectRetailerName);
+                startActivity(i);
 
             }
         });

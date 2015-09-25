@@ -141,7 +141,7 @@ public class Functions {
         Snackbar.make(v, msg, Snackbar.LENGTH_LONG).show();
     }
 
-    public static void closeKeyPad(Context context, View view) {
+    public static void hideKeyPad(Context context, View view) {
         InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(view.getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
