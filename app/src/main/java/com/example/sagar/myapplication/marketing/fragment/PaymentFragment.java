@@ -1,6 +1,7 @@
 package com.example.sagar.myapplication.marketing.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,10 @@ import android.widget.ListView;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
+import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
+import com.example.sagar.myapplication.marketing.activity.PaymentOrdersActivity;
+import com.example.sagar.myapplication.marketing.activity.RetailerOrdersActivity;
 import com.example.sagar.myapplication.model.RetailerData;
 
 import java.util.ArrayList;
@@ -54,6 +58,32 @@ public class PaymentFragment extends Fragment {
         // Inflate the layout for this fragment
         customView = View.inflate(getActivity(), R.layout.offline_retailor_list, null);
         init(customView);
+
+        offlineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Functions.hideKeyPad(getActivity(), view);
+
+                selectRetailerName = parent.getItemAtPosition(position) + "";
+                Log.e("selectRetailerId", selectRetailerName);
+
+                for (int i = 0; i < finalRetailerData.retailers.size(); i++) {
+                    if (finalRetailerData.retailers.get(i).retailer.retailerName.equals(selectRetailerName)) {
+                        selectRetailerId = finalRetailerData.retailers.get(i).retailer.retailerId;
+                        break;
+                    }
+                }
+
+                Log.e(selectRetailerId, selectRetailerName);
+
+                Intent i = new Intent(getActivity(), PaymentOrdersActivity.class);
+                i.putExtra("selectRetailerId", selectRetailerId);
+                i.putExtra("selectRetailerName", selectRetailerName);
+                startActivity(i);
+
+            }
+        });
 
         return customView;
     }

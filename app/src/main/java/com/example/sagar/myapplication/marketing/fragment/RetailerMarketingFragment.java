@@ -108,30 +108,6 @@ public class RetailerMarketingFragment extends Fragment {
             }
         });
 
-        offlineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Functions.hideKeyPad(getActivity(), view);
-
-                selectRetailerName = parent.getItemAtPosition(position) + "";
-                for (int i = 0; i < finalRetailerData.retailers.size(); i++) {
-                    if (finalRetailerData.retailers.get(i).retailer.retailerName.equals(selectRetailerName)) {
-                        selectRetailerId = finalRetailerData.retailers.get(i).retailer.retailerId;
-                        break;
-                    }
-                }
-
-                Log.e(selectRetailerId, selectRetailerName);
-
-                Intent i = new Intent(getActivity(), RetailerOrdersActivity.class);
-                i.putExtra("selectRetailerId", selectRetailerId);
-                i.putExtra("selectRetailerName", selectRetailerName);
-                startActivity(i);
-
-            }
-        });
-
     }
 
 }

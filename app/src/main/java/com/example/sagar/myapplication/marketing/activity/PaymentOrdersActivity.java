@@ -3,15 +3,12 @@ package com.example.sagar.myapplication.marketing.activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
@@ -37,7 +33,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 
-public class RetailerOrdersActivity extends AppCompatActivity {
+public class PaymentOrdersActivity extends AppCompatActivity {
 
     private String selectRetailerId, selectRetailerName;
     private TextView noData;
@@ -56,7 +52,7 @@ public class RetailerOrdersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_retailer_orders);
+        setContentView(R.layout.activity_payment_orders);
 
         selectRetailerId = getIntent().getStringExtra("selectRetailerId");
         selectRetailerName = getIntent().getStringExtra("selectRetailerName");
@@ -77,7 +73,7 @@ public class RetailerOrdersActivity extends AppCompatActivity {
                 orderStatus = orderData.orders.get(position).order.dilivery_pending;
 //                Functions.snack(parentView, orderId + " -- " + orderStatus);
 
-                Intent i = new Intent(RetailerOrdersActivity.this, OrderDetailsActivity.class);
+                Intent i = new Intent(PaymentOrdersActivity.this, OrderDetailsActivity.class);
                 i.putExtra("orderId", orderId);
                 i.putExtra("orderStatus", orderStatus);
                 startActivity(i);
@@ -102,7 +98,7 @@ public class RetailerOrdersActivity extends AppCompatActivity {
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Functions.fireIntent(RetailerOrdersActivity.this, CartActivity.class);
+                Functions.fireIntent(PaymentOrdersActivity.this, CartActivity.class);
             }
         });
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -118,7 +114,7 @@ public class RetailerOrdersActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pd = ProgressDialog.show(RetailerOrdersActivity.this, "Loading", "Please wait..", false);
+            pd = ProgressDialog.show(PaymentOrdersActivity.this, "Loading", "Please wait..", false);
         }
 
         @Override
@@ -146,7 +142,7 @@ public class RetailerOrdersActivity extends AppCompatActivity {
             super.onPostExecute(s);
             pd.dismiss();
             if (orderError.equals("0")) {
-                adapter = new OrdersAdapter(RetailerOrdersActivity.this, orderData.orders);
+                adapter = new OrdersAdapter(PaymentOrdersActivity.this, orderData.orders);
                 listview.setAdapter(adapter);
 
             } else {

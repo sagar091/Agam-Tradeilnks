@@ -2,6 +2,8 @@ package com.example.sagar.myapplication.marketing.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.CheckInDialog;
 import com.example.sagar.myapplication.customComponent.CustomBaseDialog;
 import com.example.sagar.myapplication.customComponent.SearchAdapter;
 import com.example.sagar.myapplication.customComponent.TouchImageView;
@@ -53,6 +56,7 @@ public class HomeMarketingFragment extends Fragment {
     ModelData modelData;
     private ListView productsListView;
     private ComplexPreferences complexPreferences;
+    SharedPreferences preferences;
 
     public static HomeMarketingFragment newInstance(String param1, String param2) {
         HomeMarketingFragment fragment = new HomeMarketingFragment();
@@ -271,24 +275,38 @@ public class HomeMarketingFragment extends Fragment {
             viewHolder.btnAddCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String modelName = filledContainer.get(position).name;
-                    String modelId = filledContainer.get(position).id;
-                    String modelPrice = filledContainer.get(position).price;
+                    preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+                    if (preferences.contains("offline")) {
+                        String modelName = filledContainer.get(position).name;
+                        String modelId = filledContainer.get(position).id;
+                        String modelPrice = filledContainer.get(position).price;
 
-                    if (handler.productExist(modelId)) {
-                        Functions.snack(v, "Product is already added in the cart.");
+                        if (handler.productExist(modelId)) {
+                            Functions.snack(v, "Product is already added in the cart.");
+                        } else {
+                            Log.e(modelId, modelName);
+
+                            ArrayList<String> productDetails = new ArrayList<String>();
+                            productDetails.add(modelId);
+                            productDetails.add(modelName);
+                            productDetails.add(modelPrice);
+
+                            CustomBaseDialog dialog = new CustomBaseDialog(getActivity(), productDetails);
+                            dialog.show();
+                        }
+
                     } else {
-                        Log.e(modelId, modelName);
+                        Log.e("offline", "blank");
 
-                        ArrayList<String> productDetails = new ArrayList<String>();
-                        productDetails.add(modelId);
-                        productDetails.add(modelName);
-                        productDetails.add(modelPrice);
-
-                        CustomBaseDialog dialog = new CustomBaseDialog(getActivity(), productDetails);
+                        final CheckInDialog dialog = new CheckInDialog(getActivity());
+                        dialog.setOnCancelListener(new CheckInDialog.onCancelListener() {
+                            @Override
+                            public void setCancel() {
+                                dialog.dismiss();
+                            }
+                        });
                         dialog.show();
                     }
-
                 }
             });
 

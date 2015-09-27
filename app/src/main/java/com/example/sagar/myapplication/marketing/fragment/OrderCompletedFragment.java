@@ -2,6 +2,7 @@ package com.example.sagar.myapplication.marketing.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.HttpRequest;
+import com.example.sagar.myapplication.marketing.activity.OrderDetailsActivity;
 import com.example.sagar.myapplication.model.OrderMarketingData;
 import com.example.sagar.myapplication.model.OrderModel;
 import com.example.sagar.myapplication.model.UserProfile;
@@ -38,6 +41,7 @@ public class OrderCompletedFragment extends Fragment {
     ProgressDialog pd;
     OrderMarketingData orderData;
     CompletedOrderAdapter adapter;
+    String orderId, orderStatus;
 
     public static OrderCompletedFragment newInstance() {
         OrderCompletedFragment fragment = new OrderCompletedFragment();
@@ -59,6 +63,19 @@ public class OrderCompletedFragment extends Fragment {
                              Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_order_pending, container, false);
         init(parentView);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                orderId = orderData.orders.get(position).order.order_id;
+                orderStatus = "1";
+
+                Intent i = new Intent(getActivity(), OrderDetailsActivity.class);
+                i.putExtra("orderId", orderId);
+                i.putExtra("orderStatus", orderStatus);
+                startActivity(i);
+            }
+        });
 
         return parentView;
     }
@@ -170,15 +187,6 @@ public class OrderCompletedFragment extends Fragment {
             mHolder.retailer.setText(orders.get(position).order.retailor_id);
             mHolder.orderdate
                     .setText(orders.get(position).order.order_date);
-
-            convertView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-
-                }
-            });
 
             return convertView;
         }

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/relative2">
 
-        <include layout="@layout/linear_colors"></include>
+        <include layout="@layout/linear_colors2"></include>
 
         <TextView
             android:id="@+id/noData"

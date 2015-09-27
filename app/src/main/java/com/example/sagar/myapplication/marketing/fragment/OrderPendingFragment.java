@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.HttpRequest;
+import com.example.sagar.myapplication.marketing.activity.OrderDetailsActivity;
 import com.example.sagar.myapplication.model.ModelClass;
 import com.example.sagar.myapplication.model.OrderMarketingData;
 import com.example.sagar.myapplication.model.OrderModel;
@@ -40,6 +42,7 @@ public class OrderPendingFragment extends Fragment {
     ProgressDialog pd;
     OrderMarketingData orderData;
     PendingOrderAdapter adapter;
+    String orderId, orderStatus;
 
     public static OrderPendingFragment newInstance() {
         OrderPendingFragment fragment = new OrderPendingFragment();
@@ -62,6 +65,20 @@ public class OrderPendingFragment extends Fragment {
                              Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_order_pending, container, false);
         init(parentView);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                orderId = orderData.orders.get(position).order.order_id;
+                orderStatus = "0";
+
+                Intent i = new Intent(getActivity(), OrderDetailsActivity.class);
+                i.putExtra("orderId", orderId);
+                i.putExtra("orderStatus", orderStatus);
+                startActivity(i);
+            }
+        });
 
         return parentView;
 
@@ -174,20 +191,6 @@ public class OrderPendingFragment extends Fragment {
             mHolder.retailer.setText(orders.get(position).order.retailor_id);
             mHolder.orderdate
                     .setText(orders.get(position).order.order_date);
-
-            convertView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    /*resultp = orderList.get(position);
-                    Intent i = new Intent(OrderActivity.this,
-                            OrderDetails.class);
-                    app.setOrder(resultp.get(OrderActivity.TAG_ORDER_ID));
-                    i.putExtra("select", select);
-                    startActivity(i);*/
-                }
-            });
 
             return convertView;
         }
