@@ -27,16 +27,16 @@
         android:layout_marginTop="5dp">
 
         <RadioButton
-            android:id="@+id/radio3"
+            android:id="@+id/radioCash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cash"
             android:textSize="18sp" />
 
         <android.support.design.widget.TextInputLayout
-            app:hintTextAppearance="@style/TextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout">
 
             <EditText
                 android:id="@+id/edtAmount"
@@ -50,7 +50,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <RadioButton
-            android:id="@+id/radio4"
+            android:id="@+id/radioCheque"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cheque"
@@ -64,9 +64,9 @@
             android:visibility="gone">
 
             <android.support.design.widget.TextInputLayout
-                app:hintTextAppearance="@style/TextInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayout">
 
                 <EditText
                     android:id="@+id/edtChequeNo"
@@ -77,9 +77,9 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                app:hintTextAppearance="@style/TextInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayout">
 
                 <EditText
                     android:id="@+id/edtBankname"
@@ -90,9 +90,9 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                app:hintTextAppearance="@style/TextInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayout">
 
                 <EditText
                     android:id="@+id/edtBankAmount"
@@ -105,9 +105,9 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                app:hintTextAppearance="@style/TextInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayout">
 
                 <EditText
                     android:id="@+id/edtBankDate"
@@ -120,7 +120,7 @@
         </LinearLayout>
 
         <RadioButton
-            android:id="@+id/radio5"
+            android:id="@+id/radioOther"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Other"
@@ -134,9 +134,9 @@
             android:visibility="gone">
 
             <android.support.design.widget.TextInputLayout
-                app:hintTextAppearance="@style/TextInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayout">
 
                 <EditText
                     android:id="@+id/edtOtherAmount"
@@ -149,9 +149,9 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                app:hintTextAppearance="@style/TextInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayout">
 
                 <EditText
                     android:id="@+id/edtOtherDesc"
@@ -169,12 +169,15 @@
     </RadioGroup>
 
     <com.rey.material.widget.Button
-        android:id="@+id/submit"
+        android:id="@+id/btnSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/radioGroup"
         android:layout_margin="3dp"
         android:background="@color/button_bg"
         android:text="Submit"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        app:rd_enable="true"
+        app:rd_rippleColor="@color/button_ripple"
+        app:rd_rippleType="touch" />
 </LinearLayout>

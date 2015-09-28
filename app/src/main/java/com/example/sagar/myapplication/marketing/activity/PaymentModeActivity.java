@@ -23,37 +23,46 @@ import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
-import com.example.sagar.myapplication.model.OrderMarketingData;
 import com.example.sagar.myapplication.model.ProductModel;
 import com.example.sagar.myapplication.model.Products;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.rey.material.widget.Button;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class PaymentModeActivity extends AppCompatActivity {
 
+    private Button btnSubmit;
     private Toolbar toolbar;
     private ImageView imgCart;
-    View parentView;
-    String orderId, orderStatus;
-    String orderError;
-    ProgressDialog pd;
+    private View parentView;
+    private String orderId, orderStatus, orderError;
+    private ProgressDialog pd;
     private TextView txtRetailer, txtOrderTotal, txtPaymentReceived, txtPaymentPending;
-    Products orderData;
-    MyAdapter adapter;
-    ListView productsListView;
-    LinearLayout otherLayout, chequeLayout, paymentScrollView;
+    private Products orderData;
+    private MyAdapter adapter;
+    private ListView productsListView;
+    private LinearLayout paymentScrollView;
+    private ScrollView mainLayout;
+    private RadioGroup radioGroup;
+    private int last = 0;
+
+    // Cash
     EditText edtAmount;
-    ScrollView mainLayout;
-    RadioGroup radioGroup;
-    int last = 0;
+    private String enteredAmount;
+
+    // Cheque
+    EditText edtChequeNo, edtBankname, edtBankAmount, edtBankDate;
+    LinearLayout chequeLayout;
+    private String enteredChequeNo, enteredBankName, enteredBankAmount, enteredBankDate;
+
+    // Other
+    EditText edtOtherAmount, edtOtherDesc;
+    LinearLayout otherLayout;
+    private String enteredOtherAmount, enteredOtherDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,15 +78,15 @@ public class PaymentModeActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 last = checkedId;
-                if (last == R.id.radio3) {
+                if (last == R.id.radioCash) {
                     edtAmount.setVisibility(View.VISIBLE);
                     chequeLayout.setVisibility(View.GONE);
                     otherLayout.setVisibility(View.GONE);
-                } else if (last == R.id.radio4) {
+                } else if (last == R.id.radioCheque) {
                     chequeLayout.setVisibility(View.VISIBLE);
                     edtAmount.setVisibility(View.GONE);
                     otherLayout.setVisibility(View.GONE);
-                } else if (last == R.id.radio5) {
+                } else if (last == R.id.radioOther) {
                     otherLayout.setVisibility(View.VISIBLE);
                     chequeLayout.setVisibility(View.GONE);
                     edtAmount.setVisibility(View.GONE);
@@ -85,17 +94,80 @@ public class PaymentModeActivity extends AppCompatActivity {
             }
         });
 
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                processContinue();
+            }
+        });
+
         new GetPaymentForOrder().execute();
     }
 
+    private void processContinue() {
+
+        if (last == 0) {
+            Functions.showSnack(parentView, "Select payment method");
+
+        } else if (last == R.id.radioCash) {
+            enteredAmount = edtAmount.getText().toString().trim();
+            if (enteredAmount.length() == 0) {
+                Functions.showSnack(parentView, "Enter amount");
+            } else if (Integer.parseInt(enteredAmount) > Integer.parseInt(orderData.orders.get(0).order.order_total)) {
+                Functions.showSnack(parentView, "Amount should not be greater then order total.");
+            } else {
+                Functions.showSnack(parentView, "Proceed");
+            }
+
+        } else if (last == R.id.radioCheque) {
+            enteredChequeNo = edtChequeNo.getText().toString().trim();
+            enteredBankAmount = edtBankAmount.getText().toString().trim();
+            enteredBankName = edtBankname.getText().toString().trim();
+            enteredBankDate = edtBankDate.getText().toString().trim();
+
+            if (enteredBankName.length() == 0 || enteredBankAmount.length() == 0 || enteredChequeNo.length() == 0 || enteredBankDate.length() == 0) {
+                Functions.showSnack(parentView, "Enter Cehque details correctly");
+            } else if (Integer.parseInt(enteredBankAmount) > Integer.parseInt(orderData.orders.get(0).order.order_total)) {
+                Functions.showSnack(parentView, "Amount should not be greater then order total.");
+            } else {
+                Functions.showSnack(parentView, "Proceed");
+            }
+
+        } else if (last == R.id.radioOther) {
+            enteredOtherAmount = edtOtherAmount.getText().toString().trim();
+            enteredOtherDesc = edtOtherDesc.getText().toString().trim();
+
+            if (enteredOtherAmount.length() == 0 || enteredOtherDesc.length() == 0) {
+                Functions.showSnack(parentView, "Enter amount and description");
+            } else if (Integer.parseInt(enteredOtherAmount) > Integer.parseInt(orderData.orders.get(0).order.order_total)) {
+                Functions.showSnack(parentView, "Amount should not be greater then order total.");
+            } else {
+                Functions.showSnack(parentView, "Proceed");
+            }
+        }
+    }
+
     private void init() {
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        edtChequeNo = (EditText) findViewById(R.id.edtChequeNo);
+        edtBankname = (EditText) findViewById(R.id.edtBankname);
+        edtBankAmount = (EditText) findViewById(R.id.edtBankAmount);
+        edtBankDate = (EditText) findViewById(R.id.edtBankDate);
+        edtOtherAmount = (EditText) findViewById(R.id.edtOtherAmount);
+        edtOtherDesc = (EditText) findViewById(R.id.edtOtherDesc);
         edtAmount = (EditText) findViewById(R.id.edtAmount);
+
+        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+
         chequeLayout = (LinearLayout) findViewById(R.id.chequeLayout);
         otherLayout = (LinearLayout) findViewById(R.id.otherLayout);
         paymentScrollView = (LinearLayout) findViewById(R.id.paymentScrollView);
+
         mainLayout = (ScrollView) findViewById(R.id.mainLayout);
+
         productsListView = (ListView) findViewById(R.id.productsListView);
+
         txtRetailer = (TextView) findViewById(R.id.txtRetailer);
         txtOrderTotal = (TextView) findViewById(R.id.txtOrderTotal);
         txtPaymentPending = (TextView) findViewById(R.id.txtPaymentPending);
@@ -179,6 +251,32 @@ public class PaymentModeActivity extends AppCompatActivity {
             paymentScrollView.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    private void setListViewHeightBasedOnChildren(ListView listView) {
+        // TODO Auto-generated method stub
+        MyAdapter listAdapter = (MyAdapter) listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(
+                        desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getCount() - 1)) + 30;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 
     private class MyAdapter extends BaseAdapter {

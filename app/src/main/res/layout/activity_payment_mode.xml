@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/relative2"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,7 +20,6 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/lay1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -37,7 +37,6 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
                     android:layout_weight="0.1"
                     android:text=":"
                     android:textSize="16sp"
@@ -52,7 +51,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lay2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lay1"
@@ -86,7 +84,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lay3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lay2"
@@ -120,7 +117,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lay4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lay3"
@@ -153,22 +149,32 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primaryColor"></View>
+
             <include
                 layout="@layout/payment_option"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/lay1"
                 android:layout_marginTop="6dp"></include>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primaryColor"></View>
 
             <ListView
                 android:id="@+id/productsListView"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/paymentScrollView"
                 android:layout_marginTop="5dp"
                 android:background="#fff"
                 android:divider="@null"
                 android:fadeScrollbars="false"
+                android:minHeight="130dp"
                 android:paddingBottom="15dp"></ListView>
         </LinearLayout>
     </ScrollView>
