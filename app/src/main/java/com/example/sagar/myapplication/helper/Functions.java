@@ -8,18 +8,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,14 +35,6 @@ public class Functions {
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float dp = px / (metrics.densityDpi / 160f);
         return dp;
-    }
-
-    public static void logE(final String tag, final String logMsg) {
-        if (logMsg.length() > 4000) {
-            Log.e(tag, logMsg.substring(0, 4000));
-            logE(tag, logMsg.substring(4000));
-        } else
-            Log.e(tag, logMsg);
     }
 
     public static void showToast(Context ctx, String msg) {
@@ -88,31 +77,6 @@ public class Functions {
         }
 
         return validEmailAddress;
-    }
-
-    public static String md5(String input) {
-
-        String md5 = null;
-
-        if (null == input)
-            return null;
-
-        try {
-
-            // Create MessageDigest object for MD5
-            MessageDigest digest = MessageDigest.getInstance("MD5");
-
-            // Update input string in message digest
-            digest.update(input.getBytes(), 0, input.length());
-
-            // Converts message digest value in base 16 (hex)
-            md5 = new BigInteger(1, digest.digest()).toString(16);
-
-        } catch (NoSuchAlgorithmException e) {
-
-            e.printStackTrace();
-        }
-        return md5;
     }
 
     public static String parseDate(String inputDate, String inputPattern, String outputPattern) {

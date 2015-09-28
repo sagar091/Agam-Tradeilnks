@@ -1,8 +1,6 @@
 package com.example.sagar.myapplication.ui;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.SettingDialog;
@@ -24,8 +21,6 @@ import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.model.CompanyData;
 import com.example.sagar.myapplication.model.ModelData;
-import com.example.sagar.myapplication.model.UserProfile;
-import com.example.sagar.myapplication.retailer.RetailerDrawerActivity;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.gson.GsonBuilder;
@@ -103,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (!Functions.isConnecting(this)) {
-            SettingDialog dialog = new SettingDialog(this);
+            SettingDialog dialog = new SettingDialog(this, "You don't seem to have an active internet connection. Please check your internet connectivity and come again.", android.provider.Settings.ACTION_SETTINGS);
             dialog.setOnExitListener(new SettingDialog.OnExitListener() {
                 @Override
                 public void exit() {

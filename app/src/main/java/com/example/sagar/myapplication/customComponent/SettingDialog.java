@@ -3,6 +3,7 @@ package com.example.sagar.myapplication.customComponent;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
 import com.flyco.animation.FadeEnter.FadeEnter;
@@ -17,13 +18,18 @@ public class SettingDialog extends BaseDialog {
     View parentView;
     Button btnSetting, btnExit;
     OnExitListener onExitListener;
+    String message;
+    TextView txtMessage;
+    String action;
 
     public void setOnExitListener(SettingDialog.OnExitListener onExitListener) {
         this.onExitListener = onExitListener;
     }
 
-    public SettingDialog(Context context) {
+    public SettingDialog(Context context, String message, String action) {
         super(context);
+        this.message = message;
+        this.action = action;
     }
 
     @Override
@@ -38,14 +44,17 @@ public class SettingDialog extends BaseDialog {
     }
 
     private void init(final View parentView) {
+        txtMessage = (TextView) parentView.findViewById(R.id.txtMessage);
         btnSetting = (Button) parentView.findViewById(R.id.btnSetting);
         btnExit = (Button) parentView.findViewById(R.id.btnExit);
+
+        txtMessage.setText(message);
 
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
-                context.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+                context.startActivity(new Intent(action));
             }
         });
 

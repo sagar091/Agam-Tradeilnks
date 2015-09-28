@@ -164,8 +164,6 @@
                 android:id="@+id/edtProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:digits="1234567890abcdefghijklmnopqrstuvxyz"
                 android:editable="false"
                 android:focusable="false"
                 android:hint="Profile Picture"
@@ -248,6 +246,9 @@
                         android:id="@+id/edtCity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:editable="false"
                         android:hint="City"
                         android:textColorHint="@color/primaryColor" />
                 </android.support.design.widget.TextInputLayout>

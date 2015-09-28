@@ -4,9 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -105,9 +105,39 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             loginButton.setText("Processing..");
             new doLogin().execute();
+
+//            loginProcess();
         }
     }
 
+    /*private void loginProcess() {
+        pd = ProgressDialog.show(LoginActivity.this, "Loading", "Please wait", false);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("form_type", "user_login");
+        map.put("username", userName);
+        map.put("password", password);
+
+        Fuel.post(Constants.BASE_URL, map).responseJson(new Handler<JSONObject>() {
+            @Override
+            public void success(Request request, Response response, JSONObject jsonObject) {
+                pd.dismiss();
+                Log.e("login_response", jsonObject.toString());
+                try {
+                    JSONObject statusObject = jsonObject.getJSONObject("status");
+                    String error = statusObject.getString("error");
+                    Log.e("error", error);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void failure(Request request, Response response, FuelError fuelError) {
+                pd.dismiss();
+            }
+        });
+    }
+*/
     private class doLogin extends AsyncTask<Void, Void, Void> {
 
         @Override

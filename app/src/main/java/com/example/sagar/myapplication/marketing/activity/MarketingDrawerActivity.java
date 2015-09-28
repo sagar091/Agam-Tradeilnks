@@ -77,7 +77,7 @@ public class MarketingDrawerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (!Functions.isConnecting(this)) {
-            SettingDialog dialog = new SettingDialog(this);
+            SettingDialog dialog = new SettingDialog(this, "You don't seem to have an active internet connection. Please check your internet connectivity and come again.", android.provider.Settings.ACTION_SETTINGS);
             dialog.setOnExitListener(new SettingDialog.OnExitListener() {
                 @Override
                 public void exit() {
