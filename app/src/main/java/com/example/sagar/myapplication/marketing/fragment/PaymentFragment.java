@@ -66,7 +66,6 @@ public class PaymentFragment extends Fragment {
                 Functions.hideKeyPad(getActivity(), view);
 
                 selectRetailerName = parent.getItemAtPosition(position) + "";
-                Log.e("selectRetailerId", selectRetailerName);
 
                 for (int i = 0; i < finalRetailerData.retailers.size(); i++) {
                     if (finalRetailerData.retailers.get(i).retailer.retailerName.equals(selectRetailerName)) {

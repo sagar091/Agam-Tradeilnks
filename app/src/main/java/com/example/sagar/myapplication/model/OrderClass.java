@@ -30,4 +30,16 @@ public class OrderClass {
 
     @SerializedName("payment_pending")
     public String payment_pending;
+
+    @SerializedName("payment_recived")
+    public String payment_recived;
+
+    @SerializedName("retailor_name")
+    public String retailor_name;
+
+    @SerializedName("product_name")
+    public String product_name;
+
+    @SerializedName("qty")
+    public String qty;
 }

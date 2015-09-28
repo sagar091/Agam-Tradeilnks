@@ -9,15 +9,19 @@ import android.util.Log;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
+import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.retailer.RetailerDrawerActivity;
+
+import javax.security.auth.login.LoginException;
 
 public class SplashActivity extends AppCompatActivity {
 
     private ComplexPreferences complexPreferences;
     private String userType;
     private Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +36,6 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-
                 SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
                 if (preferences.contains("isUserLogin")) {
                     complexPreferences = ComplexPreferences.getComplexPreferences(SplashActivity.this, "user_pref", 0);

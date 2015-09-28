@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".helper.MyApplication"
@@ -40,11 +41,14 @@
         <activity android:name=".marketing.activity.CartActivity" />
         <activity
             android:name=".marketing.activity.RetailerOrdersActivity"
-            android:label="@string/title_activity_retailer_orders" >
-        </activity>
+            android:label="@string/title_activity_retailer_orders" />
         <activity
             android:name=".marketing.activity.OrderDetailsActivity"
-            android:label="@string/title_activity_order_details" >
+            android:label="@string/title_activity_order_details" />
+        <activity android:name=".marketing.activity.PaymentOrdersActivity" />
+        <activity
+            android:name=".marketing.activity.PaymentModeActivity"
+            android:label="@string/title_activity_payment_mode" >
         </activity>
     </application>
 

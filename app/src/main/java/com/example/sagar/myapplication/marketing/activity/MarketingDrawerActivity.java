@@ -19,6 +19,7 @@ import android.widget.ImageView;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.ChangePasswordDialog;
+import com.example.sagar.myapplication.customComponent.SettingDialog;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.fragment.AddNewRetailerFragment;
@@ -72,6 +73,20 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!Functions.isConnecting(this)) {
+            SettingDialog dialog = new SettingDialog(this);
+            dialog.setOnExitListener(new SettingDialog.OnExitListener() {
+                @Override
+                public void exit() {
+                    finish();
+                }
+            });
+            dialog.show();
+        }
+    }
     private void setDrawerClick(int itemId) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();

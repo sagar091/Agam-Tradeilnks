@@ -1,7 +1,6 @@
 package com.example.sagar.myapplication.customComponent;
 
 import android.content.Context;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
@@ -71,9 +70,9 @@ public class CustomBaseDialog extends BaseDialog {
                 cartProductDetails = new ArrayList<String>();
                 seekbar.setProgress(1);
                 if (seekbar.getProgress() == 0) {
-                    Functions.snack(customView, "Invalid Quantity");
+                    Functions.showSnack(customView, "Invalid Quantity");
                 } else if (mTagGroup.getTags().length == 0) {
-                    Functions.snack(customView, "Add atleast one color for model");
+                    Functions.showSnack(customView, "Add atleast one color for model");
                 } else {
                     Log.e("retailerData", productDetails.toString());
                     Log.e("qty", seekbar.getProgress() + " Qty");
@@ -94,11 +93,11 @@ public class CustomBaseDialog extends BaseDialog {
                         handler.openDataBase();
                         boolean save = handler.addCartProduct(cartProductDetails);
                         if (save) {
-//                            Functions.snack(parentView, "Product added successfully");
+//                            Functions.showSnack(parentView, "Product added successfully");
                             Toast.makeText(context, "Product added successfully.", Toast.LENGTH_LONG).show();
                             dismiss();
                         } else {
-//                            Functions.snack(parentView,"Something went wrong");
+//                            Functions.showSnack(parentView,"Something went wrong");
                             Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show();
                         }
                     } catch (SQLException e) {

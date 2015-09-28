@@ -3,8 +3,8 @@ package com.example.sagar.myapplication.marketing.activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,13 +19,15 @@ import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
+import com.example.sagar.myapplication.model.OrderDetailsModel;
+import com.example.sagar.myapplication.model.OrderModel;
+import com.google.gson.GsonBuilder;
 import com.rey.material.widget.CheckBox;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class OrderDetailsActivity extends AppCompatActivity {
 
@@ -36,14 +38,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private String orderError;
     View parentView;
     ListView ordersListView;
-    String retailor_name, order_total, date, time, invoice_number, invoice_date, invoice_amount, comments, remarks;
     CheckBox orderCompleted;
     MyAdapter adapter;
-    JSONObject obj, obj1, obj2;
-    ArrayList<HashMap<String, String>> orderList;
-    HashMap<String, String> map1;
-    HashMap<String, String> resultp = new HashMap<String, String>();
     LinearLayout mainLayout;
+    OrderDetailsModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,35 +100,17 @@ public class OrderDetailsActivity extends AppCompatActivity {
             try {
                 HttpRequest request = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = request.preparePost().withData(map).sendAndReadJSON();
+
                 Log.e("order_response", obj.toString());
+
                 orderError = obj.getString("error");
                 if (orderError.equals("0")) {
-                    retailor_name = obj.getString("retailor_name");
-                    order_total = obj.getString("order_total");
-                    date = obj.getString("date");
-                    time = obj.getString("time");
-                    invoice_number = obj.getString("invoice_number");
-                    invoice_date = obj.getString("invoice_date");
-                    invoice_amount = obj.getString("invoice_amount");
-                    comments = obj.getString("comments");
-                    remarks = obj.getString("remarks");
 
-                    JSONArray orders = obj.getJSONArray("orders");
-                    orderList = new ArrayList<>();
-                    for (int i = 0; i < orders.length(); i++) {
-                        map1 = new HashMap<String, String>();
-                        obj1 = orders.getJSONObject(i);
-                        obj2 = obj1.getJSONObject("order");
-                        String productName = obj2.getString("product_name");
-                        String productQty = obj2.getString("qty");
-                        map1.put("product_name", productName);
-                        map1.put("qty", productQty);
-                        orderList.add(map1);
-                    }
+                    model = new GsonBuilder().create().fromJson(obj.toString(), OrderDetailsModel.class);
 
                 }
             } catch (Exception e) {
-                Functions.snack(parentView, e.getMessage());
+                Functions.showSnack(parentView, e.getMessage());
             }
             return null;
         }
@@ -140,7 +120,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
             super.onPostExecute(s);
             pd.dismiss();
             if (orderError.equals("0")) {
-                adapter = new MyAdapter(OrderDetailsActivity.this, orderList);
+                adapter = new MyAdapter(OrderDetailsActivity.this, model.orders);
                 ordersListView.setAdapter(adapter);
                 setDetails();
             }
@@ -148,15 +128,15 @@ public class OrderDetailsActivity extends AppCompatActivity {
     }
 
     private void setDetails() {
-        txtRetailer.setText(retailor_name);
-        txtInvoceAmount.setText(invoice_amount);
-        txtComments.setText(comments);
-        txtInvoiceDate.setText(invoice_date);
-        txtInvoiceNumber.setText(invoice_number);
-        txtOrderDateTime.setText(date + " - " + time);
-        txtOrderTotal.setText(getResources().getString(R.string.Rs) + " " + order_total);
-        txtPending.setText(getResources().getString(R.string.Rs) + " " + order_total);
-        txtRemarks.setText(remarks);
+        txtRetailer.setText(model.retailor_name);
+        txtInvoceAmount.setText(model.invoice_amount);
+        txtComments.setText(model.comments);
+        txtInvoiceDate.setText(model.invoice_date);
+        txtInvoiceNumber.setText(model.invoice_number);
+        txtOrderDateTime.setText(model.date + " - " + model.time);
+        txtOrderTotal.setText(getResources().getString(R.string.Rs) + " " + model.order_total);
+        txtPending.setText(getResources().getString(R.string.Rs) + " " + model.order_total);
+        txtRemarks.setText(model.remarks);
 
         if (orderStatus.equals("1")) {
             orderCompleted.setChecked(true);
@@ -170,10 +150,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         Context context;
         LayoutInflater mInflater;
-        ArrayList<HashMap<String, String>> dataList;
+        List<OrderModel> dataList;
 
         public MyAdapter(Context context,
-                         ArrayList<HashMap<String, String>> dataList) {
+                         List<OrderModel> dataList) {
             this.context = context;
             this.dataList = dataList;
         }
@@ -214,9 +194,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 mHolder = (ViewHolder) convertView.getTag();
             }
 
-            resultp = dataList.get(position);
-            mHolder.productName.setText(resultp.get("product_name"));
-            mHolder.qty.setText(resultp.get("qty"));
+            mHolder.productName.setText(dataList.get(position).order.product_name);
+            mHolder.qty.setText(dataList.get(position).order.qty);
             return convertView;
         }
 

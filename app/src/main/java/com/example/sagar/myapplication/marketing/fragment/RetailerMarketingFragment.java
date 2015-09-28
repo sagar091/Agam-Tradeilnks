@@ -18,6 +18,7 @@ import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
+import com.example.sagar.myapplication.marketing.activity.PaymentOrdersActivity;
 import com.example.sagar.myapplication.marketing.activity.RetailerOrdersActivity;
 import com.example.sagar.myapplication.model.Retailer;
 import com.example.sagar.myapplication.model.RetailerData;
@@ -56,6 +57,31 @@ public class RetailerMarketingFragment extends Fragment {
         // Inflate the layout for this fragment
         customView = View.inflate(getActivity(), R.layout.offline_retailor_list, null);
         init(customView);
+
+        offlineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Functions.hideKeyPad(getActivity(), view);
+
+                selectRetailerName = parent.getItemAtPosition(position) + "";
+
+                for (int i = 0; i < finalRetailerData.retailers.size(); i++) {
+                    if (finalRetailerData.retailers.get(i).retailer.retailerName.equals(selectRetailerName)) {
+                        selectRetailerId = finalRetailerData.retailers.get(i).retailer.retailerId;
+                        break;
+                    }
+                }
+
+                Log.e(selectRetailerId, selectRetailerName);
+
+                Intent i = new Intent(getActivity(), RetailerOrdersActivity.class);
+                i.putExtra("selectRetailerId", selectRetailerId);
+                i.putExtra("selectRetailerName", selectRetailerName);
+                startActivity(i);
+
+            }
+        });
 
         return customView;
     }

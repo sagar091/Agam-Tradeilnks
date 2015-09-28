@@ -14,8 +14,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.SettingDialog;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
@@ -54,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
         init();
 
-        new GetCompany().execute();
+        if (Functions.isConnecting(this)) {
+            new GetCompany().execute();
+        }
 
         edtCompany.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +97,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!Functions.isConnecting(this)) {
+            SettingDialog dialog = new SettingDialog(this);
+            dialog.setOnExitListener(new SettingDialog.OnExitListener() {
+                @Override
+                public void exit() {
+                    Log.e("FINISH", "YES");
+                    finish();
+                }
+            });
+            dialog.show();
+        }
+
     }
 
     private void setModelDialog() {

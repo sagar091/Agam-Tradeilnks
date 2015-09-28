@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -31,13 +33,6 @@ public class Functions {
         return px;
     }
 
-    /**
-     * This method converts device specific pixels to density independent pixels.
-     *
-     * @param px      A value in px (pixels) unit. Which we need to convert into db
-     * @param context Context to get resources and device specific display metrics
-     * @return A float value to represent dp equivalent to px value
-     */
     public static float convertPixelsToDp(float px, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
@@ -53,10 +48,9 @@ public class Functions {
             Log.e(tag, logMsg);
     }
 
-    public static void displayMessage(Context ctx, String msg) {
+    public static void showToast(Context ctx, String msg) {
 
         Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
-
     }
 
     public static void fireIntent(Activity activity, Class cls) {
@@ -137,7 +131,7 @@ public class Functions {
         return str;
     }
 
-    public static void snack(View v, String msg) {
+    public static void showSnack(View v, String msg) {
         Snackbar.make(v, msg, Snackbar.LENGTH_LONG).show();
     }
 
@@ -146,4 +140,12 @@ public class Functions {
         inputManager.hideSoftInputFromWindow(view.getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
+
+    public static boolean isConnecting(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 }

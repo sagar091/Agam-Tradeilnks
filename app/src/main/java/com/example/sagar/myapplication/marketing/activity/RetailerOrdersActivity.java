@@ -3,15 +3,12 @@ package com.example.sagar.myapplication.marketing.activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
@@ -75,7 +71,7 @@ public class RetailerOrdersActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 orderId = orderData.orders.get(position).order.order_id;
                 orderStatus = orderData.orders.get(position).order.dilivery_pending;
-//                Functions.snack(parentView, orderId + " -- " + orderStatus);
+//                Functions.showSnack(parentView, orderId + " -- " + orderStatus);
 
                 Intent i = new Intent(RetailerOrdersActivity.this, OrderDetailsActivity.class);
                 i.putExtra("orderId", orderId);
@@ -136,7 +132,7 @@ public class RetailerOrdersActivity extends AppCompatActivity {
                     orderData = new GsonBuilder().create().fromJson(obj.toString(), OrderMarketingData.class);
                 }
             } catch (Exception e) {
-                Functions.snack(parentView, e.getMessage());
+                Functions.showSnack(parentView, e.getMessage());
             }
             return null;
         }
@@ -205,24 +201,13 @@ public class RetailerOrdersActivity extends AppCompatActivity {
             mHolder.txtOrderId.setText(orders.get(position).order.order_id);
             mHolder.txtOrderTotal.setText(orders.get(position).order.order_total);
 
-            // Pending Order
-            if (orders.get(position).order.dilivery_pending.equals("1")) { // Completed Order
+
+            if (orders.get(position).order.dilivery_pending.equals("1")) {  // Pending Order
                 mHolder.fullLayout.setBackgroundResource(R.color.quad_blue);
 
-            } else {
+            } else {// Completed Order
                 mHolder.fullLayout.setBackgroundResource(R.color.quad_green);
             }
-
-           /* convertView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    *//*Toast.makeText(RetailerOrdersActivity.this, "position " + position, Toast.LENGTH_LONG).show();
-                    Log.e("position", position + "-##");
-                    Log.e("Order ", orderData.orders.get(position).order.order_id);*//*
-                }
-            });*/
 
             return convertView;
         }

@@ -71,9 +71,9 @@ public class PaymentOrdersActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 orderId = orderData.orders.get(position).order.order_id;
                 orderStatus = orderData.orders.get(position).order.dilivery_pending;
-//                Functions.snack(parentView, orderId + " -- " + orderStatus);
+//                Functions.showSnack(parentView, orderId + " -- " + orderStatus);
 
-                Intent i = new Intent(PaymentOrdersActivity.this, OrderDetailsActivity.class);
+                Intent i = new Intent(PaymentOrdersActivity.this, PaymentModeActivity.class);
                 i.putExtra("orderId", orderId);
                 i.putExtra("orderStatus", orderStatus);
                 startActivity(i);
@@ -88,7 +88,7 @@ public class PaymentOrdersActivity extends AppCompatActivity {
         parentView = findViewById(android.R.id.content);
         noData = (TextView) findViewById(R.id.noData);
         toolbar = (Toolbar) findViewById(R.id.toolbar2);
-        toolbar.setTitle("Orders");
+        toolbar.setTitle("Payment");
         toolbar.setSubtitle("Retailer: " + selectRetailerName);
 
         setSupportActionBar(toolbar);
@@ -128,11 +128,13 @@ public class PaymentOrdersActivity extends AppCompatActivity {
                 JSONObject obj = request.preparePost().withData(map).sendAndReadJSON();
                 Log.e("order_response", obj.toString());
                 orderError = obj.getString("error");
+
                 if (orderError.equals("0")) {
                     orderData = new GsonBuilder().create().fromJson(obj.toString(), OrderMarketingData.class);
                 }
+
             } catch (Exception e) {
-                Functions.snack(parentView, e.getMessage());
+                Functions.showSnack(parentView, e.getMessage());
             }
             return null;
         }

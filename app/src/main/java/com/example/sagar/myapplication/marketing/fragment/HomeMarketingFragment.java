@@ -2,7 +2,6 @@ package com.example.sagar.myapplication.marketing.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -282,7 +281,7 @@ public class HomeMarketingFragment extends Fragment {
                         String modelPrice = filledContainer.get(position).price;
 
                         if (handler.productExist(modelId)) {
-                            Functions.snack(v, "Product is already added in the cart.");
+                            Functions.showSnack(v, "Product is already added in the cart.");
                         } else {
                             Log.e(modelId, modelName);
 

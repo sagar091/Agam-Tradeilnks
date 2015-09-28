@@ -358,6 +358,7 @@ public abstract class BaseDialog extends Dialog {
 
     /**
      * dp to px
+     *
      * @param dp
      * @return
      */

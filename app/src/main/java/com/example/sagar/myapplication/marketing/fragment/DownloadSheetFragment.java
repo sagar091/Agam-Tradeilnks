@@ -1,10 +1,7 @@
 package com.example.sagar.myapplication.marketing.fragment;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -119,7 +116,7 @@ public class DownloadSheetFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (download) {
-                    Functions.snack(customView, "File already downloaded in Internal Storage -> Agam Downloads folder.");
+                    Functions.showSnack(customView, "File already downloaded in Internal Storage -> Agam Downloads folder.");
                 } else {
                     new DownloadSheet().execute();
                 }
@@ -211,10 +208,10 @@ public class DownloadSheetFragment extends Fragment {
                 if (sheetError.equals("0")) {
                     sheetURL = statusObj.getString("url");
                 } else {
-                    Functions.snack(customView, "Cannot find Sheet.");
+                    Functions.showSnack(customView, "Cannot find Sheet.");
                 }
             } catch (Exception e) {
-                Functions.snack(customView, "Error. " + e.getMessage());
+                Functions.showSnack(customView, "Error. " + e.getMessage());
             }
             return null;
         }
@@ -310,7 +307,7 @@ public class DownloadSheetFragment extends Fragment {
         protected void onPostExecute(String result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-            Functions.snack(customView, "Your file stored in Internal Storage -> Agam Downloads folder.");
+            Functions.showSnack(customView, "Your file stored in Internal Storage -> Agam Downloads folder.");
         }
 
         @Override

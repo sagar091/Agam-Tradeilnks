@@ -1,26 +1,16 @@
 package com.example.sagar.myapplication.ui;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.OfflineRetailerDialog;
@@ -29,21 +19,14 @@ import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
-import com.example.sagar.myapplication.model.Retailer;
 import com.example.sagar.myapplication.model.RetailerData;
 import com.example.sagar.myapplication.model.UserProfile;
-import com.flyco.animation.BounceEnter.BounceBottomEnter;
-import com.flyco.dialog.listener.OnOperItemClickL;
-import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.gson.GsonBuilder;
-import com.rey.material.app.Dialog;
 import com.rey.material.widget.Button;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class CheckInActivity extends AppCompatActivity implements View.OnClickListener, OfflineRetailerDialog.onSelectRetailerListner {
 
@@ -120,7 +103,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
         editor.putString("offline", selectRetailerId);
         editor.commit();
 
-        Functions.snack(parentView, "Check-In successfully.");
+        Functions.showSnack(parentView, "Check-In successfully.");
 
         Intent intent = new Intent(CheckInActivity.this, MarketingDrawerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

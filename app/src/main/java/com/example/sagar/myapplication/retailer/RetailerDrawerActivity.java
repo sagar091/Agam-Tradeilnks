@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.SettingDialog;
+import com.example.sagar.myapplication.helper.Functions;
 
 public class RetailerDrawerActivity extends AppCompatActivity {
 
@@ -15,4 +17,18 @@ public class RetailerDrawerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_retailer_drawer);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!Functions.isConnecting(this)) {
+            SettingDialog dialog = new SettingDialog(this);
+            dialog.setOnExitListener(new SettingDialog.OnExitListener() {
+                @Override
+                public void exit() {
+                    finish();
+                }
+            });
+            dialog.show();
+        }
+    }
 }

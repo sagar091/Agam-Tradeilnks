@@ -64,9 +64,9 @@ public class ChangePasswordDialog extends BaseDialog {
             public void onClick(View v) {
                 Functions.hideKeyPad(context, v);
                 if (edtPassword.getText().toString().trim().length() == 0) {
-                    Functions.snack(parentView, "Password required");
+                    Functions.showSnack(parentView, "Password required");
                 } else if (!edtPassword.getText().toString().trim().equals(edtConfirmPassword.getText().toString().trim())) {
-                    Functions.snack(parentView, "Password and Confirm password must be same");
+                    Functions.showSnack(parentView, "Password and Confirm password must be same");
                 } else {
                     password = edtPassword.getText().toString().trim();
                     new ChangePassword().execute();
@@ -103,7 +103,7 @@ public class ChangePasswordDialog extends BaseDialog {
                 passwordError = obj.getString("error");
                 msg = obj.getString("msg");
             } catch (Exception e) {
-                Functions.snack(parentView, e.getMessage());
+                Functions.showSnack(parentView, e.getMessage());
             }
             return null;
         }
@@ -115,7 +115,7 @@ public class ChangePasswordDialog extends BaseDialog {
             if (passwordError.equals("0")) {
                 dismiss();
             } else {
-                Functions.snack(parentView, msg);
+                Functions.showSnack(parentView, msg);
             }
         }
     }
