@@ -48,7 +48,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:background="@color/button_bg"
-                android:text="Exit"
+                android:text="Close"
                 android:textColor="#ffffff"
                 app:rd_enable="true"
                 app:rd_rippleColor="@color/button_ripple"
