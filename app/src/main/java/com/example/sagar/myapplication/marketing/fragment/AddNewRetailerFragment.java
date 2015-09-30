@@ -1,5 +1,6 @@
 package com.example.sagar.myapplication.marketing.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Location;
@@ -31,12 +32,18 @@ import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.helper.LocationFinder;
+import com.example.sagar.myapplication.helper.LocationHelper;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.City;
 import com.example.sagar.myapplication.model.CityModel;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.gson.GsonBuilder;
 import com.rey.material.widget.Button;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -47,7 +54,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class AddNewRetailerFragment extends Fragment implements LocationListener {
+public class AddNewRetailerFragment extends Fragment {
 
     View parentView;
     EditText edtOutlet, edtMobile, edtMobile2, edtBirthDate, edtEmail, edtUsername, edtRetailer, edtPassword, edtPAN, edtTin, edtProfile, edtArea,
@@ -67,8 +74,6 @@ public class AddNewRetailerFragment extends Fragment implements LocationListener
     Button btnAdd;
     double longitude = 0.0, latitude = 0.0;
     String selectCity, userId;
-    private LocationManager locationManager;
-    LocationListener locationListener;
 
     public static AddNewRetailerFragment newInstance(String param1, String param2) {
         AddNewRetailerFragment fragment = new AddNewRetailerFragment();
@@ -91,32 +96,6 @@ public class AddNewRetailerFragment extends Fragment implements LocationListener
         parentView = inflater.inflate(R.layout.fragment_add_new_retailer, container, false);
 
         init(parentView);
-
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
         // getLocationStatus();
         UserProfile userProfile = new UserProfile();
@@ -330,11 +309,6 @@ public class AddNewRetailerFragment extends Fragment implements LocationListener
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void getLocationStatus() {
         finder = new LocationFinder(getActivity());
         if (finder.canGetLocation()) {
@@ -397,26 +371,6 @@ public class AddNewRetailerFragment extends Fragment implements LocationListener
         edtAddress2 = (EditText) parentView.findViewById(R.id.edtAddress2);
         edtState = (EditText) parentView.findViewById(R.id.edtState);
         edtCountry = (EditText) parentView.findViewById(R.id.edtCountry);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
 
     private class LoadCity extends AsyncTask<String, String, String> {
