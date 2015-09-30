@@ -1,17 +1,16 @@
 package com.example.sagar.myapplication.marketing.fragment;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -19,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,11 +34,7 @@ import com.example.sagar.myapplication.helper.LocationFinder;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.City;
 import com.example.sagar.myapplication.model.CityModel;
-import com.example.sagar.myapplication.model.CompanyData;
 import com.example.sagar.myapplication.model.UserProfile;
-import com.example.sagar.myapplication.retailer.RetailerDrawerActivity;
-import com.example.sagar.myapplication.ui.CheckInActivity;
-import com.example.sagar.myapplication.ui.MainActivity;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.gson.GsonBuilder;
@@ -52,9 +46,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
-public class AddNewRetailerFragment extends Fragment {
+public class AddNewRetailerFragment extends Fragment implements LocationListener {
 
     View parentView;
     EditText edtOutlet, edtMobile, edtMobile2, edtBirthDate, edtEmail, edtUsername, edtRetailer, edtPassword, edtPAN, edtTin, edtProfile, edtArea,
@@ -74,6 +67,8 @@ public class AddNewRetailerFragment extends Fragment {
     Button btnAdd;
     double longitude = 0.0, latitude = 0.0;
     String selectCity, userId;
+    private LocationManager locationManager;
+    LocationListener locationListener;
 
     public static AddNewRetailerFragment newInstance(String param1, String param2) {
         AddNewRetailerFragment fragment = new AddNewRetailerFragment();
@@ -97,7 +92,33 @@ public class AddNewRetailerFragment extends Fragment {
 
         init(parentView);
 
-        getLocationStatus();
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+
+        // getLocationStatus();
         UserProfile userProfile = new UserProfile();
         complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         userProfile = complexPreferences.getObject("current-user", UserProfile.class);
@@ -376,6 +397,26 @@ public class AddNewRetailerFragment extends Fragment {
         edtAddress2 = (EditText) parentView.findViewById(R.id.edtAddress2);
         edtState = (EditText) parentView.findViewById(R.id.edtState);
         edtCountry = (EditText) parentView.findViewById(R.id.edtCountry);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
     private class LoadCity extends AsyncTask<String, String, String> {
