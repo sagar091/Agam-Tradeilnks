@@ -24,13 +24,14 @@
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
-        android:theme="@style/list_item_appearance"
-        android:background="#43BCCD"
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        app:headerLayout="@layout/drawer_header"
         android:layout_gravity="start"
-        app:theme="@style/NavigationItemStyle"
-        app:menu="@menu/menu_drawer" />
+        android:background="@color/drawer_bg"
+        app:itemTextAppearance="@style/list_item_appearance"
+        app:menu="@menu/menu_retailer_drawer"
+        app:theme="@style/NavigationItemStyle" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -22,7 +22,7 @@ import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.model.UserProfile;
-import com.example.sagar.myapplication.retailer.RetailerDrawerActivity;
+import com.example.sagar.myapplication.retailer.activity.RetailerDrawerActivity;
 import com.google.gson.GsonBuilder;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.CheckBox;

@@ -1,0 +1,37 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.webmyne.kidscrown.ui.MyDrawerActivity">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_home"
+            android:checked="true"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/drawer_profile"
+            android:title="Profile" />
+
+        <item
+            android:id="@+id/drawer_orders"
+            android:title="Orders" />
+
+        <item
+            android:id="@+id/drawer_payment"
+            android:title="Payment History" />
+
+        <item
+            android:id="@+id/drawer_scheme"
+            android:title="Schemes" />
+
+        <item
+            android:id="@+id/drawer_download"
+            android:title="Download Sheet" />
+
+        <item
+            android:id="@+id/drawer_log_out"
+            android:title="Logout" />
+
+    </group>
+</menu>

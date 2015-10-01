@@ -35,7 +35,7 @@
             android:name=".marketing.activity.MarketingDrawerActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".retailer.RetailerDrawerActivity"
+            android:name=".retailer.activity.RetailerDrawerActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.CheckInActivity"

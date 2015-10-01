@@ -1,4 +1,4 @@
-package com.example.sagar.myapplication.marketing.activity;
+package com.example.sagar.myapplication.retailer.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.ChangePasswordDialog;
@@ -31,11 +32,13 @@ import com.example.sagar.myapplication.marketing.fragment.OrderMarketingFragment
 import com.example.sagar.myapplication.marketing.fragment.PaymentFragment;
 import com.example.sagar.myapplication.marketing.fragment.RetailerMarketingFragment;
 import com.example.sagar.myapplication.marketing.fragment.StockFragment;
+import com.example.sagar.myapplication.model.Retailer;
 import com.example.sagar.myapplication.model.UserProfile;
+import com.example.sagar.myapplication.retailer.fragment.HomeRetailerFragment;
 import com.example.sagar.myapplication.ui.CheckInActivity;
 import com.example.sagar.myapplication.ui.MainActivity;
 
-public class MarketingDrawerActivity extends AppCompatActivity {
+public class RetailerDrawerActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -44,11 +47,13 @@ public class MarketingDrawerActivity extends AppCompatActivity {
     private ImageView imgCart;
     SharedPreferences preferences;
     private ComplexPreferences complexPreferences;
+    View headerLayout;
+    TextView txtUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_marketing_drawer);
+        setContentView(R.layout.activity_retailer_drawer);
 
         init();
 
@@ -56,7 +61,7 @@ public class MarketingDrawerActivity extends AppCompatActivity {
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
-        ft.replace(R.id.content, new HomeMarketingFragment());
+        ft.replace(R.id.content, new HomeRetailerFragment());
         // ft.addToBackStack(null);
         ft.commit();
 
@@ -71,21 +76,7 @@ public class MarketingDrawerActivity extends AppCompatActivity {
                 return true;
             }
         });
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!Functions.isConnecting(this)) {
-            SettingDialog dialog = new SettingDialog(this, "You don't seem to have an active internet connection. Please check your internet connectivity and come again.", android.provider.Settings.ACTION_SETTINGS);
-            dialog.setOnExitListener(new SettingDialog.OnExitListener() {
-                @Override
-                public void exit() {
-                    finish();
-                }
-            });
-            dialog.show();
-        }
     }
 
     private void setDrawerClick(int itemId) {
@@ -93,63 +84,23 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         FragmentTransaction ft = manager.beginTransaction();
         switch (itemId) {
             case R.id.drawer_home:
-                ft.replace(R.id.content, new HomeMarketingFragment(), "Home");
+                ft.replace(R.id.content, new HomeRetailerFragment(), "Home");
                 ft.commit();
                 break;
 
-            case R.id.drawer_retailer:
-                ft.replace(R.id.content, new RetailerMarketingFragment(), "Retailers");
-                ft.commit();
-                break;
-
-            case R.id.drawer_stock:
-                ft.replace(R.id.content, new StockFragment(), "Stock");
-                ft.commit();
+            case R.id.drawer_profile:
                 break;
 
             case R.id.drawer_orders:
-                ft.replace(R.id.content, new OrderMarketingFragment(), "Orders");
-                ft.commit();
-                break;
 
-            case R.id.drawer_add:
-                ft.replace(R.id.content, new AddNewRetailerFragment(), "Add New Retailer");
-                ft.commit();
                 break;
 
             case R.id.drawer_payment:
-                ft.replace(R.id.content, new PaymentFragment(), "Payment");
-                ft.commit();
-                break;
-
-            case R.id.drawer_multi_payment:
-                ft.replace(R.id.content, new MultipleOrdersPaymentFragment(), "Multiple Orders Payment");
-                ft.commit();
-                break;
-
-            case R.id.drawer_check_in:
-                Functions.fireIntent(MarketingDrawerActivity.this, CheckInActivity.class);
-                break;
-
-            case R.id.drawer_check_out:
-                SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.remove("offline");
-                editor.commit();
-
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
 
                 break;
 
-            case R.id.drawer_agent:
-                ft.replace(R.id.content, new AgentFragment(), "Agents Activity");
-               /* preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
-                if (!preferences.contains("offline")) {
-                    ft.addToBackStack(null);
-                }*/
-                ft.commit();
+            case R.id.drawer_scheme:
+
                 break;
 
             case R.id.drawer_download:
@@ -157,13 +108,8 @@ public class MarketingDrawerActivity extends AppCompatActivity {
                 ft.commit();
                 break;
 
-            case R.id.drawer_password:
-                ChangePasswordDialog dialog = new ChangePasswordDialog(MarketingDrawerActivity.this);
-                dialog.show();
-                break;
-
             case R.id.drawer_log_out:
-                complexPreferences = ComplexPreferences.getComplexPreferences(MarketingDrawerActivity.this, "user_pref", 0);
+                complexPreferences = ComplexPreferences.getComplexPreferences(RetailerDrawerActivity.this, "user_pref", 0);
                 UserProfile blankUser = new UserProfile();
                 complexPreferences.putObject("current-user", blankUser);
                 complexPreferences.commit();
@@ -184,21 +130,30 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         }
     }
 
-    public Toolbar getToolbar() {
-        return toolbar;
-    }
+    private void initDrawer() {
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
 
-    public void setTitle(String title) {
-        toolbar.setTitle(title);
-    }
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                Functions.hideKeyPad(RetailerDrawerActivity.this, drawerView);
 
-    public void setSubtitle(String subtitle) {
-        if (subtitle.equalsIgnoreCase("no")) {
-            toolbar.setSubtitle(null);
-        } else {
-            toolbar.setSubtitle(subtitle);
-        }
+            }
 
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                Functions.hideKeyPad(RetailerDrawerActivity.this, drawerView);
+            }
+        };
+        drawerLayout.setDrawerListener(drawerToggle);
+
+        // Set CheckIn CheckOut option visibility
+        complexPreferences = ComplexPreferences.getComplexPreferences(this, "user_pref", 0);
+        UserProfile userProfile = new UserProfile();
+        userProfile = complexPreferences.getObject("current-user", UserProfile.class);
+
+        txtUsername.setText(userProfile.name);
     }
 
     @Override
@@ -224,39 +179,25 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initDrawer() {
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
 
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                Functions.hideKeyPad(MarketingDrawerActivity.this, drawerView);
+    public void setTitle(String title) {
+        toolbar.setTitle(title);
+    }
 
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                Functions.hideKeyPad(MarketingDrawerActivity.this, drawerView);
-            }
-        };
-        drawerLayout.setDrawerListener(drawerToggle);
-
-        // Set CheckIn CheckOut option visibility
-        preferences = getSharedPreferences("login", MODE_PRIVATE);
-        if (preferences.contains("offline")) {
-            Log.e("offline", preferences.getString("offline", null));
-            MenuItem item = navigationView.getMenu().getItem(7);
-            item.setVisible(false);
+    public void setSubtitle(String subtitle) {
+        if (subtitle.equalsIgnoreCase("no")) {
+            toolbar.setSubtitle(null);
         } else {
-            Log.e("offline", "blank");
-            MenuItem item = navigationView.getMenu().getItem(8);
-            item.setVisible(false);
+            toolbar.setSubtitle(subtitle);
         }
 
     }
 
     private void init() {
+        txtUsername = (TextView) findViewById(R.id.txtUsername);
         toolbar = (Toolbar) findViewById(R.id.toolbar2);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -267,24 +208,22 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         }
 
         imgCart = (ImageView) findViewById(R.id.imgCart);
-        imgCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Functions.fireIntent(MarketingDrawerActivity.this, CartActivity.class);
-            }
-        });
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        imgCart.setVisibility(View.GONE);
 
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+    protected void onResume() {
+        super.onResume();
+        if (!Functions.isConnecting(this)) {
+            SettingDialog dialog = new SettingDialog(this, "You don't seem to have an active internet connection. Please check your internet connectivity and come again.", android.provider.Settings.ACTION_SETTINGS);
+            dialog.setOnExitListener(new SettingDialog.OnExitListener() {
+                @Override
+                public void exit() {
+                    finish();
+                }
+            });
+            dialog.show();
+        }
     }
 }

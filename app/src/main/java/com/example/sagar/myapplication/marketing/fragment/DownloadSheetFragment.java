@@ -1,5 +1,6 @@
 package com.example.sagar.myapplication.marketing.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -28,6 +29,7 @@ import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.CompanyData;
+import com.example.sagar.myapplication.retailer.activity.RetailerDrawerActivity;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.rey.material.widget.Button;
@@ -58,6 +60,7 @@ public class DownloadSheetFragment extends Fragment {
     String type = null;
     String filename;
     File SDCardRoot, dir;
+    private Activity activity;
 
     public static DownloadSheetFragment newInstance(String param1, String param2) {
         DownloadSheetFragment fragment = new DownloadSheetFragment();
@@ -168,8 +171,16 @@ public class DownloadSheetFragment extends Fragment {
     }
 
     private void init(View customView) {
-        ((MarketingDrawerActivity) getActivity()).setTitle("Download Sheet");
-        ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
+        activity = getActivity();
+
+        if (activity instanceof MarketingDrawerActivity) {
+            ((MarketingDrawerActivity) getActivity()).setTitle("Download Sheet");
+            ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
+
+        } else if (activity instanceof RetailerDrawerActivity) {
+            ((RetailerDrawerActivity) getActivity()).setTitle("Download Sheet");
+            ((RetailerDrawerActivity) getActivity()).setSubtitle("no");
+        }
 
         btnDownload = (Button) customView.findViewById(R.id.btnDownload);
         btnView = (Button) customView.findViewById(R.id.btnView);

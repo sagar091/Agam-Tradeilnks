@@ -9,6 +9,8 @@
 
     <color name="link_text">#0000FF</color>
 
+    <color name="drawer_bg">#263248</color>
+
     <color name="primaryColor">#3498DB</color>
     <color name="primaryColorDark">#1976D2</color>
     <color name="colorAccent">#999999</color>

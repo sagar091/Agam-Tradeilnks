@@ -32,4 +32,5 @@ dependencies {
     compile 'me.gujun.android.taggroup:library:1.4@aar'
     compile 'com.wdullaer:materialdatetimepicker:1.5.2'
     compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'com.alexzh:circleimageview:1.1.0@aar'
 }

@@ -123,6 +123,7 @@ public class PaymentOrdersActivity extends AppCompatActivity {
             map.put("form_type", "retailor_order");
             map.put("user_id", userId);
             map.put("retailor_id", selectRetailerId);
+            Log.e("req", map.toString());
             try {
                 HttpRequest request = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = request.preparePost().withData(map).sendAndReadJSON();
@@ -206,23 +207,12 @@ public class PaymentOrdersActivity extends AppCompatActivity {
             mHolder.txtOrderTotal.setText(orders.get(position).order.order_total);
 
             // Pending Order
-            if (orders.get(position).order.dilivery_pending.equals("1")) { // Completed Order
+            if (orders.get(position).order.payment_pending.equals("1")) { // Completed Payment
                 mHolder.fullLayout.setBackgroundResource(R.color.quad_blue);
 
             } else {
                 mHolder.fullLayout.setBackgroundResource(R.color.quad_green);
             }
-
-           /* convertView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    *//*Toast.makeText(RetailerOrdersActivity.this, "position " + position, Toast.LENGTH_LONG).show();
-                    Log.e("position", position + "-##");
-                    Log.e("Order ", orderData.orders.get(position).order.order_id);*//*
-                }
-            });*/
 
             return convertView;
         }

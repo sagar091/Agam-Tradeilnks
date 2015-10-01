@@ -5,16 +5,12 @@ import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
-import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.model.UserProfile;
-import com.example.sagar.myapplication.retailer.RetailerDrawerActivity;
-
-import javax.security.auth.login.LoginException;
+import com.example.sagar.myapplication.retailer.activity.RetailerDrawerActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
