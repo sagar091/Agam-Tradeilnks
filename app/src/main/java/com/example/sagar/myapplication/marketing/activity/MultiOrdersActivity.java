@@ -2,15 +2,19 @@ package com.example.sagar.myapplication.marketing.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,38 +22,42 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
-import com.example.sagar.myapplication.model.ProductModel;
-import com.example.sagar.myapplication.model.Products;
+import com.example.sagar.myapplication.model.OrderMarketingData;
+import com.example.sagar.myapplication.model.OrderModel;
+import com.example.sagar.myapplication.model.UserProfile;
 import com.google.gson.GsonBuilder;
 import com.rey.material.widget.Button;
+import com.rey.material.widget.CheckBox;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class PaymentModeActivity extends AppCompatActivity {
+public class MultiOrdersActivity extends AppCompatActivity {
 
-    private Button btnSubmit;
     private Toolbar toolbar;
+    View parentView;
+    OrderMarketingData orderData;
+    private String userId, selectRetailerId, selectRetailerName, orderError;
     private ImageView imgCart;
-    private View parentView;
-    private String orderId, orderStatus, orderError;
-    private ProgressDialog pd;
-    private TextView txtRetailer, txtOrderTotal, txtPaymentReceived, txtPaymentPending;
-    private Products orderData;
-    private MyAdapter adapter;
-    private ListView productsListView;
-    private LinearLayout paymentScrollView;
-    private ScrollView mainLayout;
+    ComplexPreferences complexPreferences;
+    OrdersAdapter adapter;
+    private TextView noData, txtAmount;
+    ListView listview;
+    ProgressDialog pd;
+    List<OrderModel> newOrders;
+    LinearLayout paymentScrollView;
     private RadioGroup radioGroup;
-    private int last = 0;
+    private int last = 0, payableAmount = 0;
+    private Button btnSubmit;
 
     // Cash
     EditText edtAmount;
@@ -68,10 +76,10 @@ public class PaymentModeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment_mode);
+        setContentView(R.layout.activity_multi_orders);
 
-        orderId = getIntent().getStringExtra("orderId");
-        orderStatus = getIntent().getStringExtra("orderStatus");
+        selectRetailerId = getIntent().getStringExtra("selectRetailerId");
+        selectRetailerName = getIntent().getStringExtra("selectRetailerName");
 
         init();
 
@@ -102,7 +110,12 @@ public class PaymentModeActivity extends AppCompatActivity {
             }
         });
 
-        new GetPaymentForOrder().execute();
+        UserProfile userProfile = new UserProfile();
+        complexPreferences = ComplexPreferences.getComplexPreferences(this, "user_pref", 0);
+        userProfile = complexPreferences.getObject("current-user", UserProfile.class);
+        userId = userProfile.user_id;
+
+        new GetRetailerOrders().execute();
     }
 
     private void processContinue() {
@@ -114,7 +127,7 @@ public class PaymentModeActivity extends AppCompatActivity {
             enteredAmount = edtAmount.getText().toString().trim();
             if (enteredAmount.length() == 0) {
                 Functions.showSnack(parentView, "Enter amount");
-            } else if (Integer.parseInt(enteredAmount) > Integer.parseInt(orderData.orders.get(0).order.order_total)) {
+            } else if (Integer.parseInt(enteredAmount) > payableAmount) {
                 Functions.showSnack(parentView, "Amount should not be greater then order total.");
             } else {
                 Functions.showSnack(parentView, "Proceed");
@@ -128,7 +141,7 @@ public class PaymentModeActivity extends AppCompatActivity {
 
             if (enteredBankName.length() == 0 || enteredBankAmount.length() == 0 || enteredChequeNo.length() == 0 || enteredBankDate.length() == 0) {
                 Functions.showSnack(parentView, "Enter Cehque details correctly");
-            } else if (Integer.parseInt(enteredBankAmount) > Integer.parseInt(orderData.orders.get(0).order.order_total)) {
+            } else if (Integer.parseInt(enteredBankAmount) > payableAmount) {
                 Functions.showSnack(parentView, "Amount should not be greater then order total.");
             } else {
                 Functions.showSnack(parentView, "Proceed");
@@ -140,7 +153,7 @@ public class PaymentModeActivity extends AppCompatActivity {
 
             if (enteredOtherAmount.length() == 0 || enteredOtherDesc.length() == 0) {
                 Functions.showSnack(parentView, "Enter amount and description");
-            } else if (Integer.parseInt(enteredOtherAmount) > Integer.parseInt(orderData.orders.get(0).order.order_total)) {
+            } else if (Integer.parseInt(enteredOtherAmount) > payableAmount) {
                 Functions.showSnack(parentView, "Amount should not be greater then order total.");
             } else {
                 Functions.showSnack(parentView, "Proceed");
@@ -163,21 +176,15 @@ public class PaymentModeActivity extends AppCompatActivity {
 
         chequeLayout = (LinearLayout) findViewById(R.id.chequeLayout);
         otherLayout = (LinearLayout) findViewById(R.id.otherLayout);
+
         paymentScrollView = (LinearLayout) findViewById(R.id.paymentScrollView);
-
-        mainLayout = (ScrollView) findViewById(R.id.mainLayout);
-
-        productsListView = (ListView) findViewById(R.id.productsListView);
-
-        txtRetailer = (TextView) findViewById(R.id.txtRetailer);
-        txtOrderTotal = (TextView) findViewById(R.id.txtOrderTotal);
-        txtPaymentPending = (TextView) findViewById(R.id.txtPaymentPending);
-        txtPaymentReceived = (TextView) findViewById(R.id.txtPaymentReceived);
-
+        txtAmount = (TextView) findViewById(R.id.txtAmount);
+        noData = (TextView) findViewById(R.id.noData);
+        listview = (ListView) findViewById(R.id.listview);
         parentView = findViewById(android.R.id.content);
         toolbar = (Toolbar) findViewById(R.id.toolbar2);
-        toolbar.setTitle("Payment Mode");
-        toolbar.setSubtitle("Order: " + orderId);
+        toolbar.setTitle("Orders");
+        toolbar.setSubtitle("Retailer: " + selectRetailerName);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -186,7 +193,7 @@ public class PaymentModeActivity extends AppCompatActivity {
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Functions.fireIntent(PaymentModeActivity.this, CartActivity.class);
+                Functions.fireIntent(MultiOrdersActivity.this, CartActivity.class);
             }
         });
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -197,30 +204,31 @@ public class PaymentModeActivity extends AppCompatActivity {
         });
     }
 
-    private class GetPaymentForOrder extends AsyncTask<String, String, String> {
+    private class GetRetailerOrders extends AsyncTask<String, String, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pd = ProgressDialog.show(PaymentModeActivity.this, "Loading", "Please wait..", false);
+            pd = ProgressDialog.show(MultiOrdersActivity.this, "Loading", "Please wait..", false);
         }
 
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> map = new HashMap<>();
-            map.put("form_type", "order_payment");
-            map.put("order_id", orderId);
+            map.put("form_type", "retailor_order");
+            map.put("user_id", userId);
+            map.put("retailor_id", selectRetailerId);
             try {
                 HttpRequest request = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = request.preparePost().withData(map).sendAndReadJSON();
-                Log.e("order_response", obj.toString());
                 orderError = obj.getString("error");
+
                 if (orderError.equals("0")) {
-                    orderData = new GsonBuilder().create().fromJson(obj.toString(), Products.class);
+                    orderData = new GsonBuilder().create().fromJson(obj.toString(), OrderMarketingData.class);
                 }
+
             } catch (Exception e) {
                 Functions.showSnack(parentView, e.getMessage());
             }
-
             return null;
         }
 
@@ -229,34 +237,27 @@ public class PaymentModeActivity extends AppCompatActivity {
             super.onPostExecute(s);
             pd.dismiss();
             if (orderError.equals("0")) {
-                setDetails();
+                newOrders = new ArrayList<>();
+
+                for (int i = 0; i < orderData.orders.size(); i++) {
+                    if (orderData.orders.get(i).order.payment_pending.equals("0")) {
+                        newOrders.add(orderData.orders.get(i));
+                    }
+                }
+
+                adapter = new OrdersAdapter(MultiOrdersActivity.this, newOrders);
+                listview.setAdapter(adapter);
+                setListViewHeightBasedOnChildren(listview);
+
+            } else {
+                noData.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    private void setDetails() {
-
-        txtRetailer.setText(orderData.orders.get(0).order.retailor_name);
-        txtPaymentPending.setText(getResources().getString(R.string.Rs) + " " + orderData.orders.get(0).order.payment_pending);
-        txtPaymentReceived.setText(getResources().getString(R.string.Rs) + " " + orderData.orders.get(0).order.payment_recived);
-        txtOrderTotal.setText(getResources().getString(R.string.Rs) + " " + orderData.orders.get(0).order.order_total);
-
-        adapter = new MyAdapter(this, orderData.product);
-        productsListView.setAdapter(adapter);
-        setListViewHeightBasedOnChildren(productsListView);
-        mainLayout.setVisibility(View.VISIBLE);
-
-        if (orderStatus.equals("1")) { // completed
-            paymentScrollView.setVisibility(View.GONE);
-        } else {    // pending
-            paymentScrollView.setVisibility(View.VISIBLE);
-        }
-
-    }
-
     private void setListViewHeightBasedOnChildren(ListView listView) {
         // TODO Auto-generated method stub
-        MyAdapter listAdapter = (MyAdapter) listView.getAdapter();
+        OrdersAdapter listAdapter = (OrdersAdapter) listView.getAdapter();
         if (listAdapter == null)
             return;
 
@@ -280,61 +281,101 @@ public class PaymentModeActivity extends AppCompatActivity {
         listView.requestLayout();
     }
 
-    private class MyAdapter extends BaseAdapter {
+    private class OrdersAdapter extends BaseAdapter {
 
         Context context;
         LayoutInflater mInflater;
-        List<ProductModel> dataList;
+        List<OrderModel> newOrders;
+        int x = 0;
 
-        public MyAdapter(Context context,
-                         List<ProductModel> dataList) {
+        public OrdersAdapter(Context context, List<OrderModel> newOrders) {
             this.context = context;
-            this.dataList = dataList;
+            this.newOrders = newOrders;
         }
 
         @Override
         public int getCount() {
-            // TODO Auto-generated method stub
-            return dataList.size();
+            return newOrders.size();
         }
 
         @Override
         public Object getItem(int position) {
-            // TODO Auto-generated method stub
-            return null;
+            return position;
         }
 
         @Override
         public long getItemId(int position) {
-            // TODO Auto-generated method stub
             return 0;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
+
             // TODO Auto-generated method stub
             final ViewHolder mHolder;
             if (convertView == null) {
                 mInflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = mInflater.inflate(R.layout.order_details_item,
+                convertView = mInflater.inflate(R.layout.ret_order_row,
                         parent, false);
                 mHolder = new ViewHolder();
-                mHolder.productName = (TextView) convertView
-                        .findViewById(R.id.pName);
-                mHolder.qty = (TextView) convertView.findViewById(R.id.pQty);
+                mHolder.checkbox = (CheckBox) convertView.findViewById(R.id.checkbox);
+                mHolder.fullLayout = (LinearLayout) convertView.findViewById(R.id.fullLayout);
+                mHolder.txtOrderId = (TextView) convertView
+                        .findViewById(R.id.txtOrderId);
+                mHolder.txtOrderTotal = (TextView) convertView
+                        .findViewById(R.id.txtOrderTotal);
                 convertView.setTag(mHolder);
             } else {
                 mHolder = (ViewHolder) convertView.getTag();
             }
 
-            mHolder.productName.setText(dataList.get(position).product_name);
-            mHolder.qty.setText(dataList.get(position).qty);
+            mHolder.txtOrderId.setText(newOrders.get(position).order.order_id);
+            mHolder.txtOrderTotal.setText(newOrders.get(position).order.order_total);
+
+            mHolder.fullLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent i = new Intent(MultiOrdersActivity.this, PaymentModeActivity.class);
+                    i.putExtra("orderId", newOrders.get(position).order.order_id);
+                    i.putExtra("orderStatus", "0");
+                    startActivity(i);
+                }
+            });
+
+            mHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        x++;
+                        payableAmount += Integer.parseInt(newOrders.get(position).order.order_total);
+                    } else {
+                        x--;
+                        payableAmount -= Integer.parseInt(newOrders.get(position).order.order_total);
+                    }
+
+                    if (x == 0) {
+                        paymentScrollView.setVisibility(View.GONE);
+                        txtAmount.setVisibility(View.GONE);
+
+                    } else {
+                        txtAmount.setVisibility(View.VISIBLE);
+                        Functions.showSnack(parentView, payableAmount + "");
+                        paymentScrollView.setVisibility(View.VISIBLE);
+                        txtAmount.setText("Payable amount:  " + getResources().getString(R.string.Rs) + " " + payableAmount);
+                    }
+
+                }
+            });
+
             return convertView;
         }
 
         private class ViewHolder {
-            TextView productName, qty;
+            TextView txtOrderTotal, txtOrderId;
+            LinearLayout fullLayout;
+            CheckBox checkbox;
         }
     }
 }

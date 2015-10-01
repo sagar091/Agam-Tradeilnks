@@ -35,5 +35,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_order_details">OrderDetailsActivity</string>
     <string name="title_activity_payment_mode">PaymentModeActivity</string>
+    <string name="title_activity_multi_orders">MultiOrders</string>
 
 </resources>

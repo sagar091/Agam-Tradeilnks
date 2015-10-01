@@ -1,6 +1,7 @@
 package com.example.sagar.myapplication.marketing.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,10 @@ import android.widget.ListView;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
+import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
+import com.example.sagar.myapplication.marketing.activity.MultiOrdersActivity;
+import com.example.sagar.myapplication.marketing.activity.PaymentOrdersActivity;
 import com.example.sagar.myapplication.model.RetailerData;
 
 import java.util.ArrayList;
@@ -110,6 +114,7 @@ public class MultipleOrdersPaymentFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Functions.hideKeyPad(getActivity(), view);
                 selectRetailerName = parent.getItemAtPosition(position) + "";
                 for (int i = 0; i < finalRetailerData.retailers.size(); i++) {
                     if (finalRetailerData.retailers.get(i).retailer.retailerName.equals(selectRetailerName)) {
@@ -118,6 +123,11 @@ public class MultipleOrdersPaymentFragment extends Fragment {
                     }
                 }
                 Log.e(selectRetailerId, selectRetailerName);
+
+                Intent i = new Intent(getActivity(), MultiOrdersActivity.class);
+                i.putExtra("selectRetailerId", selectRetailerId);
+                i.putExtra("selectRetailerName", selectRetailerName);
+                startActivity(i);
 
             }
         });

@@ -27,6 +27,7 @@ import com.example.sagar.myapplication.model.OrderMarketingData;
 import com.example.sagar.myapplication.model.OrderModel;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.google.gson.GsonBuilder;
+import com.rey.material.widget.CheckBox;
 
 import org.json.JSONObject;
 
@@ -71,7 +72,6 @@ public class PaymentOrdersActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 orderId = orderData.orders.get(position).order.order_id;
                 orderStatus = orderData.orders.get(position).order.dilivery_pending;
-//                Functions.showSnack(parentView, orderId + " -- " + orderStatus);
 
                 Intent i = new Intent(PaymentOrdersActivity.this, PaymentModeActivity.class);
                 i.putExtra("orderId", orderId);
@@ -190,6 +190,8 @@ public class PaymentOrdersActivity extends AppCompatActivity {
                 convertView = mInflater.inflate(R.layout.ret_order_row,
                         parent, false);
                 mHolder = new ViewHolder();
+                mHolder.checkbox = (CheckBox) convertView.findViewById(R.id.checkbox);
+                mHolder.checkbox.setVisibility(View.GONE);
                 mHolder.fullLayout = (LinearLayout) convertView.findViewById(R.id.fullLayout);
                 mHolder.txtOrderId = (TextView) convertView
                         .findViewById(R.id.txtOrderId);
@@ -228,6 +230,7 @@ public class PaymentOrdersActivity extends AppCompatActivity {
         private class ViewHolder {
             TextView txtOrderTotal, txtOrderId;
             LinearLayout fullLayout;
+            CheckBox checkbox;
         }
     }
 }
