@@ -294,17 +294,6 @@ public class AddNewRetailerFragment extends Fragment {
                 edtCity.setText(selectCity);
                 Log.e("selectCity", selectCity);
                 dialog.dismiss();
-                new CountDownTimer(900, 100) {
-                    @Override
-                    public void onTick(long l) {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                    }
-                }.start();
             }
         });
     }

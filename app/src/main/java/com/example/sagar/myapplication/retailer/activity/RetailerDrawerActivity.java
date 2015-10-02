@@ -35,6 +35,7 @@ import com.example.sagar.myapplication.marketing.fragment.StockFragment;
 import com.example.sagar.myapplication.model.Retailer;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.retailer.fragment.HomeRetailerFragment;
+import com.example.sagar.myapplication.retailer.fragment.ProfileRetailerFragment;
 import com.example.sagar.myapplication.ui.CheckInActivity;
 import com.example.sagar.myapplication.ui.MainActivity;
 
@@ -89,6 +90,8 @@ public class RetailerDrawerActivity extends AppCompatActivity {
                 break;
 
             case R.id.drawer_profile:
+                ft.replace(R.id.content, new ProfileRetailerFragment(), "Profile");
+                ft.commit();
                 break;
 
             case R.id.drawer_orders:

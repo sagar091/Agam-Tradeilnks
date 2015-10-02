@@ -1,0 +1,345 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context="com.example.sagar.myapplication.marketing.fragment.AddNewRetailerFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout">
+
+            <EditText
+                android:id="@+id/edtOutlet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Outlet Name"
+                android:textColorHint="@color/primaryColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout">
+
+            <EditText
+                android:id="@+id/edtMobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="0123456789"
+                android:hint="Mobile Number"
+                android:inputType="number"
+                android:maxLength="10"
+                android:textColorHint="@color/primaryColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout">
+
+            <EditText
+                android:id="@+id/edtMobile2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="0123456789"
+                android:hint="Mobile Number 2"
+                android:inputType="number"
+                android:maxLength="10"
+                android:textColorHint="@color/primaryColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout">
+
+            <EditText
+                android:id="@+id/edtBirthDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                android:focusable="false"
+                android:hint="Date of Birth"
+                android:maxLength="10"
+                android:textColorHint="@color/primaryColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout">
+
+            <EditText
+                android:id="@+id/edtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email-id"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@color/primaryColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout">
+
+            <EditText
+                android:id="@+id/edtUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="abcdefghijklmnopqrstuvwxyz_1234567890"
+                android:hint="Username"
+                android:textColorHint="@color/primaryColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout">
+
+            <EditText
+                android:id="@+id/edtRetailer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Retailer Name"
+                android:textColorHint="@color/primaryColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout">
+
+            <EditText
+                android:id="@+id/edtRegDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                android:focusable="false"
+                android:hint="Date of Register"
+                android:maxLength="10"
+                android:textColorHint="@color/primaryColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout">
+
+            <EditText
+                android:id="@+id/edtPAN"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+                android:hint="PAN No"
+                android:inputType="textCapCharacters"
+                android:maxLength="10"
+                android:textColorHint="@color/primaryColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout">
+
+            <EditText
+                android:id="@+id/edtTin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="1234567890abcdefghijklmnopqrstuvxyz"
+                android:hint="Tin No"
+                android:textColorHint="@color/primaryColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout">
+
+                    <EditText
+                        android:id="@+id/edtArea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Area"
+                        android:textColorHint="@color/primaryColor" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout">
+
+                    <EditText
+                        android:id="@+id/edtAddress1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Address Line 1"
+                        android:textColorHint="@color/primaryColor" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout">
+
+                    <EditText
+                        android:id="@+id/edtAddress2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Address Line 2"
+                        android:textColorHint="@color/primaryColor" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout">
+
+                    <EditText
+                        android:id="@+id/edtCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="City"
+                        android:textColorHint="@color/primaryColor" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout">
+
+                    <EditText
+                        android:id="@+id/edtState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:editable="false"
+                        android:hint="State"
+                        android:text="Gujarat"
+                        android:textColorHint="@color/primaryColor" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout">
+
+                    <EditText
+                        android:id="@+id/edtCountry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:editable="false"
+                        android:hint="Country"
+                        android:text="India"
+                        android:textColorHint="@color/primaryColor" />
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.9"
+                        app:hintTextAppearance="@style/TextInputLayout">
+
+                        <EditText
+                            android:id="@+id/edtPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Password"
+                            android:inputType="textPassword"
+                            android:textColorHint="@color/primaryColor" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <ImageView
+                        android:id="@+id/showPassword"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.1"
+                        android:src="@drawable/eye" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.9"
+                        app:hintTextAppearance="@style/TextInputLayout">
+
+                        <EditText
+                            android:id="@+id/edtRePassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Re-type Password"
+                            android:inputType="textPassword"
+                            android:textColorHint="@color/primaryColor" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <ImageView
+                        android:id="@+id/showPassword2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.1"
+                        android:src="@drawable/eye" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edtBrand"
+                    style="@style/match_wrap_content"
+                    android:background="@drawable/background"
+                    android:focusable="false"
+                    android:hint="Select Prefered Company"
+                    android:padding="12dp"
+                    android:textColorHint="@color/primaryColor" />
+            </LinearLayout>
+        </RadioGroup>
+
+        <com.rey.material.widget.Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/button_bg"
+            android:text="Update Profile"
+            android:textColor="#ffffff"
+            app:rd_enable="true"
+            app:rd_rippleColor="@color/button_ripple"
+            app:rd_rippleType="touch" />
+    </LinearLayout>
+</ScrollView>
