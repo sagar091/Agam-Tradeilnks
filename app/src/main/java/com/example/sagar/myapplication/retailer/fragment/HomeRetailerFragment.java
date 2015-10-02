@@ -65,7 +65,7 @@ public class HomeRetailerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        parentView = inflater.inflate(R.layout.activity_main, container, false);
+        parentView = inflater.inflate(R.layout.fragment_home_retailer, container, false);
 
         init(parentView);
 

@@ -1,13 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <include layout="@layout/app_bar"></include>
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/selectLayout"
         style="@style/match_wrap_content"
         android:layout_below="@+id/toolbar"
         android:orientation="vertical"
@@ -59,6 +56,7 @@
     <LinearLayout
         android:id="@+id/scroll"
         style="@style/both_match_parent"
+        android:layout_below="@+id/selectLayout"
         android:layout_margin="5dp"
         android:background="#ffffff"
         android:gravity="center"
@@ -142,6 +140,26 @@
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:text="Price"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/pPrice"
+                            style="@style/both_wrap_content"
+                            android:text=""
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear5"
+                        style="@style/match_wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/productDetails"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:text="Retailer Price"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 

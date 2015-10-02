@@ -113,8 +113,12 @@ public class Functions {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public static int getLength(EditText edtText){
+    public static int getLength(EditText edtText) {
         return edtText.getText().toString().length();
+    }
+
+    public static String getText(EditText editText) {
+        return editText.getText().toString().trim();
     }
 
 }

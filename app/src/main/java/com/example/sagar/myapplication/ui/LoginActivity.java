@@ -162,6 +162,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginError == 0) {
                     userProfile = new GsonBuilder().create().fromJson(statusObject.toString(), UserProfile.class);
 
+                    userProfile.password = Functions.getText(edtPassword);
+
                     ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginActivity.this, "user_pref", 0);
                     complexPreferences.putObject("current-user", userProfile);
                     complexPreferences.commit();

@@ -10,6 +10,9 @@ public class UserProfile {
     @SerializedName("user_type")
     public String user_type;
 
+    @SerializedName("password")
+    public String password;
+
     @SerializedName("name")
     public String name;
 

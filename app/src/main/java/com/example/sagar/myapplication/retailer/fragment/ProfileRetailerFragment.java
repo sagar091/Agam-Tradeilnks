@@ -48,7 +48,7 @@ public class ProfileRetailerFragment extends Fragment {
 
     View parentView;
     private ComplexPreferences complexPreferences;
-    String retailerId;
+    String retailerId, password;
     private City city;
     EditText edtOutlet, edtMobile, edtMobile2, edtBirthDate, edtEmail, edtUsername, edtRetailer, edtRegDate, edtPassword, edtRePassword, edtPAN, edtTin,
             edtArea, edtAddress1, edtAddress2, edtCity, edtState, edtCountry, edtBrand;
@@ -88,15 +88,14 @@ public class ProfileRetailerFragment extends Fragment {
         complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         UserProfile userProfile = complexPreferences.getObject("current-user", UserProfile.class);
         retailerId = userProfile.user_id;
+        password = userProfile.password;
 
         companyData = new CompanyData();
-        complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         companyData = complexPreferences.getObject("mobile_companies", CompanyData.class);
 
         init(parentView);
 
         city = new City();
-        complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         city = complexPreferences.getObject("city_list", City.class);
 
         if (city == null) {
@@ -117,20 +116,8 @@ public class ProfileRetailerFragment extends Fragment {
         edtBirthDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar now = Calendar.getInstance();
-                DatePickerDialog dpd = DatePickerDialog.newInstance(
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePickerDialog datePickerDialog, int year, int monthOfYear, int dayOfMonth) {
-                                edtBirthDate.setText(new StringBuilder().append(dayOfMonth).append("-")
-                                        .append(monthOfYear + 1).append("-").append(year));
-                            }
-                        },
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH)
-                );
-                dpd.show(getActivity().getFragmentManager(), "Select Birthdate");
+                openDatePicker();
+
             }
         });
 
@@ -160,17 +147,16 @@ public class ProfileRetailerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (show2) {
-                    edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    edtRePassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     show2 = false;
                 } else {
-                    edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    edtRePassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     show2 = true;
                 }
             }
         });
 
         profileModel = new RetailerProfileModel();
-        complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         profileModel = complexPreferences.getObject("current-retailer", RetailerProfileModel.class);
         if (profileModel == null) {
             new GetProfileData().execute();
@@ -178,7 +164,137 @@ public class ProfileRetailerFragment extends Fragment {
             setProfile();
         }
 
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkValidation()) {
+                    Functions.showSnack(parentView, "Proceed..");
+                    new UpdateRetailer().execute();
+                }
+            }
+        });
+
         return parentView;
+    }
+
+    private boolean checkValidation() {
+
+        boolean valid = true;
+
+        if (Functions.getLength(edtOutlet) == 0) {
+            Functions.showSnack(parentView, "Enter Outlet Name");
+            valid = false;
+
+        } else if (Functions.getLength(edtMobile) != 10) {
+            Functions.showSnack(parentView, "Enter mobile number of 10 digits");
+            valid = false;
+
+        } else if (Functions.getLength(edtMobile2) != 10) {
+            Functions.showSnack(parentView, "Enter mobile number-2 of 10 digits");
+            valid = false;
+
+        } else if (Functions.getLength(edtBirthDate) == 0) {
+            Functions.showSnack(parentView, "Select Birthdate");
+            valid = false;
+
+        } else if (Functions.getLength(edtEmail) == 0 || !Functions.emailValidation(edtEmail.getText().toString())) {
+            Functions.showSnack(parentView, "Enter valid Email-id");
+            valid = false;
+
+        } else if (Functions.getLength(edtUsername) == 0) {
+            Functions.showSnack(parentView, "Enter User Name");
+            valid = false;
+
+        } else if (Functions.getLength(edtRetailer) == 0) {
+            Functions.showSnack(parentView, "Enter Retailer Name");
+            valid = false;
+
+        } else if (Functions.getLength(edtArea) == 0) {
+            Functions.showSnack(parentView, "Enter Area");
+            valid = false;
+
+        } else if (Functions.getLength(edtAddress1) == 0) {
+            Functions.showSnack(parentView, "Enter Address Line 1");
+            valid = false;
+
+        } else if (Functions.getLength(edtAddress2) == 0) {
+            Functions.showSnack(parentView, "Enter Address Line 2");
+            valid = false;
+
+        } else if (Functions.getLength(edtCity) == 0) {
+            Functions.showSnack(parentView, "Select City");
+            valid = false;
+
+        } else if (Functions.getLength(edtState) == 0) {
+            Functions.showSnack(parentView, "Enter State");
+            valid = false;
+
+        } else if (Functions.getLength(edtCountry) == 0) {
+            Functions.showSnack(parentView, "Enter Country");
+            valid = false;
+
+        } else if (Functions.getLength(edtPassword) < 6) {
+            Functions.showSnack(parentView, "Enter password minimum of 6 characters");
+            valid = false;
+
+        } else if (Functions.getLength(edtRePassword) < 6) {
+            Functions.showSnack(parentView, "Enter password minimum of 6 characters");
+            valid = false;
+
+        } else if (!edtPassword.getText().toString().equals(edtRePassword.getText().toString())) {
+            Functions.showSnack(parentView, "Password and Re-type password does not match.");
+            valid = false;
+
+        } else if (Functions.getLength(edtBrand) == 0 && edtBrand.getHint().toString().equals("Select Prefered Company")) {
+            Functions.showSnack(parentView, "Select your prefered brand");
+            valid = false;
+        }
+
+        if (valid) {
+
+            profileModel = new RetailerProfileModel();
+            profileModel.outlet = Functions.getText(edtOutlet);
+            profileModel.error = "0";
+            profileModel.mobile1 = Functions.getText(edtMobile);
+            profileModel.mobile2 = Functions.getText(edtMobile2);
+            profileModel.bdate = Functions.getText(edtBirthDate);
+            profileModel.user_email = Functions.getText(edtEmail);
+            profileModel.username = Functions.getText(edtUsername);
+            profileModel.retailerName = Functions.getText(edtRetailer);
+            profileModel.registred_date = Functions.getText(edtRegDate);
+            profileModel.pan = Functions.getText(edtPAN);
+            profileModel.tin = Functions.getText(edtTin);
+            profileModel.area = Functions.getText(edtArea);
+            profileModel.address1 = Functions.getText(edtAddress1);
+            profileModel.address2 = Functions.getText(edtAddress2);
+            profileModel.city = Functions.getText(edtCity);
+            profileModel.state = Functions.getText(edtState);
+            profileModel.country = Functions.getText(edtCountry);
+            profileModel.password = Functions.getText(edtPassword);
+            profileModel.prefered_brand = Functions.getText(edtBrand);
+            complexPreferences.putObject("current-retailer", profileModel);
+            complexPreferences.commit();
+
+        }
+
+        return valid;
+    }
+
+    private void openDatePicker() {
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog datePickerDialog, int year, int monthOfYear, int dayOfMonth) {
+                        edtBirthDate.setText(new StringBuilder().append(dayOfMonth).append("-")
+                                .append(monthOfYear + 1).append("-").append(year));
+                    }
+                },
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.show(getActivity().getFragmentManager(), "Select Birthdate");
     }
 
     private void setCompanyDialog() {
@@ -193,7 +309,7 @@ public class ProfileRetailerFragment extends Fragment {
 
         final ActionSheetDialog dialog = new ActionSheetDialog(getActivity(), stringItems, parentView);
         dialog.isTitleShow(true).show();
-        dialog.title("Select Prefered Company").titleTextSize_SP(20);
+        dialog.title("Select Prefered Brand").titleTextSize_SP(20);
 
         dialog.setOnOperItemClickL(new OnOperItemClickL() {
             @Override
@@ -281,7 +397,6 @@ public class ProfileRetailerFragment extends Fragment {
 
                 if (cityError == 0) {
                     city = new GsonBuilder().create().fromJson(obj.toString(), City.class);
-                    complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
                     complexPreferences.putObject("city_list", city);
                     complexPreferences.commit();
                 }
@@ -322,7 +437,7 @@ public class ProfileRetailerFragment extends Fragment {
                 profileError = obj.getInt("error");
                 if (profileError == 0) {
                     profileModel = new GsonBuilder().create().fromJson(obj.toString(), RetailerProfileModel.class);
-                    complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
+                    profileModel.password = password;
                     complexPreferences.putObject("current-retailer", profileModel);
                     complexPreferences.commit();
                 }
@@ -344,23 +459,42 @@ public class ProfileRetailerFragment extends Fragment {
     }
 
     private void setProfile() {
-        edtOutlet.setText(profileModel.shop_no);
-        edtMobile.setText(profileModel.mo_no);
-        edtMobile2.setText(profileModel.mo_no2);
+        edtOutlet.setText(profileModel.outlet);
+        edtMobile.setText(profileModel.mobile1);
+        edtMobile2.setText(profileModel.mobile2);
         edtBirthDate.setText(profileModel.bdate);
         edtEmail.setText(profileModel.user_email);
-        edtUsername.setText(profileModel.user_login);
-        edtRetailer.setText(profileModel.display_name);
+        edtUsername.setText(profileModel.username);
+        edtRetailer.setText(profileModel.retailerName);
         edtRegDate.setText(profileModel.registred_date);
         edtPAN.setText(profileModel.pan);
         edtTin.setText(profileModel.tin);
         edtArea.setText(profileModel.area);
-        edtAddress1.setText(profileModel.address);
-        edtAddress2.setText(profileModel.add_1);
+        edtAddress1.setText(profileModel.address1);
+        edtAddress2.setText(profileModel.address2);
         edtCity.setText(profileModel.city);
         edtState.setText(profileModel.state);
         edtCountry.setText(profileModel.country);
+        edtPassword.setText(profileModel.password);
+        edtRePassword.setText(profileModel.password);
         edtBrand.setText(profileModel.prefered_brand);
 
+    }
+
+    private class UpdateRetailer extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
     }
 }
