@@ -33,11 +33,14 @@ import com.example.sagar.myapplication.marketing.fragment.PaymentFragment;
 import com.example.sagar.myapplication.marketing.fragment.RetailerMarketingFragment;
 import com.example.sagar.myapplication.marketing.fragment.StockFragment;
 import com.example.sagar.myapplication.model.Retailer;
+import com.example.sagar.myapplication.model.RetailerProfileModel;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.retailer.fragment.HomeRetailerFragment;
 import com.example.sagar.myapplication.retailer.fragment.ProfileRetailerFragment;
+import com.example.sagar.myapplication.retailer.fragment.SchemeFragment;
 import com.example.sagar.myapplication.ui.CheckInActivity;
 import com.example.sagar.myapplication.ui.MainActivity;
+import com.google.gson.GsonBuilder;
 
 public class RetailerDrawerActivity extends AppCompatActivity {
 
@@ -103,7 +106,8 @@ public class RetailerDrawerActivity extends AppCompatActivity {
                 break;
 
             case R.id.drawer_scheme:
-
+                ft.replace(R.id.content, new SchemeFragment(), "Scheme");
+                ft.commit();
                 break;
 
             case R.id.drawer_download:
@@ -115,12 +119,15 @@ public class RetailerDrawerActivity extends AppCompatActivity {
                 complexPreferences = ComplexPreferences.getComplexPreferences(RetailerDrawerActivity.this, "user_pref", 0);
                 UserProfile blankUser = new UserProfile();
                 complexPreferences.putObject("current-user", blankUser);
-                complexPreferences.commit();
 
                 SharedPreferences preferences2 = getSharedPreferences("login", MODE_PRIVATE);
                 SharedPreferences.Editor editor2 = preferences2.edit();
                 editor2.remove("isUserLogin");
                 editor2.commit();
+
+                RetailerProfileModel blankModel = new RetailerProfileModel();
+                complexPreferences.putObject("current-retailer", blankModel);
+                complexPreferences.commit();
 
                 Intent i = new Intent(this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK

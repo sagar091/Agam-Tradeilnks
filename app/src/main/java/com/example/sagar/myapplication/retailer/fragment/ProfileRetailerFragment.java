@@ -57,8 +57,8 @@ public class ProfileRetailerFragment extends Fragment {
     private ImageView showPassword, showPassword2;
     Button btnUpdate;
     String selectCity, selectCompanyId;
-    int cityError, profileError;
-    ProgressDialog pd, pd1;
+    int cityError, profileError, updateError;
+    ProgressDialog pd, pd1, pd2;
     boolean show = false, show2 = false;
     CompanyData companyData;
     RetailerProfileModel profileModel;
@@ -90,6 +90,7 @@ public class ProfileRetailerFragment extends Fragment {
         retailerId = userProfile.user_id;
         password = userProfile.password;
 
+        Log.e("retailerId", retailerId);
         companyData = new CompanyData();
         companyData = complexPreferences.getObject("mobile_companies", CompanyData.class);
 
@@ -158,7 +159,8 @@ public class ProfileRetailerFragment extends Fragment {
 
         profileModel = new RetailerProfileModel();
         profileModel = complexPreferences.getObject("current-retailer", RetailerProfileModel.class);
-        if (profileModel == null) {
+
+        if (profileModel.username == null) {
             new GetProfileData().execute();
         } else {
             setProfile();
@@ -168,7 +170,6 @@ public class ProfileRetailerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (checkValidation()) {
-                    Functions.showSnack(parentView, "Proceed..");
                     new UpdateRetailer().execute();
                 }
             }
@@ -428,7 +429,7 @@ public class ProfileRetailerFragment extends Fragment {
         protected String doInBackground(String... params) {
             HashMap<String, String> map = new HashMap<>();
             map.put("form_type", "edit_profile");
-            map.put("retailor_id", "442");
+            map.put("retailor_id", retailerId);
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
@@ -485,16 +486,53 @@ public class ProfileRetailerFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pd2 = ProgressDialog.show(getActivity(), "Loading", "Please wait", false);
         }
 
         @Override
         protected String doInBackground(String... params) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("form_type", "update_profile");
+            map.put("retailor_id", retailerId);
+            map.put("shop_no", profileModel.outlet);
+            map.put("mo_no", profileModel.mobile1);
+            map.put("mo_no2", profileModel.mobile2);
+            map.put("area", profileModel.area);
+            map.put("address", profileModel.address1);
+            map.put("add_1", profileModel.address2);
+            map.put("city", profileModel.city);
+            map.put("state", profileModel.state);
+            map.put("country", profileModel.country);
+            map.put("bdate", profileModel.bdate);
+            map.put("display_name", profileModel.retailerName);
+            map.put("pan", profileModel.pan);
+            map.put("tin", profileModel.tin);
+            map.put("pro_pic", "null");
+            map.put("prefered_brand", selectCompanyId);
+            map.put("passoword", profileModel.password);
+
+            try {
+                HttpRequest req = new HttpRequest(Constants.BASE_URL);
+                JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
+                Log.e("update_response", obj.toString());
+                updateError = obj.getInt("error");
+            } catch (Exception e) {
+                Functions.showSnack(parentView, e.getMessage());
+            }
+
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            pd2.dismiss();
+            if (updateError == 0) {
+                Functions.showSnack(parentView, "Profile updated successfully.");
+            } else {
+                Functions.showSnack(parentView, "Error in update profile");
+            }
+
         }
     }
 }

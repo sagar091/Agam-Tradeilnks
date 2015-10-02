@@ -81,8 +81,9 @@
                 android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="false"
+                android:editable="false"
                 android:hint="Email-id"
-                android:inputType="textEmailAddress"
                 android:textColorHint="@color/primaryColor" />
         </android.support.design.widget.TextInputLayout>
 
@@ -95,7 +96,8 @@
                 android:id="@+id/edtUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:digits="abcdefghijklmnopqrstuvwxyz_1234567890"
+                android:clickable="false"
+                android:editable="false"
                 android:hint="Username"
                 android:textColorHint="@color/primaryColor" />
         </android.support.design.widget.TextInputLayout>
@@ -125,7 +127,6 @@
                 android:editable="false"
                 android:focusable="false"
                 android:hint="Date of Register"
-                android:maxLength="10"
                 android:textColorHint="@color/primaryColor" />
         </android.support.design.widget.TextInputLayout>
 
@@ -154,7 +155,9 @@
                 android:id="@+id/edtTin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="false"
                 android:digits="1234567890abcdefghijklmnopqrstuvxyz"
+                android:editable="false"
                 android:hint="Tin No"
                 android:textColorHint="@color/primaryColor" />
         </android.support.design.widget.TextInputLayout>

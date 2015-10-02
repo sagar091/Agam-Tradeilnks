@@ -73,7 +73,7 @@ public class AddNewRetailerFragment extends Fragment {
     LocationFinder finder;
     Button btnAdd;
     double longitude = 0.0, latitude = 0.0;
-    String selectCity, userId;
+    String selectCity, userId, msg;
 
     public static AddNewRetailerFragment newInstance(String param1, String param2) {
         AddNewRetailerFragment fragment = new AddNewRetailerFragment();
@@ -117,7 +117,6 @@ public class AddNewRetailerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (checkValidation()) {
-                    Functions.showSnack(parentView, "Proceed..");
                     new AddRetailer().execute();
                 }
             }
@@ -441,6 +440,17 @@ public class AddNewRetailerFragment extends Fragment {
                 map.put("lat", "0.0");
                 map.put("long", "0.0");
             }
+            Log.e("req", map.toString());
+            try {
+                HttpRequest req = new HttpRequest(Constants.BASE_URL);
+                JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
+                Log.e("add_retailer_response", obj.toString());
+                JSONObject json2 = obj.getJSONObject("status");
+                msg = json2.getString("msg");
+            } catch (Exception e) {
+                Functions.showSnack(parentView, e.getMessage());
+
+            }
 
             return null;
         }
@@ -449,6 +459,7 @@ public class AddNewRetailerFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             pd.dismiss();
+            Functions.showSnack(parentView, msg);
         }
     }
 }
