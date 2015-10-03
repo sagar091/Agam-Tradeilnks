@@ -3,6 +3,7 @@ package com.example.sagar.myapplication.retailer.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,37 +11,25 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
-import com.example.sagar.myapplication.customComponent.ChangePasswordDialog;
 import com.example.sagar.myapplication.customComponent.SettingDialog;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Functions;
-import com.example.sagar.myapplication.marketing.fragment.AddNewRetailerFragment;
-import com.example.sagar.myapplication.marketing.fragment.AgentFragment;
 import com.example.sagar.myapplication.marketing.fragment.DownloadSheetFragment;
-import com.example.sagar.myapplication.marketing.fragment.HomeMarketingFragment;
-import com.example.sagar.myapplication.marketing.fragment.MultipleOrdersPaymentFragment;
-import com.example.sagar.myapplication.marketing.fragment.OrderMarketingFragment;
-import com.example.sagar.myapplication.marketing.fragment.PaymentFragment;
-import com.example.sagar.myapplication.marketing.fragment.RetailerMarketingFragment;
-import com.example.sagar.myapplication.marketing.fragment.StockFragment;
 import com.example.sagar.myapplication.model.Retailer;
 import com.example.sagar.myapplication.model.RetailerProfileModel;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.retailer.fragment.HomeRetailerFragment;
 import com.example.sagar.myapplication.retailer.fragment.ProfileRetailerFragment;
+import com.example.sagar.myapplication.retailer.fragment.RetailersOrderFragment;
 import com.example.sagar.myapplication.retailer.fragment.SchemeFragment;
-import com.example.sagar.myapplication.ui.CheckInActivity;
 import com.example.sagar.myapplication.ui.MainActivity;
-import com.google.gson.GsonBuilder;
 
 public class RetailerDrawerActivity extends AppCompatActivity {
 
@@ -49,9 +38,7 @@ public class RetailerDrawerActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     private NavigationView navigationView;
     private ImageView imgCart;
-    SharedPreferences preferences;
     private ComplexPreferences complexPreferences;
-    View headerLayout;
     TextView txtUsername;
 
     @Override
@@ -86,6 +73,7 @@ public class RetailerDrawerActivity extends AppCompatActivity {
     private void setDrawerClick(int itemId) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
+
         switch (itemId) {
             case R.id.drawer_home:
                 ft.replace(R.id.content, new HomeRetailerFragment(), "Home");
@@ -98,7 +86,8 @@ public class RetailerDrawerActivity extends AppCompatActivity {
                 break;
 
             case R.id.drawer_orders:
-
+                ft.replace(R.id.content, new RetailersOrderFragment(), "Orders");
+                ft.commit();
                 break;
 
             case R.id.drawer_payment:
@@ -116,26 +105,13 @@ public class RetailerDrawerActivity extends AppCompatActivity {
                 break;
 
             case R.id.drawer_log_out:
-                complexPreferences = ComplexPreferences.getComplexPreferences(RetailerDrawerActivity.this, "user_pref", 0);
-                UserProfile blankUser = new UserProfile();
-                complexPreferences.putObject("current-user", blankUser);
-
-                SharedPreferences preferences2 = getSharedPreferences("login", MODE_PRIVATE);
-                SharedPreferences.Editor editor2 = preferences2.edit();
-                editor2.remove("isUserLogin");
-                editor2.commit();
-
-                RetailerProfileModel blankModel = new RetailerProfileModel();
-                complexPreferences.putObject("current-retailer", blankModel);
-                complexPreferences.commit();
+                Functions.closeSession(RetailerDrawerActivity.this);
 
                 Intent i = new Intent(this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
                         | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
-
                 break;
-
 
         }
     }

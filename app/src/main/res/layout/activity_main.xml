@@ -8,6 +8,7 @@
     <include layout="@layout/app_bar"></include>
 
     <LinearLayout
+        android:id="@+id/selectLayout"
         style="@style/match_wrap_content"
         android:layout_below="@+id/toolbar"
         android:orientation="vertical"
@@ -23,7 +24,6 @@
             android:textColorHint="@color/primaryColor" />
 
         <LinearLayout
-            android:id="@+id/selectLayout"
             style="@style/match_wrap_content"
             android:layout_marginTop="6dp"
             android:orientation="horizontal"
@@ -59,6 +59,7 @@
     <LinearLayout
         android:id="@+id/scroll"
         style="@style/both_match_parent"
+        android:layout_below="@+id/selectLayout"
         android:layout_margin="5dp"
         android:background="#ffffff"
         android:gravity="center"
@@ -79,7 +80,7 @@
                 android:weightSum="3">
 
                 <ImageView
-                    android:id="@+id/smallImage"
+                    android:id="@+id/imgProduct"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_weight="1" />
@@ -93,12 +94,10 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/linear4"
                         style="@style/match_wrap_content"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/productDetails"
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:text="Brand"
@@ -106,19 +105,16 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/pBrand"
+                            android:id="@+id/txtBrand"
                             style="@style/both_wrap_content"
-                            android:text=""
                             android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/linear4"
                         style="@style/match_wrap_content"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/productDetails"
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:text="Name"
@@ -126,19 +122,17 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/pName"
+                            android:id="@+id/txtName"
                             style="@style/both_wrap_content"
                             android:text=""
                             android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/linear5"
                         style="@style/match_wrap_content"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/productDetails"
                             android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:text="Price"
@@ -146,7 +140,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/pPrice"
+                            android:id="@+id/txtPrice"
                             style="@style/both_wrap_content"
                             android:text=""
                             android:textSize="16sp" />
@@ -155,7 +149,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linear5"
                 style="@style/both_match_parent"
                 android:orientation="vertical">
 
@@ -174,7 +167,6 @@
                     android:fadeScrollbars="false">
 
                     <LinearLayout
-                        android:id="@+id/linear5"
                         style="@style/both_match_parent"
                         android:orientation="vertical">
 
@@ -186,7 +178,6 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/productDetails"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -195,7 +186,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pDisplay"
+                                android:id="@+id/txtDisplay"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -212,7 +203,6 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/productDetails"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -221,7 +211,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pOS"
+                                android:id="@+id/txtOS"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -238,7 +228,6 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/productDetails"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -247,7 +236,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pCam"
+                                android:id="@+id/txtCamera"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -264,7 +253,6 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/productDetails"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -273,7 +261,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pROM"
+                                android:id="@+id/txtRAM"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -290,7 +278,6 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/productDetails"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -299,7 +286,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pExp"
+                                android:id="@+id/txtExpandable"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -316,7 +303,6 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/productDetails"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -325,7 +311,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pFM"
+                                android:id="@+id/txtFM"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -350,7 +336,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pAudio"
+                                android:id="@+id/txtAudio"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -367,7 +353,6 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/productDetails"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -376,7 +361,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pProcessor"
+                                android:id="@+id/txtProcessor"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -393,7 +378,6 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/productDetails"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -402,7 +386,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pBattery"
+                                android:id="@+id/txtBattery"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -427,7 +411,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pColor"
+                                android:id="@+id/txtColor"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -452,7 +436,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pBt"
+                                android:id="@+id/txtBluetooth"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -477,7 +461,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pFlash"
+                                android:id="@+id/txtFlash"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -502,7 +486,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/pSpecial"
+                                android:id="@+id/txtSpecial"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"

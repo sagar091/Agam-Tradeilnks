@@ -27,9 +27,9 @@
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:headerLayout="@layout/drawer_header"
         android:layout_gravity="start"
         android:background="@color/drawer_bg"
+        app:headerLayout="@layout/drawer_header"
         app:itemTextAppearance="@style/list_item_appearance"
         app:menu="@menu/menu_retailer_drawer"
         app:theme="@style/NavigationItemStyle" />

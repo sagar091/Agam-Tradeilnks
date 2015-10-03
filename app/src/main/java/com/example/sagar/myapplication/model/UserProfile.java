@@ -21,4 +21,7 @@ public class UserProfile {
 
     @SerializedName("prefered_brand")
     public String prefered_brand;
+
+    @SerializedName("is_new")
+    public String is_new;
 }

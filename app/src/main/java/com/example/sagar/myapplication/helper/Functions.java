@@ -7,6 +7,7 @@ package com.example.sagar.myapplication.helper;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.location.Location;
 import android.net.ConnectivityManager;
@@ -17,6 +18,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.sagar.myapplication.model.RetailerProfileModel;
+import com.example.sagar.myapplication.model.UserProfile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -119,6 +123,23 @@ public class Functions {
 
     public static String getText(EditText editText) {
         return editText.getText().toString().trim();
+    }
+
+    public static void closeSession(Context context) {
+        ComplexPreferences complexPreferences;
+        complexPreferences = ComplexPreferences.getComplexPreferences(context, "user_pref", 0);
+        UserProfile blankUser = new UserProfile();
+        complexPreferences.putObject("current-user", blankUser);
+
+        SharedPreferences preferences2 = context.getSharedPreferences("login", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = preferences2.edit();
+        editor2.remove("isUserLogin");
+        editor2.commit();
+
+        RetailerProfileModel blankModel = new RetailerProfileModel();
+        complexPreferences.putObject("current-retailer", blankModel);
+        complexPreferences.commit();
+
     }
 
 }

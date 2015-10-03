@@ -1,6 +1,7 @@
 package com.example.sagar.myapplication.ui;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -17,10 +18,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.FirstTimeDialog;
+import com.example.sagar.myapplication.customComponent.HomeWatcher;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
+import com.example.sagar.myapplication.model.RetailerProfileModel;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.retailer.activity.RetailerDrawerActivity;
 import com.google.gson.GsonBuilder;
@@ -42,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog pd;
     UserProfile userProfile;
     private int loginError;
+    JSONObject statusObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
                 Log.e("login_response", obj.toString());
-                JSONObject statusObject = obj.getJSONObject("status");
+                statusObject = obj.getJSONObject("status");
 
                 loginError = statusObject.getInt("error");
                 if (loginError == 0) {
@@ -173,18 +178,6 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putBoolean("isUserLogin", true);
                     editor.commit();
 
-                    if (userProfile.user_type.equals("1")) {
-                        Snackbar.make(loginButton, "Login as Marketing Executive", Snackbar.LENGTH_LONG).show();
-                        Intent intent = new Intent(LoginActivity.this, CheckInActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    } else {
-                        Snackbar.make(loginButton, "Login as Retailer", Snackbar.LENGTH_LONG).show();
-                        Intent intent = new Intent(LoginActivity.this, RetailerDrawerActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-
                 } else {
                     Snackbar.make(loginButton, "Invalid Login Credentials", Snackbar.LENGTH_LONG).show();
                 }
@@ -199,7 +192,56 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             pd.dismiss();
+
+            if (userProfile.user_type.equals("1")) {
+                Intent intent = new Intent(LoginActivity.this, CheckInActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+            } else {
+
+                if (userProfile.is_new == null) {
+                    Intent intent = new Intent(LoginActivity.this, RetailerDrawerActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+                } else if (userProfile.is_new.equals("1")) {
+
+                    HomeWatcher mHomeWatcher = new HomeWatcher(LoginActivity.this);
+                    mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
+                        @Override
+                        public void onHomePressed() {
+                            // do something here...
+                            Functions.closeSession(LoginActivity.this);
+
+                        }
+
+                        @Override
+                        public void onHomeLongPressed() {
+                        }
+                    });
+
+                    mHomeWatcher.startWatch();
+
+                    FirstTimeDialog dialog = new FirstTimeDialog(LoginActivity.this);
+                    dialog.setOnChangePasswordListener(new FirstTimeDialog.onChangePasswordListener() {
+                        @Override
+                        public void setPassword(String password) {
+                            userProfile = new GsonBuilder().create().fromJson(statusObject.toString(), UserProfile.class);
+
+                            userProfile.password = password;
+
+                            ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginActivity.this, "user_pref", 0);
+                            complexPreferences.putObject("current-user", userProfile);
+                            complexPreferences.commit();
+                        }
+                    });
+                    dialog.show();
+                }
+            }
+
             loginButton.setText("Login");
         }
+
     }
 }

@@ -158,21 +158,12 @@ public class MarketingDrawerActivity extends AppCompatActivity {
                 break;
 
             case R.id.drawer_password:
-                ChangePasswordDialog dialog = new ChangePasswordDialog(MarketingDrawerActivity.this);
+                final ChangePasswordDialog dialog = new ChangePasswordDialog(MarketingDrawerActivity.this);
                 dialog.show();
                 break;
 
             case R.id.drawer_log_out:
-                complexPreferences = ComplexPreferences.getComplexPreferences(MarketingDrawerActivity.this, "user_pref", 0);
-                UserProfile blankUser = new UserProfile();
-                complexPreferences.putObject("current-user", blankUser);
-                complexPreferences.commit();
-
-                SharedPreferences preferences2 = getSharedPreferences("login", MODE_PRIVATE);
-                SharedPreferences.Editor editor2 = preferences2.edit();
-                editor2.remove("isUserLogin");
-                editor2.commit();
-
+                Functions.closeSession(MarketingDrawerActivity.this);
                 Intent i = new Intent(this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
                         | Intent.FLAG_ACTIVITY_NEW_TASK);
