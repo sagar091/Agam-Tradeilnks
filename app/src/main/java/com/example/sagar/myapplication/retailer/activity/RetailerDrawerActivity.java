@@ -27,6 +27,7 @@ import com.example.sagar.myapplication.model.RetailerProfileModel;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.retailer.fragment.HomeRetailerFragment;
 import com.example.sagar.myapplication.retailer.fragment.ProfileRetailerFragment;
+import com.example.sagar.myapplication.retailer.fragment.RetailerPaymentFragment;
 import com.example.sagar.myapplication.retailer.fragment.RetailersOrderFragment;
 import com.example.sagar.myapplication.retailer.fragment.SchemeFragment;
 import com.example.sagar.myapplication.ui.MainActivity;
@@ -91,7 +92,8 @@ public class RetailerDrawerActivity extends AppCompatActivity {
                 break;
 
             case R.id.drawer_payment:
-
+                ft.replace(R.id.content, new RetailerPaymentFragment(), "Payment");
+                ft.commit();
                 break;
 
             case R.id.drawer_scheme:

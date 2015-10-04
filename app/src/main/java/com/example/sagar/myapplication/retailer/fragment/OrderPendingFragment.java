@@ -121,7 +121,7 @@ public class OrderPendingFragment extends Fragment {
                 orderError = obj.getInt("error");
                 if (orderError == 0) {
                     orderData = new GsonBuilder().create().fromJson(obj.toString(), OrderMarketingData.class);
-                }else{
+                } else {
                     orderData = null;
                 }
             } catch (Exception e) {
@@ -135,18 +135,14 @@ public class OrderPendingFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             pd.dismiss();
-            if (orderData == null) {
+            if (orderData == null || orderData.orders.size() == 0) {
                 Log.e("no data", "no data");
-            }
-            /*
-            if (orderData.orders != null || orderData.orders.size() > 0) {
+                noData.setVisibility(View.VISIBLE);
+            } else {
                 noData.setVisibility(View.GONE);
                 adapter = new PendingOrderAdapter(getActivity(), orderData.orders);
                 listView.setAdapter(adapter);
-            }else{
-                noData.setVisibility(View.VISIBLE);
-            }*/
-
+            }
         }
     }
 

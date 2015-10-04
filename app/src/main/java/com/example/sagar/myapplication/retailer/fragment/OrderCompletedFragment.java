@@ -132,17 +132,14 @@ public class OrderCompletedFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             pd.dismiss();
-            if (orderData == null) {
+            if (orderData == null || orderData.orders.size() == 0) {
                 Log.e("no data", "no data");
-            }
- /*           if (orderData.orders != null || orderData.orders.size() > 0) {
+                noData.setVisibility(View.VISIBLE);
+            } else {
                 noData.setVisibility(View.GONE);
                 adapter = new CompletedOrderAdapter(getActivity(), orderData.orders);
                 listView.setAdapter(adapter);
-            } else {
-                noData.setVisibility(View.VISIBLE);
-            }*/
-
+            }
         }
     }
 
