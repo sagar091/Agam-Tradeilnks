@@ -161,6 +161,7 @@ public class RetailerPaymentFragment extends Fragment {
                 mHolder.orderdate = (TextView) convertView
                         .findViewById(R.id.orderDate);
                 convertView.setTag(mHolder);
+
             } else {
                 mHolder = (ViewHolder) convertView.getTag();
             }
