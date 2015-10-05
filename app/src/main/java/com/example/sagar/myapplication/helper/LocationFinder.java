@@ -88,7 +88,7 @@ public class LocationFinder extends Service implements LocationListener {
 
             if (!isGPSEnabled && !isNetworkEnabled) {
                 // no network provider is enabled
-                Log.e("Network-GPS", "Disable");
+               // Log.e("Network-GPS", "Disable");
             } else {
                 this.canGetLocation = true;
                 // First get location from Network Provider
@@ -97,7 +97,7 @@ public class LocationFinder extends Service implements LocationListener {
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,
                             MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    Log.e("Network", "Network");
+                   // Log.e("Network", "Network");
                     if (locationManager != null) {
                         location = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -114,7 +114,7 @@ public class LocationFinder extends Service implements LocationListener {
                                     LocationManager.GPS_PROVIDER,
                                     MIN_TIME_BW_UPDATES,
                                     MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                            Log.e("GPS Enabled", "GPS Enabled");
+                            //Log.e("GPS Enabled", "GPS Enabled");
                             if (locationManager != null) {
                                 location = locationManager
                                         .getLastKnownLocation(LocationManager.GPS_PROVIDER);

@@ -57,8 +57,7 @@
             android:id="@+id/usersListView"
             style="@style/both_match_parent"
             android:layout_marginTop="6dp"
-            android:divider="@color/primaryColor"
-            android:dividerHeight="1dp"
+            android:divider="@null"
             android:fadeScrollbars="false"></ListView>
     </LinearLayout>
 
