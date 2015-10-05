@@ -92,7 +92,7 @@ public class OrderPendingFragment extends Fragment {
         userId = userProfile.user_id;
         Log.e("userId", userId);
 
-        //new GetPendingOrder().execute();
+        new GetPendingOrder().execute();
 
     }
 
@@ -195,7 +195,7 @@ public class OrderPendingFragment extends Fragment {
             }
 
             mHolder.orderid.setText(orders.get(position).order.order_id);
-            mHolder.retailer.setText(orders.get(position).order.retailor_id);
+            mHolder.retailer.setText(orders.get(position).order.retailor_name);
             mHolder.orderdate
                     .setText(orders.get(position).order.order_date);
 

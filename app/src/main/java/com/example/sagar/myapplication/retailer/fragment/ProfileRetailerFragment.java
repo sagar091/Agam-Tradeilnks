@@ -160,7 +160,7 @@ public class ProfileRetailerFragment extends Fragment {
         profileModel = new RetailerProfileModel();
         profileModel = complexPreferences.getObject("current-retailer", RetailerProfileModel.class);
 
-        if (profileModel.username == null) {
+        if (profileModel == null) {
             new GetProfileData().execute();
         } else {
             setProfile();

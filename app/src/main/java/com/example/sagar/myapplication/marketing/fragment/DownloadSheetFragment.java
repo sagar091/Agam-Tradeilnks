@@ -328,7 +328,6 @@ public class DownloadSheetFragment extends Fragment {
             btnDownload.setText(values[0] + "%");
             if (values[0].equals("100"))
                 btnDownload.setText("Downloaded");
-
         }
     }
 }

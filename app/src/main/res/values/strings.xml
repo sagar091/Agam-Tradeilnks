@@ -36,5 +36,6 @@
     <string name="title_activity_order_details">OrderDetailsActivity</string>
     <string name="title_activity_payment_mode">PaymentModeActivity</string>
     <string name="title_activity_multi_orders">MultiOrders</string>
+    <string name="title_activity_retailer_order_detail">RetailerOrderDetailActivity</string>
 
 </resources>

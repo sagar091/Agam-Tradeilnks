@@ -2,6 +2,7 @@ package com.example.sagar.myapplication.retailer.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +23,8 @@ import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.model.OrderClass;
 import com.example.sagar.myapplication.model.PaymentHistory;
 import com.example.sagar.myapplication.model.UserProfile;
+import com.example.sagar.myapplication.retailer.activity.RetailerDrawerActivity;
+import com.example.sagar.myapplication.retailer.activity.RetailerPaymentOrderActivity;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
@@ -39,6 +43,7 @@ public class RetailerPaymentFragment extends Fragment {
     ProgressDialog pd;
     ListView paymentList;
     ListViewAdapter adapter;
+    TextView noData;
 
     public static RetailerPaymentFragment newInstance(String param1, String param2) {
         RetailerPaymentFragment fragment = new RetailerPaymentFragment();
@@ -65,15 +70,30 @@ public class RetailerPaymentFragment extends Fragment {
         init(parentView);
 
         new GetPaymentHistory().execute();
+
+        paymentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(getActivity(), RetailerPaymentOrderActivity.class);
+                i.putExtra("orderId", paymentHistory.data.get(position).order_id);
+                startActivity(i);
+            }
+        });
+
         return parentView;
     }
 
     private void init(View parentView) {
+        ((RetailerDrawerActivity) getActivity()).setTitle("Payment");
+        ((RetailerDrawerActivity) getActivity()).setSubtitle("Orders");
+
+        noData = (TextView) parentView.findViewById(R.id.noData);
         paymentList = (ListView) parentView.findViewById(R.id.paymentList);
 
         complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         UserProfile userProfile = complexPreferences.getObject("current-user", UserProfile.class);
         retailerId = userProfile.user_id;
+        Log.e("retailer", retailerId);
     }
 
     private class GetPaymentHistory extends AsyncTask<String, String, String> {
@@ -87,7 +107,7 @@ public class RetailerPaymentFragment extends Fragment {
         protected String doInBackground(String... params) {
             HashMap<String, String> map = new HashMap<>();
             map.put("form_type", "retailor_payment");
-            map.put("retailor_id", "422");
+            map.put("retailor_id", retailerId);
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
@@ -107,10 +127,15 @@ public class RetailerPaymentFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             pd.dismiss();
-            if (paymentHistory != null) {
+
+            if (paymentHistory == null || paymentHistory.data.size() == 0) {
+                noData.setVisibility(View.VISIBLE);
+            } else {
+                noData.setVisibility(View.GONE);
                 adapter = new ListViewAdapter(getActivity(), paymentHistory.data);
                 paymentList.setAdapter(adapter);
             }
+
         }
     }
 
@@ -171,7 +196,7 @@ public class RetailerPaymentFragment extends Fragment {
             mHolder.paymentPending.setText(getResources().getString(R.string.Rs) + " " + data.get(position).payment_recived);
             mHolder.orderdate.setText(data.get(position).date + " " + data.get(position).time);
 
-            return null;
+            return convertView;
         }
 
         private class ViewHolder {
