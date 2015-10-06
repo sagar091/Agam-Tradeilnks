@@ -184,7 +184,7 @@ public class OrderCompletedFragment extends Fragment {
             }
 
             mHolder.orderid.setText(orders.get(position).order.order_id);
-            mHolder.retailer.setText(orders.get(position).order.retailor_id);
+            mHolder.retailer.setText(orders.get(position).order.retailor_name);
             mHolder.orderdate
                     .setText(orders.get(position).order.order_date);
 
