@@ -108,6 +108,7 @@ public class RetailerPaymentFragment extends Fragment {
             HashMap<String, String> map = new HashMap<>();
             map.put("form_type", "retailor_payment");
             map.put("retailor_id", retailerId);
+
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
