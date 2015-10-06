@@ -21,7 +21,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.CheckInDialog;
-import com.example.sagar.myapplication.customComponent.CustomBaseDialog;
+import com.example.sagar.myapplication.customComponent.CartDialog;
+import com.example.sagar.myapplication.customComponent.SchemeViewDialog;
 import com.example.sagar.myapplication.customComponent.SearchAdapter;
 import com.example.sagar.myapplication.customComponent.TouchImageView;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
@@ -248,6 +249,7 @@ public class HomeMarketingFragment extends Fragment {
                 viewHolder.txtProductStock = (TextView) convertView.findViewById(R.id.txtProductStock);
                 viewHolder.imgProduct = (ImageView) convertView.findViewById(R.id.imgProduct);
                 viewHolder.btnAddCart = (Button) convertView.findViewById(R.id.btnAddCart);
+                viewHolder.btnScheme = (Button) convertView.findViewById(R.id.btnScheme);
                 convertView.setTag(viewHolder);
 
             } else {
@@ -271,6 +273,14 @@ public class HomeMarketingFragment extends Fragment {
                 }
             });
 
+            viewHolder.btnScheme.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SchemeViewDialog dialog = new SchemeViewDialog(getActivity(), filledContainer.get(position).schemes);
+                    dialog.show();
+                }
+            });
+
             viewHolder.btnAddCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -290,7 +300,7 @@ public class HomeMarketingFragment extends Fragment {
                             productDetails.add(modelName);
                             productDetails.add(modelPrice);
 
-                            CustomBaseDialog dialog = new CustomBaseDialog(getActivity(), productDetails);
+                            CartDialog dialog = new CartDialog(getActivity(), productDetails, filledContainer.get(position).schemes);
                             dialog.show();
                         }
 

@@ -10,19 +10,21 @@ import android.widget.Toast;
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.DatabaseHandler;
 import com.example.sagar.myapplication.helper.Functions;
+import com.example.sagar.myapplication.model.Scheme;
 import com.flyco.animation.FadeEnter.FadeEnter;
 import com.flyco.dialog.widget.base.BaseDialog;
 import com.rey.material.widget.Button;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import me.gujun.android.taggroup.TagGroup;
 
 /**
  * Created by sagartahelyani on 18-09-2015.
  */
-public class CustomBaseDialog extends BaseDialog {
+public class CartDialog extends BaseDialog {
 
     ArrayList<String> productDetails;
     ArrayList<String> cartProductDetails;
@@ -34,10 +36,12 @@ public class CustomBaseDialog extends BaseDialog {
     StringBuilder sb;
     View customView;
     View parentView;
+    List<Scheme> schemes;
 
-    public CustomBaseDialog(Context context, ArrayList<String> productDetails) {
+    public CartDialog(Context context, ArrayList<String> productDetails, List<Scheme> schemes) {
         super(context);
         this.productDetails = productDetails;
+        this.schemes = schemes;
     }
 
     @Override
@@ -91,7 +95,7 @@ public class CustomBaseDialog extends BaseDialog {
 
                     try {
                         handler.openDataBase();
-                        boolean save = handler.addCartProduct(cartProductDetails);
+                        boolean save = handler.addCartProduct(cartProductDetails, schemes);
                         if (save) {
 //                            Functions.showSnack(parentView, "Product added successfully");
                             Toast.makeText(context, "Product added successfully.", Toast.LENGTH_LONG).show();

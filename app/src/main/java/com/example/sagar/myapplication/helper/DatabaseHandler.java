@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.model.ProductCart;
+import com.example.sagar.myapplication.model.Scheme;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,6 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sagartahelyani on 18-09-2015.
@@ -24,6 +27,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "agamtradelinks.db";
     private static final String TABLE_CART_ITEM = "Cart";
+    private static final String TABLE_SCHEME = "Scheme";
 
     private static final String DATABASE_PATH = "/data/data/com.example.sagar.myapplication/databases/";
     private Context context;
@@ -103,7 +107,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return dbFile.exists();
     }
 
-    public boolean addCartProduct(ArrayList<String> cartProductDetails) {
+    public boolean addCartProduct(ArrayList<String> cartProductDetails, List<Scheme> schemes) {
 
         myDataBase = this.getWritableDatabase();
 
@@ -114,6 +118,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("qty", Integer.parseInt(cartProductDetails.get(3))); // qty
         values.put("colors", cartProductDetails.get(4)); // colors
         myDataBase.insert(TABLE_CART_ITEM, null, values);
+
+        for (int i = 0; i < schemes.size(); i++) {
+            ContentValues cv = new ContentValues();
+            cv.put("product_id", Integer.parseInt(cartProductDetails.get(0))); // id
+            String strScheme = "Buy " + schemes.get(i).quantity + " at  " + context.getResources().getString(R.string.Rs) + " " + schemes.get(i).price;
+            cv.put("scheme", strScheme); // scheme text
+            cv.put("scheme_id", schemes.get(i).id); // scheme id
+            myDataBase.insert(TABLE_SCHEME, null, values);
+
+        }
 
         return true;
 

@@ -27,6 +27,7 @@ import com.example.sagar.myapplication.model.OrderMarketingData;
 import com.example.sagar.myapplication.model.OrderModel;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.google.gson.GsonBuilder;
+import com.rey.material.widget.CheckBox;
 
 import org.json.JSONObject;
 
@@ -193,6 +194,8 @@ public class RetailerOrdersActivity extends AppCompatActivity {
                         .findViewById(R.id.txtOrderId);
                 mHolder.txtOrderTotal = (TextView) convertView
                         .findViewById(R.id.txtOrderTotal);
+                mHolder.checkbox = (CheckBox) convertView.findViewById(R.id.checkbox);
+                mHolder.checkbox.setVisibility(View.GONE);
                 convertView.setTag(mHolder);
             } else {
                 mHolder = (ViewHolder) convertView.getTag();
@@ -215,6 +218,7 @@ public class RetailerOrdersActivity extends AppCompatActivity {
         private class ViewHolder {
             TextView txtOrderTotal, txtOrderId;
             LinearLayout fullLayout;
+            CheckBox checkbox;
         }
     }
 }
