@@ -125,7 +125,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String strScheme = "Buy " + schemes.get(i).quantity + " at  " + context.getResources().getString(R.string.Rs) + " " + schemes.get(i).price;
             cv.put("scheme", strScheme); // scheme text
             cv.put("scheme_id", schemes.get(i).id); // scheme id
-            myDataBase.insert(TABLE_SCHEME, null, values);
+            myDataBase.insert(TABLE_SCHEME, null, cv);
 
         }
 

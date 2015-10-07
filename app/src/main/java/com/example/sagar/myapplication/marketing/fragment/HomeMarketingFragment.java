@@ -95,7 +95,6 @@ public class HomeMarketingFragment extends Fragment {
                 } else {
                     Snackbar.make(edtCompany, "No data for company", Snackbar.LENGTH_SHORT).show();
                 }
-
             }
         });
 
