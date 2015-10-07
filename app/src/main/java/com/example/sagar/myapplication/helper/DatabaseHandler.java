@@ -147,8 +147,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return available;
     }
 
-    public ArrayList<ProductCart> getProducts() {
-        ArrayList<ProductCart> products = new ArrayList<>();
+    public List<ProductCart> getProducts() {
+        List<ProductCart> products = new ArrayList<>();
 
         myDataBase = this.getWritableDatabase();
         Cursor cursor;

@@ -95,6 +95,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_weight="0.30"
+            android:background="@drawable/background"
             android:gravity="left|start"
             android:hint="Remarks"
             android:lines="3"
