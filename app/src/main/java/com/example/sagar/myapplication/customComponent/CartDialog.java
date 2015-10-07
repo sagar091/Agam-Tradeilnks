@@ -37,6 +37,13 @@ public class CartDialog extends BaseDialog {
     View customView;
     View parentView;
     List<Scheme> schemes;
+    int qty;
+
+    public void setOnCartAddListener(OnCartAddListener onCartAddListener) {
+        this.onCartAddListener = onCartAddListener;
+    }
+
+    OnCartAddListener onCartAddListener;
 
     public CartDialog(Context context, ArrayList<String> productDetails, List<Scheme> schemes) {
         super(context);
@@ -72,14 +79,13 @@ public class CartDialog extends BaseDialog {
             @Override
             public void onClick(View v) {
                 cartProductDetails = new ArrayList<String>();
-                seekbar.setProgress(1);
+
                 if (seekbar.getProgress() == 0) {
                     Functions.showSnack(customView, "Invalid Quantity");
                 } else if (mTagGroup.getTags().length == 0) {
                     Functions.showSnack(customView, "Add atleast one color for model");
                 } else {
-                    Log.e("retailerData", productDetails.toString());
-                    Log.e("qty", seekbar.getProgress() + " Qty");
+
                     sb = new StringBuilder();
                     for (int i = 0; i < mTagGroup.getTags().length; i++) {
                         Log.e("colors", mTagGroup.getTags()[i]);
@@ -89,7 +95,8 @@ public class CartDialog extends BaseDialog {
                     cartProductDetails.add(productDetails.get(0)); // id
                     cartProductDetails.add(productDetails.get(1)); // name
                     cartProductDetails.add(productDetails.get(2)); // price
-                    cartProductDetails.add(seekbar.getProgress() + ""); // qty
+                    cartProductDetails.add(qty + ""); // qty
+
                     String colors = sb.toString().substring(0, sb.toString().length() - 2);
                     cartProductDetails.add(colors); // colors
 
@@ -97,8 +104,9 @@ public class CartDialog extends BaseDialog {
                         handler.openDataBase();
                         boolean save = handler.addCartProduct(cartProductDetails, schemes);
                         if (save) {
-//                            Functions.showSnack(parentView, "Product added successfully");
-                            Toast.makeText(context, "Product added successfully.", Toast.LENGTH_LONG).show();
+                            if (onCartAddListener != null) {
+                                onCartAddListener.onOkClick();
+                            }
                             dismiss();
                         } else {
 //                            Functions.showSnack(parentView,"Something went wrong");
@@ -133,9 +141,11 @@ public class CartDialog extends BaseDialog {
 
     @Override
     public boolean setUiBeforShow() {
+        seekbar.setProgress(1);
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                qty = progress;
                 unitQty.setText("x " + progress + " Qty");
                 unitTotalPrice.setText("= " + context.getResources().getString(R.string.Rs) + " " + String.valueOf(Integer.parseInt(productDetails.get(2)) * progress));
             }
@@ -151,6 +161,10 @@ public class CartDialog extends BaseDialog {
             }
         });
         return false;
+    }
+
+    public interface OnCartAddListener {
+        void onOkClick();
     }
 
 }

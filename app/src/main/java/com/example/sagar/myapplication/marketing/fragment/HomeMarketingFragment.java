@@ -24,6 +24,7 @@ import com.example.sagar.myapplication.customComponent.CheckInDialog;
 import com.example.sagar.myapplication.customComponent.CartDialog;
 import com.example.sagar.myapplication.customComponent.SchemeViewDialog;
 import com.example.sagar.myapplication.customComponent.SearchAdapter;
+import com.example.sagar.myapplication.customComponent.ToolHelper;
 import com.example.sagar.myapplication.customComponent.TouchImageView;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
@@ -48,6 +49,7 @@ import java.util.List;
 
 public class HomeMarketingFragment extends Fragment {
 
+    View parentView;
     private EditText edtCompany;
     CompanyData companyData;
     ProgressDialog pd;
@@ -77,8 +79,8 @@ public class HomeMarketingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home_marketing, container, false);
-        init(view);
+        parentView = inflater.inflate(R.layout.fragment_home_marketing, container, false);
+        init(parentView);
 
         //new GetCompany().execute();
 
@@ -98,7 +100,7 @@ public class HomeMarketingFragment extends Fragment {
             }
         });
 
-        return view;
+        return parentView;
 
     }
 
@@ -300,6 +302,13 @@ public class HomeMarketingFragment extends Fragment {
                             productDetails.add(modelPrice);
 
                             CartDialog dialog = new CartDialog(getActivity(), productDetails, filledContainer.get(position).schemes);
+                            dialog.setOnCartAddListener(new CartDialog.OnCartAddListener() {
+                                @Override
+                                public void onOkClick() {
+                                    Functions.showSnack(parentView, "Product added in the cart");
+                                    ((MarketingDrawerActivity) getActivity()).getHelper().displayBadge();
+                                }
+                            });
                             dialog.show();
                         }
 

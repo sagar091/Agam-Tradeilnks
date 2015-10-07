@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.ChangePasswordDialog;
 import com.example.sagar.myapplication.customComponent.SettingDialog;
+import com.example.sagar.myapplication.customComponent.ToolHelper;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.fragment.AddNewRetailerFragment;
@@ -44,6 +45,7 @@ public class MarketingDrawerActivity extends AppCompatActivity {
     private ImageView imgCart;
     SharedPreferences preferences;
     private ComplexPreferences complexPreferences;
+    ToolHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class MarketingDrawerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        helper.displayBadge();
         if (!Functions.isConnecting(this)) {
             SettingDialog dialog = new SettingDialog(this, "You don't seem to have an active internet connection. Please check your internet connectivity and come again.", android.provider.Settings.ACTION_SETTINGS);
             dialog.setOnExitListener(new SettingDialog.OnExitListener() {
@@ -171,13 +174,17 @@ public class MarketingDrawerActivity extends AppCompatActivity {
 
                 break;
 
-
         }
     }
 
     public Toolbar getToolbar() {
         return toolbar;
     }
+
+    public ToolHelper getHelper() {
+        return helper;
+    }
+
 
     public void setTitle(String title) {
         toolbar.setTitle(title);
@@ -270,6 +277,7 @@ public class MarketingDrawerActivity extends AppCompatActivity {
                 finish();
             }
         });
+        helper = new ToolHelper(MarketingDrawerActivity.this, toolbar);
 
     }
 
