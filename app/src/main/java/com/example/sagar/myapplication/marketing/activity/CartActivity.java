@@ -16,8 +16,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.SchemeViewDialog;
 import com.example.sagar.myapplication.helper.DatabaseHandler;
 import com.example.sagar.myapplication.model.ProductCart;
+import com.example.sagar.myapplication.model.Scheme;
+import com.rey.material.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +108,7 @@ public class CartActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             final ViewHolder mHolder;
 
@@ -113,36 +116,46 @@ public class CartActivity extends AppCompatActivity {
                 convertView = mInflater.inflate(R.layout.cart_item, parent,
                         false);
                 mHolder = new ViewHolder();
-                mHolder.proName = (TextView) convertView
-                        .findViewById(R.id.pName);
-                mHolder.proPrice = (TextView) convertView
-                        .findViewById(R.id.pPrice);
-                mHolder.proColors = (TextView) convertView
-                        .findViewById(R.id.colors);
-                mHolder.proQty = (TextView) convertView.findViewById(R.id.qua);
+                mHolder.txtProductName = (TextView) convertView
+                        .findViewById(R.id.txtProductName);
+                mHolder.txtProductPrice = (TextView) convertView
+                        .findViewById(R.id.txtProductPrice);
+                mHolder.txtColors = (TextView) convertView
+                        .findViewById(R.id.txtColors);
+                mHolder.txtQty = (TextView) convertView.findViewById(R.id.txtQty);
                 mHolder.remove = (ImageView) convertView
                         .findViewById(R.id.remove);
+                mHolder.btnScheme = (Button) convertView.findViewById(R.id.btnScheme);
                 mHolder.edit = (ImageView) convertView.findViewById(R.id.qty);
                 convertView.setTag(mHolder);
             } else {
                 mHolder = (ViewHolder) convertView.getTag();
             }
 
-            mHolder.proName.setText("Name: " + products.get(position).getName());
-            mHolder.proPrice.setText("Price: "
+            mHolder.txtProductName.setText("Name: " + products.get(position).getName());
+            mHolder.txtProductPrice.setText("Price: "
                     + getResources().getString(R.string.Rs)
                     + products.get(position).getPrice());
-            mHolder.proQty.setText(products.get(position).getQty());
-            mHolder.proColors.setText(products.get(position).getColors());
-
+            mHolder.txtQty.setText(products.get(position).getQty());
+            mHolder.txtColors.setText("Colors: " + products.get(position).getColors());
+            mHolder.btnScheme.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handler = new DatabaseHandler(context);
+                    List<Scheme> schemes = handler.getScheme(products.get(position).getProductId());
+                    SchemeViewDialog dialog = new SchemeViewDialog(context, schemes, "cart");
+                    dialog.show();
+                }
+            });
             return convertView;
         }
 
         private class ViewHolder {
-            TextView proName, proPrice, proColors;
-            TextView proQty;
+            TextView txtProductName, txtProductPrice, txtColors;
+            TextView txtQty;
             ImageView remove;
             ImageView edit;
+            Button btnScheme;
         }
     }
 }

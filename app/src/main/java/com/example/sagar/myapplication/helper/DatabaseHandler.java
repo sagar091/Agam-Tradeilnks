@@ -171,4 +171,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return products;
     }
 
+    public List<Scheme> getScheme(String productId) {
+        List<Scheme> schemes = new ArrayList<>();
+
+        myDataBase = this.getWritableDatabase();
+        Cursor cursor;
+        String selectQuery = "SELECT * FROM " + TABLE_SCHEME + " WHERE product_id = '" + productId + "'";
+        cursor = myDataBase.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+
+        if (cursor.getCount() > 0) {
+            do {
+                Scheme scheme = new Scheme();
+                scheme.scheme = (cursor.getString(cursor.getColumnIndexOrThrow("scheme")));
+                scheme.scheme_id = (cursor.getInt(cursor.getColumnIndexOrThrow("scheme_id")));
+                schemes.add(scheme);
+            } while (cursor.moveToNext());
+        }
+
+        return schemes;
+    }
+
 }

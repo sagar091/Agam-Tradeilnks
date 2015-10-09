@@ -277,7 +277,7 @@ public class HomeMarketingFragment extends Fragment {
             viewHolder.btnScheme.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SchemeViewDialog dialog = new SchemeViewDialog(getActivity(), filledContainer.get(position).schemes);
+                    SchemeViewDialog dialog = new SchemeViewDialog(getActivity(), filledContainer.get(position).schemes, "home");
                     dialog.show();
                 }
             });

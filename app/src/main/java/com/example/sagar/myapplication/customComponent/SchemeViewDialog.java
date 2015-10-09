@@ -8,7 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
@@ -33,11 +36,14 @@ public class SchemeViewDialog extends BaseDialog {
 
     View parentView;
     private LinearLayout schemeLayout;
+    private TextView txtNote;
     List<Scheme> schemes;
+    String type;
 
-    public SchemeViewDialog(Context context, List<Scheme> schemes) {
+    public SchemeViewDialog(Context context, List<Scheme> schemes, String type) {
         super(context);
         this.schemes = schemes;
+        this.type = type;
     }
 
     @Override
@@ -48,13 +54,35 @@ public class SchemeViewDialog extends BaseDialog {
         parentView = View.inflate(context, R.layout.scheme_view, null);
         init(parentView);
 
-        for (int i = 0; i < schemes.size(); i++) {
-            TextView txtScheme = new TextView(context);
-            txtScheme.setTextSize(18);
+        if (type.equals("home")) {
+            txtNote.setVisibility(View.VISIBLE);
+            for (int i = 0; i < schemes.size(); i++) {
+                TextView txtScheme = new TextView(context);
+                txtScheme.setTextSize(18);
 
-            txtScheme.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bullet, 0, 0, 0);
-            txtScheme.setText("Buy " + schemes.get(i).quantity + " at  " + context.getResources().getString(R.string.Rs) + " " + schemes.get(i).price);
-            schemeLayout.addView(txtScheme);
+                txtScheme.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bullet, 0, 0, 0);
+                txtScheme.setText("Buy " + schemes.get(i).quantity + " at  " + context.getResources().getString(R.string.Rs) + " " + schemes.get(i).price);
+                schemeLayout.addView(txtScheme);
+            }
+
+        } else {
+            txtNote.setVisibility(View.GONE);
+            RadioGroup rGroup = new RadioGroup(context);
+            for (int i = 0; i < schemes.size(); i++) {
+                RadioButton rButton = new RadioButton(context);
+                rButton.setTextSize(18);
+                rButton.setId(schemes.get(i).scheme_id);
+                rButton.setText(schemes.get(i).scheme);
+                rGroup.addView(rButton);
+            }
+            schemeLayout.addView(rGroup);
+
+            rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    Toast.makeText(context, checkedId + "", Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         parentView.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +97,7 @@ public class SchemeViewDialog extends BaseDialog {
 
     private void init(final View parentView) {
         schemeLayout = (LinearLayout) parentView.findViewById(R.id.schemeLayout);
-
+        txtNote = (TextView) parentView.findViewById(R.id.txtNote);
     }
 
     @Override

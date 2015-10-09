@@ -15,5 +15,12 @@ public class Scheme {
 
     @SerializedName("price")
     public String price;
+
+    @SerializedName("scheme")
+    public String scheme;
+
+    @SerializedName("scheme_id")
+    public int scheme_id;
+
 }
 
