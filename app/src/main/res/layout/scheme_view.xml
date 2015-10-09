@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFE4E1"
@@ -13,19 +14,61 @@
         android:textSize="18sp" />
 
     <LinearLayout
-        android:id="@+id/schemeLayout"
+        android:id="@+id/viewLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingLeft="10dp">
+
+        <LinearLayout
+            android:id="@+id/schemeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="You can apply any scheme to the products from Cart Page."
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/selectLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
+
+        <RadioGroup
+            android:id="@+id/rGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </RadioGroup>
+
+        <com.rey.material.widget.Button
+            android:id="@+id/btnApply"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="6dp"
+            android:background="@color/button_bg"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Apply"
+            android:textColor="#ffffff"
+            app:rd_enable="true"
+            app:rd_rippleColor="@color/button_ripple"
+            app:rd_rippleType="touch" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txtNote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="You can apply any scheme to the products from Cart Page."
-        android:textSize="18sp" />
+
 </LinearLayout>

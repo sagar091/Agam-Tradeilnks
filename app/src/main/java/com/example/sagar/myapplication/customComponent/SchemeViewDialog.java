@@ -1,12 +1,7 @@
 package com.example.sagar.myapplication.customComponent;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -14,19 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
-import com.example.sagar.myapplication.helper.ComplexPreferences;
-import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
-import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.model.Scheme;
-import com.example.sagar.myapplication.model.UserProfile;
 import com.flyco.animation.FadeEnter.FadeEnter;
 import com.flyco.dialog.widget.base.BaseDialog;
 import com.rey.material.widget.Button;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,10 +23,13 @@ import java.util.List;
 public class SchemeViewDialog extends BaseDialog {
 
     View parentView;
-    private LinearLayout schemeLayout;
+    private LinearLayout viewLayout, selectLayout;
     private TextView txtNote;
     List<Scheme> schemes;
+    Button btnApply;
     String type;
+    RadioGroup rGroup;
+    int selectedSchemeId = 0;
 
     public SchemeViewDialog(Context context, List<Scheme> schemes, String type) {
         super(context);
@@ -54,7 +45,21 @@ public class SchemeViewDialog extends BaseDialog {
         parentView = View.inflate(context, R.layout.scheme_view, null);
         init(parentView);
 
+        btnApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedSchemeId == 0) {
+                    Functions.showSnack(parentView, "Select atleast one scheme to apply.");
+                } else {
+                    Functions.showSnack(parentView, "Selected scheme " + selectedSchemeId);
+                }
+            }
+        });
+
         if (type.equals("home")) {
+            viewLayout.setVisibility(View.VISIBLE);
+            selectLayout.setVisibility(View.GONE);
+
             txtNote.setVisibility(View.VISIBLE);
             for (int i = 0; i < schemes.size(); i++) {
                 TextView txtScheme = new TextView(context);
@@ -62,12 +67,13 @@ public class SchemeViewDialog extends BaseDialog {
 
                 txtScheme.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bullet, 0, 0, 0);
                 txtScheme.setText("Buy " + schemes.get(i).quantity + " at  " + context.getResources().getString(R.string.Rs) + " " + schemes.get(i).price);
-                schemeLayout.addView(txtScheme);
+                viewLayout.addView(txtScheme);
             }
 
         } else {
-            txtNote.setVisibility(View.GONE);
-            RadioGroup rGroup = new RadioGroup(context);
+            viewLayout.setVisibility(View.GONE);
+            selectLayout.setVisibility(View.VISIBLE);
+
             for (int i = 0; i < schemes.size(); i++) {
                 RadioButton rButton = new RadioButton(context);
                 rButton.setTextSize(18);
@@ -75,12 +81,12 @@ public class SchemeViewDialog extends BaseDialog {
                 rButton.setText(schemes.get(i).scheme);
                 rGroup.addView(rButton);
             }
-            schemeLayout.addView(rGroup);
 
             rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    Toast.makeText(context, checkedId + "", Toast.LENGTH_LONG).show();
+                    selectedSchemeId = checkedId;
+                    Functions.showSnack(parentView, "scheme " + selectedSchemeId);
                 }
             });
         }
@@ -96,8 +102,12 @@ public class SchemeViewDialog extends BaseDialog {
     }
 
     private void init(final View parentView) {
-        schemeLayout = (LinearLayout) parentView.findViewById(R.id.schemeLayout);
+        viewLayout = (LinearLayout) parentView.findViewById(R.id.viewLayout);
+        selectLayout = (LinearLayout) parentView.findViewById(R.id.selectLayout);
+
         txtNote = (TextView) parentView.findViewById(R.id.txtNote);
+        btnApply = (Button) parentView.findViewById(R.id.btnApply);
+        rGroup = (RadioGroup) parentView.findViewById(R.id.rGroup);
     }
 
     @Override

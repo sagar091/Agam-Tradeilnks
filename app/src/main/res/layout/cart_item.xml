@@ -86,13 +86,14 @@
             <com.rey.material.widget.Button
                 android:id="@+id/btnScheme"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_alignParentRight="true"
                 android:background="@color/button_bg"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="Select Scheme"
                 android:textColor="#ffffff"
+                android:textSize="12sp"
                 app:rd_enable="true"
                 app:rd_rippleColor="@color/button_ripple"
                 app:rd_rippleType="touch" />
