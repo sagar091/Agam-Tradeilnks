@@ -23,13 +23,18 @@ import java.util.List;
 public class SchemeViewDialog extends BaseDialog {
 
     View parentView;
-    private LinearLayout viewLayout, selectLayout;
+    private LinearLayout viewLayout, selectLayout, schemeLayout;
     private TextView txtNote;
     List<Scheme> schemes;
     Button btnApply;
-    String type;
+    String type, schemeText;
     RadioGroup rGroup;
     int selectedSchemeId = 0;
+    OnApplyListener onApplyListener;
+
+    public void setOnApplyListener(OnApplyListener onApplyListener) {
+        this.onApplyListener = onApplyListener;
+    }
 
     public SchemeViewDialog(Context context, List<Scheme> schemes, String type) {
         super(context);
@@ -48,11 +53,12 @@ public class SchemeViewDialog extends BaseDialog {
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedSchemeId == 0) {
-                    Functions.showSnack(parentView, "Select atleast one scheme to apply.");
-                } else {
-                    Functions.showSnack(parentView, "Selected scheme " + selectedSchemeId);
+
+                if (onApplyListener != null) {
+                    onApplyListener.onApplyClick(selectedSchemeId, schemeText);
                 }
+                Functions.showSnack(parentView, "Selected scheme " + selectedSchemeId);
+                dismiss();
             }
         });
 
@@ -66,8 +72,8 @@ public class SchemeViewDialog extends BaseDialog {
                 txtScheme.setTextSize(18);
 
                 txtScheme.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bullet, 0, 0, 0);
-                txtScheme.setText("Buy " + schemes.get(i).quantity + " at  " + context.getResources().getString(R.string.Rs) + " " + schemes.get(i).price);
-                viewLayout.addView(txtScheme);
+                txtScheme.setText("Buy " + schemes.get(i).quantity + " at  " + context.getResources().getString(R.string.Rs) + " " + schemes.get(i).price + " (per 1 quantity)");
+                schemeLayout.addView(txtScheme);
             }
 
         } else {
@@ -78,15 +84,23 @@ public class SchemeViewDialog extends BaseDialog {
                 RadioButton rButton = new RadioButton(context);
                 rButton.setTextSize(18);
                 rButton.setId(schemes.get(i).scheme_id);
-                rButton.setText(schemes.get(i).scheme);
+                rButton.setText(schemes.get(i).scheme + " (per 1 quantity)");
                 rGroup.addView(rButton);
             }
+
+            RadioButton rButton = new RadioButton(context);
+            rButton.setTextSize(18);
+            rButton.setId(0);
+            rButton.setText("No Scheme");
+            rGroup.addView(rButton);
 
             rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     selectedSchemeId = checkedId;
-                    Functions.showSnack(parentView, "scheme " + selectedSchemeId);
+                    RadioButton selected = (RadioButton) rGroup.findViewById(checkedId);
+                    schemeText = (String) selected.getText();
+                    Functions.showSnack(parentView, selectedSchemeId + " -> " + schemeText);
                 }
             });
         }
@@ -104,6 +118,7 @@ public class SchemeViewDialog extends BaseDialog {
     private void init(final View parentView) {
         viewLayout = (LinearLayout) parentView.findViewById(R.id.viewLayout);
         selectLayout = (LinearLayout) parentView.findViewById(R.id.selectLayout);
+        schemeLayout = (LinearLayout) parentView.findViewById(R.id.schemeLayout);
 
         txtNote = (TextView) parentView.findViewById(R.id.txtNote);
         btnApply = (Button) parentView.findViewById(R.id.btnApply);
@@ -114,6 +129,10 @@ public class SchemeViewDialog extends BaseDialog {
     public boolean setUiBeforShow() {
 
         return false;
+    }
+
+    public interface OnApplyListener {
+        void onApplyClick(int schemeId, String scheme);
     }
 
 }

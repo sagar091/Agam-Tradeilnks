@@ -164,6 +164,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 cart.setProductId(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("product_id"))));
                 cart.setQty(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("qty"))));
                 cart.setColors(cursor.getString(cursor.getColumnIndexOrThrow("colors")));
+                cart.setSchemeId(cursor.getInt(cursor.getColumnIndexOrThrow("scheme_id")));
+                cart.setSchemeText(cursor.getString(cursor.getColumnIndexOrThrow("scheme")));
                 products.add(cart);
             } while (cursor.moveToNext());
         }
@@ -192,4 +194,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return schemes;
     }
 
+    public void addScheme(String productId, int schemeId, String scheme) {
+        myDataBase = this.getWritableDatabase();
+        String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET scheme_id='" + schemeId + "',scheme='" + scheme + "' WHERE product_id='" + productId + "'";
+        myDataBase.execSQL(selectQuery);
+    }
+
+    public void deleteCartProduct(String productID) {
+        myDataBase = this.getWritableDatabase();
+        String selectQuery = "DELETE FROM " + TABLE_CART_ITEM + " WHERE product_id ='" + productID + "'";
+        myDataBase.execSQL(selectQuery);
+    }
+
+    public void updateCart(int qty, int totalPrice, int productID) {
+        myDataBase = this.getWritableDatabase();
+        String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET qty=" + qty + ", total_price=" + totalPrice + " WHERE product_id ='" + productID + "'";
+        myDataBase.execSQL(selectQuery);
+    }
 }

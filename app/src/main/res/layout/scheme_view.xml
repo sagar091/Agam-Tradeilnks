@@ -48,6 +48,7 @@
             android:id="@+id/rGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
             android:orientation="vertical">
 
         </RadioGroup>
@@ -59,6 +60,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="6dp"
+            android:layout_marginTop="6dp"
             android:background="@color/button_bg"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"

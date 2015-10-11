@@ -5,7 +5,29 @@ package com.example.sagar.myapplication.model;
  */
 public class ProductCart {
 
-    String name, price, productId, qty, colors;
+    String name;
+    String price;
+    String productId;
+    String qty;
+    String colors;
+    int schemeId;
+    String schemeText;
+
+    public int getSchemeId() {
+        return schemeId;
+    }
+
+    public void setSchemeId(int schemeId) {
+        this.schemeId = schemeId;
+    }
+
+    public String getSchemeText() {
+        return schemeText;
+    }
+
+    public void setSchemeText(String schemeText) {
+        this.schemeText = schemeText;
+    }
 
     public String getName() {
         return name;

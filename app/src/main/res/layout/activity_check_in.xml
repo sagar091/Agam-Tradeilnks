@@ -12,8 +12,8 @@
         android:layout_alignParentTop="true"></include>
 
     <LinearLayout
+        android:id="@+id/topBar"
         style="@style/match_wrap_content"
-        android:layout_above="@+id/bottomBar"
         android:layout_below="@+id/relative2"
         android:layout_margin="8dp"
         android:orientation="vertical">
@@ -55,11 +55,20 @@
 
         <ListView
             android:id="@+id/usersListView"
-            style="@style/both_match_parent"
+            style="@style/match_wrap_content"
             android:layout_marginTop="6dp"
             android:divider="@null"
             android:fadeScrollbars="false"></ListView>
     </LinearLayout>
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/fragment_add_new_retailer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomBar"
+        android:layout_below="@+id/topBar"
+        android:visibility="gone"></include>
 
     <LinearLayout
         android:id="@+id/bottomBar"

@@ -24,7 +24,7 @@ import me.gujun.android.taggroup.TagGroup;
 /**
  * Created by sagartahelyani on 18-09-2015.
  */
-public class CartDialog extends BaseDialog {
+public class UpdateCartDialog extends BaseDialog {
 
     ArrayList<String> productDetails;
     ArrayList<String> cartProductDetails;
@@ -39,17 +39,24 @@ public class CartDialog extends BaseDialog {
     List<Scheme> schemes;
     int qty;
 
+    String productId, quantity, price;
+    List<String> diffColors;
+
+
+    public UpdateCartDialog(Context context, String productId, List<String> diffColors, String quantity, String price) {
+        super(context);
+        this.context = context;
+        this.productId = productId;
+        this.diffColors = diffColors;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     public void setOnCartAddListener(OnCartAddListener onCartAddListener) {
         this.onCartAddListener = onCartAddListener;
     }
 
     OnCartAddListener onCartAddListener;
-
-    public CartDialog(Context context, ArrayList<String> productDetails, List<Scheme> schemes) {
-        super(context);
-        this.productDetails = productDetails;
-        this.schemes = schemes;
-    }
 
     @Override
     public View onCreateView() {
@@ -92,7 +99,7 @@ public class CartDialog extends BaseDialog {
                         sb.append(mTagGroup.getTags()[i] + ", ");
                     }
 
-                    cartProductDetails.add(productDetails.get(0)); // id
+                    cartProductDetails.add(productId); // id
                     cartProductDetails.add(productDetails.get(1)); // name
                     cartProductDetails.add(productDetails.get(2)); // price
                     if (qty == 0) {
@@ -129,28 +136,36 @@ public class CartDialog extends BaseDialog {
 
     private void init(View customView) {
         parentView = (View) findViewById(android.R.id.content);
-        mTagGroup = (TagGroup) customView.findViewById(R.id.tag_group);
+
         btnOK = (Button) customView.findViewById(R.id.btnOK);
         btnCancel = (Button) customView.findViewById(R.id.btnCancel);
         unitPrice = (TextView) customView.findViewById(R.id.unitPrice);
         unitQty = (TextView) customView.findViewById(R.id.unitQty);
         unitTotalPrice = (TextView) customView.findViewById(R.id.unitTotalPrice);
-        seekbar = (SeekBar) customView.findViewById(R.id.seekbar);
 
-        unitPrice.setText(context.getResources().getString(R.string.Rs) + " " + productDetails.get(2));
-        unitQty.setText("x 1 Qty");
-        unitTotalPrice.setText("= " + context.getResources().getString(R.string.Rs) + " " + productDetails.get(2));
+        seekbar = (SeekBar) customView.findViewById(R.id.seekbar);
+        seekbar.setProgress(Integer.parseInt(quantity));
+
+        mTagGroup = (TagGroup) customView.findViewById(R.id.tag_group);
+        mTagGroup.setTags(diffColors);
+
+        unitPrice.setText(context.getResources().getString(R.string.Rs) + " " + price);
+        unitQty.setText("x " + quantity + " Qty");
+
+        int q = Integer.parseInt(quantity);
+        int t = Integer.parseInt(price);
+        unitTotalPrice.setText("= " + context.getResources().getString(R.string.Rs) + (q * t));
     }
 
     @Override
     public boolean setUiBeforShow() {
-        seekbar.setProgress(1);
+
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 qty = progress;
                 unitQty.setText("x " + progress + " Qty");
-                unitTotalPrice.setText("= " + context.getResources().getString(R.string.Rs) + " " + String.valueOf(Integer.parseInt(productDetails.get(2)) * progress));
+                unitTotalPrice.setText("= " + context.getResources().getString(R.string.Rs) + " " + String.valueOf(Integer.parseInt(price) * progress));
             }
 
             @Override
