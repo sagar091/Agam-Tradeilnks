@@ -244,6 +244,8 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         preferences = getSharedPreferences("login", MODE_PRIVATE);
         if (preferences.contains("offline")) {
             Log.e("offline", preferences.getString("offline", null));
+            Log.e("retailer_type", preferences.getString("retailer_type", null));
+
             MenuItem item = navigationView.getMenu().getItem(7);
             item.setVisible(false);
         } else {

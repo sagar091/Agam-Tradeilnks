@@ -21,9 +21,9 @@
     <RelativeLayout
         android:id="@+id/cartLayout"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="match_parent"
-        android:layout_below="@+id/relative2">
+        android:layout_below="@+id/relative2"
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/labelLayout"
@@ -67,52 +67,28 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/lin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/labelLayout"
-            android:orientation="vertical"
-            android:weightSum="1.55">
+            android:orientation="vertical">
 
             <ListView
                 android:id="@+id/productsListView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/btnPlaceOrder"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
                 android:divider="@null"
                 android:fadeScrollbars="false"></ListView>
-
-            <TextView
-                android:id="@+id/txtTotal"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.12"
-                android:padding="2dp"
-                android:text="Total"
-                android:textSize="20sp"
-                android:visibility="visible" />
-
-            <EditText
-                android:id="@+id/remarks"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="0.30"
-                android:gravity="left|start"
-                android:hint="Remarks"
-                android:lines="3"
-                android:padding="2dp"
-                android:visibility="visible" />
 
             <com.rey.material.widget.Button
                 android:id="@+id/btnPlaceOrder"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="12dp"
-                android:layout_weight="0.15"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="10dp"
                 android:background="@color/button_bg"
                 android:text="Place Order"
                 android:textColor="#ffffff"
@@ -120,7 +96,7 @@
                 app:rd_rippleColor="@color/button_ripple"
                 app:rd_rippleType="touch" />
 
-        </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

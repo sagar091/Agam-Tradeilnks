@@ -27,7 +27,6 @@ import me.gujun.android.taggroup.TagGroup;
 public class UpdateCartDialog extends BaseDialog {
 
     ArrayList<String> productDetails;
-    ArrayList<String> cartProductDetails;
     TextView unitPrice, unitQty, unitTotalPrice;
     SeekBar seekbar;
     Button btnOK, btnCancel;
@@ -85,7 +84,6 @@ public class UpdateCartDialog extends BaseDialog {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cartProductDetails = new ArrayList<String>();
 
                 if (seekbar.getProgress() == 0) {
                     Functions.showSnack(customView, "Invalid Quantity");
@@ -98,36 +96,22 @@ public class UpdateCartDialog extends BaseDialog {
                         Log.e("colors", mTagGroup.getTags()[i]);
                         sb.append(mTagGroup.getTags()[i] + ", ");
                     }
-
-                    cartProductDetails.add(productId); // id
-                    cartProductDetails.add(productDetails.get(1)); // name
-                    cartProductDetails.add(productDetails.get(2)); // price
-                    if (qty == 0) {
-                        qty = 1;
-                    }
-                    cartProductDetails.add(qty + ""); // qty
-
                     String colors = sb.toString().substring(0, sb.toString().length() - 2);
-                    cartProductDetails.add(colors); // colors
-
                     try {
                         handler.openDataBase();
-                        boolean save = handler.addCartProduct(cartProductDetails, schemes);
+                        boolean save = handler.updateCart(productId, qty, colors);
                         if (save) {
                             if (onCartAddListener != null) {
                                 onCartAddListener.onOkClick();
+                                dismiss();
                             }
-                            dismiss();
                         } else {
-//                            Functions.showSnack(parentView,"Something went wrong");
                             Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show();
                         }
-                    } catch (SQLException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 }
-
             }
         });
 

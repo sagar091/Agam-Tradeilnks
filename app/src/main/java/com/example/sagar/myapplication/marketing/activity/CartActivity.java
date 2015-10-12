@@ -1,6 +1,9 @@
 package com.example.sagar.myapplication.marketing.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -19,19 +23,23 @@ import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.AskDialog;
 import com.example.sagar.myapplication.customComponent.SchemeViewDialog;
 import com.example.sagar.myapplication.customComponent.UpdateCartDialog;
+import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.DatabaseHandler;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.model.ProductCart;
 import com.example.sagar.myapplication.model.Scheme;
+import com.example.sagar.myapplication.model.UserProfile;
 import com.rey.material.widget.Button;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
 
     DatabaseHandler handler;
+    private EditText edtRemarks;
     private TextView txtTotal;
     View parentView;
     List<ProductCart> products = new ArrayList<>();
@@ -39,9 +47,15 @@ public class CartActivity extends AppCompatActivity {
     private ImageView imgCart;
     private TextView emptyCart;
     private ListView productsListView;
-    private CardAdapter adapter;
+    private CartAdapter adapter;
     private RelativeLayout cartLayout;
     int total = 0;
+    private Button btnPlaceOrder;
+    ProgressDialog pd;
+    ComplexPreferences complexPreferences;
+    private String userId, retailerId, retailerType;
+    SharedPreferences preferences;
+    View footerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +64,34 @@ public class CartActivity extends AppCompatActivity {
 
         init();
 
+        UserProfile userProfile = new UserProfile();
+        complexPreferences = ComplexPreferences.getComplexPreferences(this, "user_pref", 0);
+        userProfile = complexPreferences.getObject("current-user", UserProfile.class);
+        userId = userProfile.user_id;
+
         displayProducts();
+
+        btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                retailerId = preferences.getString("offline", null);
+                retailerType = preferences.getString("retailer_type", null);
+
+                Log.e("retailerType", retailerType);
+
+                products = new ArrayList<>();
+                products.clear();
+                handler = new DatabaseHandler(CartActivity.this);
+                try {
+                    handler.openDataBase();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                products = handler.getProducts();
+                new PlaceOrder().execute();
+            }
+        });
 
     }
 
@@ -71,15 +112,21 @@ public class CartActivity extends AppCompatActivity {
             cartLayout.setVisibility(View.GONE);
 
         } else {
+            total = 0;
             emptyCart.setVisibility(View.GONE);
-            adapter = new CardAdapter(this, products);
+            adapter = new CartAdapter(this, products);
             productsListView.setAdapter(adapter);
+            productsListView.addFooterView(footerView);
             cartLayout.setVisibility(View.VISIBLE);
         }
     }
 
     private void init() {
-        txtTotal = (TextView) findViewById(R.id.txtTotal);
+        footerView = getLayoutInflater().inflate(R.layout.order_footer, null);
+
+        edtRemarks = (EditText) footerView.findViewById(R.id.edtRemarks);
+        btnPlaceOrder = (Button) findViewById(R.id.btnPlaceOrder);
+        txtTotal = (TextView) footerView.findViewById(R.id.txtTotal);
         parentView = findViewById(android.R.id.content);
         cartLayout = (RelativeLayout) findViewById(R.id.cartLayout);
         productsListView = (ListView) findViewById(R.id.productsListView);
@@ -103,13 +150,13 @@ public class CartActivity extends AppCompatActivity {
     }
 
 
-    private class CardAdapter extends BaseAdapter {
+    private class CartAdapter extends BaseAdapter {
 
         Context context;
         List<ProductCart> products;
         LayoutInflater mInflater;
 
-        public CardAdapter(Context context, List<ProductCart> products) {
+        public CartAdapter(Context context, List<ProductCart> products) {
             this.context = context;
             this.products = products;
             mInflater = (LayoutInflater) context
@@ -240,6 +287,7 @@ public class CartActivity extends AppCompatActivity {
                 }
             });
 
+
             txtTotal.setText("Total: " + getResources().getString(R.string.Rs) + " " + total);
             return convertView;
         }
@@ -250,6 +298,42 @@ public class CartActivity extends AppCompatActivity {
             ImageView remove;
             ImageView edit;
             Button btnScheme;
+        }
+    }
+
+    private class PlaceOrder extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = ProgressDialog.show(CartActivity.this, "Loading", "Please wait..", false);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("form_type", "create_order");
+
+            for (int i = 0; i < products.size(); i++) {
+                map.put("product[]", products.get(i).getProductId());
+                map.put("qty[]", products.get(i).getQty());
+                map.put("scheme[]", products.get(i).getSchemeId() + "");
+            }
+
+            map.put("user_id", userId);
+            map.put("order_type", retailerType);
+            map.put("retailor_id", retailerId);
+            map.put("remarks", Functions.getText(edtRemarks));
+            map.put("order_total", total + "");
+
+            Log.e("place_order", map.toString());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            pd.dismiss();
         }
     }
 }

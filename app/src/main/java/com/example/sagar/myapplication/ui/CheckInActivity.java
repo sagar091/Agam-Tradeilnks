@@ -297,7 +297,6 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
 
-
         return valid;
     }
 
@@ -365,6 +364,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                 SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("offline", newRetailerId);
+                editor.putString("retailer_type", "0"); // By Adding new retailer
                 editor.commit();
 
                 Functions.showSnack(parentView, msg + "and Check-In successfully.");
@@ -561,6 +561,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
         SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("offline", selectRetailerId);
+        editor.putString("retailer_type", "1"); // By select from offline retailers
         editor.commit();
 
         Functions.showSnack(parentView, "Check-In successfully.");
@@ -725,6 +726,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                     SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("offline", users.get(position).user.retailor_id);
+                    editor.putString("retailer_type", "0"); // By Check In using near by users
                     editor.commit();
 
                     Functions.showSnack(parentView, "Check-In successfully.");

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="2dp">
+
+    <TextView
+        android:id="@+id/txtTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="Total"
+        android:textSize="20sp"
+        android:visibility="visible" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        app:hintTextAppearance="@style/TextInputLayout">
+
+        <EditText
+            android:id="@+id/edtRemarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|start"
+            android:hint="Remarks"
+            android:inputType="textMultiLine"
+            android:minLines="2"
+            android:textColorHint="@color/primaryColor" />
+    </android.support.design.widget.TextInputLayout>
+</LinearLayout>

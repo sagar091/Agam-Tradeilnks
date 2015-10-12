@@ -206,9 +206,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase.execSQL(selectQuery);
     }
 
-    public void updateCart(int qty, int totalPrice, int productID) {
+
+    public boolean updateCart(String productId, int qty, String colors) {
         myDataBase = this.getWritableDatabase();
-        String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET qty=" + qty + ", total_price=" + totalPrice + " WHERE product_id ='" + productID + "'";
+        String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET qty='" + qty + "',colors='" + colors + "' WHERE product_id='" + productId + "'";
         myDataBase.execSQL(selectQuery);
+        return true;
     }
 }
