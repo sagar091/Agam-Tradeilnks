@@ -59,6 +59,7 @@ public class HomeMarketingFragment extends Fragment {
     private ListView productsListView;
     private ComplexPreferences complexPreferences;
     SharedPreferences preferences;
+    private TextView noData;
 
     public static HomeMarketingFragment newInstance(String param1, String param2) {
         HomeMarketingFragment fragment = new HomeMarketingFragment();
@@ -174,6 +175,7 @@ public class HomeMarketingFragment extends Fragment {
         ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
         productsListView = (ListView) view.findViewById(R.id.productsListView);
         edtCompany = (EditText) view.findViewById(R.id.edtCompany);
+        noData = (TextView) view.findViewById(R.id.noData);
     }
 
     private class GetProducts extends AsyncTask<String, Void, String> {
@@ -208,10 +210,16 @@ public class HomeMarketingFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             pd.dismiss();
-            Log.e("modelData.model size", modelData.model.size() + "--");
+            if (modelError == 0) {
+                noData.setVisibility(View.GONE);
+                Log.e("modelData.model size", modelData.model.size() + "--");
 
-            final SearchAdapter adapter = new MyAdapter(modelData.model, getActivity());
-            productsListView.setAdapter(adapter);
+                final SearchAdapter adapter = new MyAdapter(modelData.model, getActivity());
+                productsListView.setAdapter(adapter);
+            } else {
+                noData.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 

@@ -119,6 +119,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("colors", cartProductDetails.get(4)); // colors
         myDataBase.insert(TABLE_CART_ITEM, null, values);
 
+        String selectQuery = "DELETE FROM " + TABLE_SCHEME + " WHERE product_id ='" + cartProductDetails.get(0) + "'";
+        myDataBase.execSQL(selectQuery);
+
         for (int i = 0; i < schemes.size(); i++) {
             ContentValues cv = new ContentValues();
             cv.put("product_id", Integer.parseInt(cartProductDetails.get(0))); // id
@@ -207,7 +210,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateCart(String productId, int qty, String colors) {
+    public boolean updateCart(String productId, String qty, String colors) {
         myDataBase = this.getWritableDatabase();
         String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET qty='" + qty + "',colors='" + colors + "' WHERE product_id='" + productId + "'";
         myDataBase.execSQL(selectQuery);

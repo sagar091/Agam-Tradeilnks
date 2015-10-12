@@ -84,7 +84,6 @@ public class UpdateCartDialog extends BaseDialog {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (seekbar.getProgress() == 0) {
                     Functions.showSnack(customView, "Invalid Quantity");
                 } else if (mTagGroup.getTags().length == 0) {
@@ -99,7 +98,7 @@ public class UpdateCartDialog extends BaseDialog {
                     String colors = sb.toString().substring(0, sb.toString().length() - 2);
                     try {
                         handler.openDataBase();
-                        boolean save = handler.updateCart(productId, qty, colors);
+                        boolean save = handler.updateCart(productId, quantity, colors);
                         if (save) {
                             if (onCartAddListener != null) {
                                 onCartAddListener.onOkClick();
@@ -150,6 +149,7 @@ public class UpdateCartDialog extends BaseDialog {
                 qty = progress;
                 unitQty.setText("x " + progress + " Qty");
                 unitTotalPrice.setText("= " + context.getResources().getString(R.string.Rs) + " " + String.valueOf(Integer.parseInt(price) * progress));
+                quantity = String.valueOf(qty);
             }
 
             @Override

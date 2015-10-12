@@ -96,7 +96,9 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void displayProducts() {
+
         products = new ArrayList<>();
+        products.clear();
         handler = new DatabaseHandler(CartActivity.this);
         try {
             handler.openDataBase();
@@ -114,6 +116,12 @@ public class CartActivity extends AppCompatActivity {
         } else {
             total = 0;
             emptyCart.setVisibility(View.GONE);
+
+            for (int i = 0; i < products.size(); i++) {
+                total += Integer.parseInt(products.get(i).getPrice()) * Integer.parseInt(products.get(i).getQty());
+            }
+            txtTotal.setText("Total: " + getResources().getString(R.string.Rs) + " " + total);
+
             adapter = new CartAdapter(this, products);
             productsListView.setAdapter(adapter);
             productsListView.addFooterView(footerView);
@@ -212,8 +220,6 @@ public class CartActivity extends AppCompatActivity {
 
             mHolder.txtQty.setText(products.get(position).getQty());
 
-            total += Integer.parseInt(products.get(position).getPrice()) * Integer.parseInt(products.get(position).getQty());
-
             str = "<b>Colors: </b>" + products.get(position).getColors();
             mHolder.txtColors.setText(Html.fromHtml(str));
 
@@ -235,7 +241,11 @@ public class CartActivity extends AppCompatActivity {
                         @Override
                         public void onApplyClick(int schemeId, String scheme) {
                             handler = new DatabaseHandler(context);
+                            if (schemeId == 0) {
+                                scheme = "No scheme";
+                            }
                             handler.addScheme(products.get(position).getProductId(), schemeId, scheme);
+                            productsListView.removeFooterView(footerView);
                             displayProducts();
                         }
 
@@ -263,6 +273,7 @@ public class CartActivity extends AppCompatActivity {
                         @Override
                         public void onOkClick() {
                             Functions.showSnack(parentView, "Product updated");
+                            productsListView.removeFooterView(footerView);
                             displayProducts();
 
                         }
@@ -280,6 +291,7 @@ public class CartActivity extends AppCompatActivity {
                         public void clickYes() {
                             handler = new DatabaseHandler(context);
                             handler.deleteCartProduct(products.get(position).getProductId());
+                            productsListView.removeFooterView(footerView);
                             displayProducts();
                         }
                     });
@@ -287,8 +299,6 @@ public class CartActivity extends AppCompatActivity {
                 }
             });
 
-
-            txtTotal.setText("Total: " + getResources().getString(R.string.Rs) + " " + total);
             return convertView;
         }
 
@@ -314,9 +324,9 @@ public class CartActivity extends AppCompatActivity {
             map.put("form_type", "create_order");
 
             for (int i = 0; i < products.size(); i++) {
-                map.put("product[]", products.get(i).getProductId());
-                map.put("qty[]", products.get(i).getQty());
-                map.put("scheme[]", products.get(i).getSchemeId() + "");
+                map.put("product[" + i + "]", products.get(i).getProductId());
+                map.put("qty[" + i + "]", products.get(i).getQty());
+                map.put("scheme[" + i + "]", products.get(i).getSchemeId() + "");
             }
 
             map.put("user_id", userId);
