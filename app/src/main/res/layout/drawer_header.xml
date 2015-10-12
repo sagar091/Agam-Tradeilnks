@@ -2,19 +2,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp"
     android:background="@color/button_bg"
     android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:background="@color/drawer_bg"></View>
 
     <com.alexzh.circleimageview.CircleImageView
         android:id="@+id/profilePic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:tintMode="@color/white"
+        android:layout_marginTop="12dp"
         android:backgroundTint="@color/white"
         android:src="@drawable/ic_person2"
+        android:tintMode="@color/white"
         app:view_borderColor="@color/white"
         app:view_borderWidth="1dp" />
 

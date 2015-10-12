@@ -61,9 +61,9 @@ public class AddNewRetailerFragment extends Fragment {
     LocationFinder finder;
     Button btnAdd;
     double longitude = 0.0, latitude = 0.0;
-    String selectCity, userId, msg;
+    String selectCity, userId, msg, addError;
 
-    public static AddNewRetailerFragment newInstance(String param1, String param2) {
+    public static AddNewRetailerFragment newInstance() {
         AddNewRetailerFragment fragment = new AddNewRetailerFragment();
         return fragment;
     }
@@ -156,7 +156,6 @@ public class AddNewRetailerFragment extends Fragment {
     }
 
     private boolean checkValidation() {
-
         boolean valid = true;
 
         if (Functions.getLength(edtOutlet) == 0) {
@@ -255,7 +254,6 @@ public class AddNewRetailerFragment extends Fragment {
             }
         }
 
-
         return valid;
     }
 
@@ -290,8 +288,6 @@ public class AddNewRetailerFragment extends Fragment {
         if (finder.canGetLocation()) {
             latitude = finder.getLatitude();
             longitude = finder.getLongitude();
-
-            Toast.makeText(getActivity(), "location-" + latitude + "--" + longitude, Toast.LENGTH_LONG).show();
 
         } else {
             final SettingDialog dialog = new SettingDialog(getActivity(), "GPS is not enabled. Please go to settings menu to enable GPS or mention manually your address.", Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -435,6 +431,7 @@ public class AddNewRetailerFragment extends Fragment {
                 Log.e("add_retailer_response", obj.toString());
                 JSONObject json2 = obj.getJSONObject("status");
                 msg = json2.getString("msg");
+                addError = json2.getString("error");
             } catch (Exception e) {
                 Functions.showSnack(parentView, e.getMessage());
 
@@ -447,7 +444,15 @@ public class AddNewRetailerFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             pd.dismiss();
-            Functions.showSnack(parentView, msg);
+            if (addError.equals("0")) {
+                Functions.showSnack(parentView, msg);
+            }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //getLocationStatus();
     }
 }

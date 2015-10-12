@@ -77,7 +77,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
     ListViewAdapter adapter;
     ScrollView newRetailerLayout;
 
-
+    // ADD RETAILER SECTION
     EditText edtOutlet, edtMobile, edtMobile2, edtBirthDate, edtEmail, edtUsername, edtRetailer, edtPassword, edtPAN, edtTin, edtProfile, edtArea,
             edtAddress1, edtAddress2, edtCity, edtState, edtCountry;
     private String strOutlet, strMobile, strMobile2, strBirthDate, strEmail, strUsername, strRetailer, strPassword, strPAN, strTin, strProfile, strArea,
@@ -91,7 +91,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
     int cityError;
     private City city;
     Button btnAdd;
-    String selectCity;
+    String selectCity, msg, userId, addError, newRetailerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +99,12 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_check_in);
 
         init();
+
+        // getLocationStatus();
+        UserProfile userProfile = new UserProfile();
+        complexPreferences = ComplexPreferences.getComplexPreferences(this, "user_pref", 0);
+        userProfile = complexPreferences.getObject("current-user", UserProfile.class);
+        userId = userProfile.user_id;
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -180,6 +186,204 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkValidation()) {
+                    new AddRetailer().execute();
+                }
+            }
+        });
+    }
+
+    private boolean checkValidation() {
+
+        boolean valid = true;
+
+        if (Functions.getLength(edtOutlet) == 0) {
+            Functions.showSnack(parentView, "Enter Outlet Name");
+            valid = false;
+
+        } else if (Functions.getLength(edtMobile) != 10) {
+            Functions.showSnack(parentView, "Enter mobile number of 10 digits");
+            valid = false;
+
+        } else if (Functions.getLength(edtMobile2) != 10) {
+            Functions.showSnack(parentView, "Enter mobile number-2 of 10 digits");
+            valid = false;
+
+        } else if (Functions.getLength(edtBirthDate) == 0) {
+            Functions.showSnack(parentView, "Select Birthdate");
+            valid = false;
+
+        } else if (Functions.getLength(edtEmail) == 0 || !Functions.emailValidation(edtEmail.getText().toString())) {
+            Functions.showSnack(parentView, "Enter valid Email-id");
+            valid = false;
+
+        } else if (Functions.getLength(edtUsername) == 0) {
+            Functions.showSnack(parentView, "Enter User Name");
+            valid = false;
+
+        } else if (Functions.getLength(edtRetailer) == 0) {
+            Functions.showSnack(parentView, "Enter Retailer Name");
+            valid = false;
+
+        } else if (Functions.getLength(edtPassword) < 6) {
+            Functions.showSnack(parentView, "Enter password minimum of 6 characters");
+            valid = false;
+
+        } else if (radioCheckedId == R.id.radioCurrent) {
+            if (latitude == 0.0 || longitude == 0.0) {
+                getLocationStatus();
+                valid = false;
+            }
+
+        } else {
+            if (Functions.getLength(edtArea) == 0) {
+                Functions.showSnack(parentView, "Enter Area");
+                valid = false;
+
+            } else if (Functions.getLength(edtAddress1) == 0) {
+                Functions.showSnack(parentView, "Enter Address Line 1");
+                valid = false;
+
+            } else if (Functions.getLength(edtAddress2) == 0) {
+                Functions.showSnack(parentView, "Enter Address Line 2");
+                valid = false;
+
+            } else if (Functions.getLength(edtCity) == 0) {
+                Functions.showSnack(parentView, "Select City");
+                valid = false;
+
+            } else if (Functions.getLength(edtState) == 0) {
+                Functions.showSnack(parentView, "Enter State");
+                valid = false;
+
+            } else if (Functions.getLength(edtCountry) == 0) {
+                Functions.showSnack(parentView, "Enter Country");
+                valid = false;
+            }
+
+        }
+
+        if (valid) {
+            strOutlet = edtOutlet.getText().toString().trim();
+            strMobile = edtMobile.getText().toString().trim();
+            strMobile2 = edtMobile2.getText().toString().trim();
+            strBirthDate = edtBirthDate.getText().toString().trim();
+            strEmail = edtEmail.getText().toString().trim();
+            strUsername = edtUsername.getText().toString().trim();
+            strRetailer = edtRetailer.getText().toString().trim();
+            strPassword = edtPassword.getText().toString().trim();
+            strPAN = edtPAN.getText().toString().trim();
+            strTin = edtTin.getText().toString().trim();
+
+            if (radioCheckedId == R.id.radioCurrent) {
+                strArea = "";
+                strAddress1 = "";
+                strAddress2 = "";
+                strCountry = "";
+                strCity = "";
+                strState = "";
+
+            } else {
+                strArea = edtArea.getText().toString().trim();
+                strAddress1 = edtAddress1.getText().toString().trim();
+                strAddress2 = edtAddress2.getText().toString().trim();
+                strCity = edtCity.getText().toString().trim();
+                strState = edtState.getText().toString().trim();
+                strCountry = edtCountry.getText().toString().trim();
+            }
+        }
+
+
+        return valid;
+    }
+
+    private class AddRetailer extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = ProgressDialog.show(CheckInActivity.this, "Loading", "Please wait", false);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("form_type", "user_registration");
+            map.put("user_id", userId);
+            map.put("shop_no", strOutlet);
+            map.put("mo_no", strMobile);
+            map.put("mo_no2", strMobile2);
+            map.put("bdate", strBirthDate);
+            map.put("email", strEmail);
+            map.put("username", strUsername);
+            map.put("r_name", strRetailer);
+            map.put("password", strPassword);
+            map.put("pan", strPAN);
+            map.put("tin", strTin);
+            map.put("pro_pic", "null");
+            map.put("area", strArea);
+            map.put("address", strAddress1);
+            map.put("add_1", strAddress2);
+            map.put("city", strCity);
+            map.put("state", strState);
+            map.put("country", strCountry);
+
+            if (radioCheckedId == R.id.radioCurrent) {
+                map.put("lat", latitude + "");
+                map.put("long", longitude + "");
+            } else {
+                map.put("lat", "0.0");
+                map.put("long", "0.0");
+            }
+            Log.e("req", map.toString());
+            try {
+                HttpRequest req = new HttpRequest(Constants.BASE_URL);
+                JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
+                Log.e("add_retailer_response", obj.toString());
+                JSONObject json2 = obj.getJSONObject("status");
+                msg = json2.getString("msg");
+                addError = json2.getString("error");
+                if (addError.equals("0")) {
+                    newRetailerId = json2.getString("retailor_id");
+                }
+            } catch (Exception e) {
+                Functions.showSnack(parentView, e.getMessage());
+
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            pd.dismiss();
+            if (addError.equals("0")) {
+                SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("offline", newRetailerId);
+                editor.commit();
+
+                Functions.showSnack(parentView, msg + "and Check-In successfully.");
+
+                Intent intent = new Intent(CheckInActivity.this, MarketingDrawerActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+
+            } else {
+                Functions.showSnack(parentView, msg);
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //getLocationStatus();
     }
 
     private void setCityDialog() {
