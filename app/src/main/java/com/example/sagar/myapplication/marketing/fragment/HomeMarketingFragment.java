@@ -212,11 +212,14 @@ public class HomeMarketingFragment extends Fragment {
             pd.dismiss();
             if (modelError == 0) {
                 noData.setVisibility(View.GONE);
+                productsListView.setVisibility(View.VISIBLE);
                 Log.e("modelData.model size", modelData.model.size() + "--");
 
                 final SearchAdapter adapter = new MyAdapter(modelData.model, getActivity());
                 productsListView.setAdapter(adapter);
+
             } else {
+                productsListView.setVisibility(View.GONE);
                 noData.setVisibility(View.VISIBLE);
             }
 
@@ -276,7 +279,7 @@ public class HomeMarketingFragment extends Fragment {
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                     TouchImageView bigImage = (TouchImageView) dialog.findViewById(R.id.bigImage);
-                    Glide.with(context).load(imageURL).thumbnail(0.1f).placeholder(R.drawable.loading).into(bigImage);
+                    Glide.with(context).load(imageURL).thumbnail(0.1f).placeholder(R.drawable.ic_progress_image).into(bigImage);
 
                     dialog.show();
                 }
@@ -338,7 +341,7 @@ public class HomeMarketingFragment extends Fragment {
             viewHolder.txtProductName.setText(filledContainer.get(position).name);
             viewHolder.txtProductPrice.setText(getResources().getString(R.string.Rs)
                     + filledContainer.get(position).price);
-            Glide.with(context).load(filledContainer.get(position).image).thumbnail(0.1f).placeholder(R.drawable.loading).into(viewHolder.imgProduct);
+            Glide.with(context).load(filledContainer.get(position).image).thumbnail(0.1f).placeholder(R.drawable.ic_progress_image).into(viewHolder.imgProduct);
             if (filledContainer.get(position).stock.equals("")) {
                 viewHolder.txtProductStock.setVisibility(View.GONE);
             } else {
