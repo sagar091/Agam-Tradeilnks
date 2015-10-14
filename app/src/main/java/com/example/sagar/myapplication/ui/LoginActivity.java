@@ -62,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
                     edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 else
                     edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
             }
         });
 
