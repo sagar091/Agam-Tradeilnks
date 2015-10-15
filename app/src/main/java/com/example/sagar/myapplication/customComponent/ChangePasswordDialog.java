@@ -51,6 +51,12 @@ public class ChangePasswordDialog extends BaseDialog {
         userProfile = complexPreferences.getObject("current-user", UserProfile.class);
         userId = userProfile.user_id;
 
+        parentView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return parentView;
     }
 
