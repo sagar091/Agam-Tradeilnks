@@ -2,6 +2,7 @@ package com.example.sagar.myapplication.marketing.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,11 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.AskDialog;
+import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.model.ProductModel;
 import com.example.sagar.myapplication.model.Products;
+import com.example.sagar.myapplication.model.UserProfile;
 import com.google.gson.GsonBuilder;
 import com.rey.material.widget.Button;
 
@@ -40,7 +44,7 @@ public class PaymentModeActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageView imgCart;
     private View parentView;
-    private String orderId, orderStatus, orderError;
+    private String orderId, orderStatus, orderError, paymentType, paymentCompleteStatus;
     private ProgressDialog pd;
     private TextView txtRetailer, txtOrderTotal, txtPaymentReceived, txtPaymentPending;
     private Products orderData;
@@ -50,6 +54,9 @@ public class PaymentModeActivity extends AppCompatActivity {
     private ScrollView mainLayout;
     private RadioGroup radioGroup;
     private int last = 0;
+    ComplexPreferences complexPreferences;
+    private String userId, retailerId;
+    SharedPreferences preferences;
 
     // Cash
     EditText edtAmount;
@@ -74,6 +81,14 @@ public class PaymentModeActivity extends AppCompatActivity {
         orderStatus = getIntent().getStringExtra("orderStatus");
 
         init();
+
+        UserProfile userProfile = new UserProfile();
+        complexPreferences = ComplexPreferences.getComplexPreferences(this, "user_pref", 0);
+        userProfile = complexPreferences.getObject("current-user", UserProfile.class);
+        userId = userProfile.user_id;
+
+        preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+        retailerId = preferences.getString("offline", null);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -110,17 +125,24 @@ public class PaymentModeActivity extends AppCompatActivity {
         if (last == 0) {
             Functions.showSnack(parentView, "Select payment method");
 
-        } else if (last == R.id.radioCash) {
+        } else if (last == R.id.radioCash) { // Cash
             enteredAmount = edtAmount.getText().toString().trim();
             if (enteredAmount.length() == 0) {
                 Functions.showSnack(parentView, "Enter amount");
             } else if (Integer.parseInt(enteredAmount) > Integer.parseInt(orderData.orders.get(0).order.order_total)) {
                 Functions.showSnack(parentView, "Amount should not be greater then order total.");
             } else {
-                Functions.showSnack(parentView, "Proceed");
+                paymentType = "0";
+                if (Integer.parseInt(enteredAmount) == Integer.parseInt(orderData.orders.get(0).order.order_total)) {
+                    paymentCompleteStatus = "1";
+                } else {
+                    paymentCompleteStatus = "0";
+                }
+                confirmPayment();
+
             }
 
-        } else if (last == R.id.radioCheque) {
+        } else if (last == R.id.radioCheque) { // Cheque
             enteredChequeNo = edtChequeNo.getText().toString().trim();
             enteredBankAmount = edtBankAmount.getText().toString().trim();
             enteredBankName = edtBankname.getText().toString().trim();
@@ -131,10 +153,17 @@ public class PaymentModeActivity extends AppCompatActivity {
             } else if (Integer.parseInt(enteredBankAmount) > Integer.parseInt(orderData.orders.get(0).order.order_total)) {
                 Functions.showSnack(parentView, "Amount should not be greater then order total.");
             } else {
-                Functions.showSnack(parentView, "Proceed");
+                paymentType = "1";
+                if (Integer.parseInt(enteredBankAmount) == Integer.parseInt(orderData.orders.get(0).order.order_total)) {
+                    paymentCompleteStatus = "1";
+                } else {
+                    paymentCompleteStatus = "0";
+                }
+                confirmPayment();
+
             }
 
-        } else if (last == R.id.radioOther) {
+        } else if (last == R.id.radioOther) { // Other
             enteredOtherAmount = edtOtherAmount.getText().toString().trim();
             enteredOtherDesc = edtOtherDesc.getText().toString().trim();
 
@@ -143,9 +172,28 @@ public class PaymentModeActivity extends AppCompatActivity {
             } else if (Integer.parseInt(enteredOtherAmount) > Integer.parseInt(orderData.orders.get(0).order.order_total)) {
                 Functions.showSnack(parentView, "Amount should not be greater then order total.");
             } else {
-                Functions.showSnack(parentView, "Proceed");
+                paymentType = "2";
+                if (Integer.parseInt(enteredOtherAmount) == Integer.parseInt(orderData.orders.get(0).order.order_total)) {
+                    paymentCompleteStatus = "1";
+                } else {
+                    paymentCompleteStatus = "0";
+                }
+                confirmPayment();
+
             }
         }
+    }
+
+    private void confirmPayment() {
+        AskDialog askDialog = new AskDialog(this, "Are you sure want to do payment for this order?");
+        askDialog.setOnYesListener(new AskDialog.OnYesClickListener() {
+            @Override
+            public void clickYes() {
+                Functions.showSnack(parentView, "proceed");
+                new PaymentProcess().execute();
+            }
+        });
+        askDialog.show();
     }
 
     private void init() {
@@ -335,6 +383,51 @@ public class PaymentModeActivity extends AppCompatActivity {
 
         private class ViewHolder {
             TextView productName, qty;
+        }
+    }
+
+    private class PaymentProcess extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("form_type", "update_order_payment");
+            map.put("order_id", orderId);
+            map.put("payment_amount", enteredAmount);
+            map.put("payment_type", paymentType);
+            map.put("is_complted", paymentCompleteStatus);
+            map.put("check_amount", enteredBankAmount);
+            map.put("check_number", enteredChequeNo);
+            map.put("check_date", enteredBankDate);
+            map.put("bank_name", enteredBankName);
+            map.put("market_id", userId);
+            map.put("retailor_id", retailerId);
+            map.put("other_amount", enteredOtherAmount);
+            map.put("other_desc", enteredOtherDesc);
+
+            Log.e("payement_req", map.toString());
+
+            /*try {
+                HttpRequest request = new HttpRequest(Constants.BASE_URL);
+                JSONObject obj = request.preparePost().withData(map).sendAndReadJSON();
+                Log.e("payment_response", obj.toString());
+                orderError = obj.getString("error");
+                if (orderError.equals("0")) {
+                    orderData = new GsonBuilder().create().fromJson(obj.toString(), Products.class);
+                }
+            } catch (Exception e) {
+                Functions.showSnack(parentView, e.getMessage());
+            }*/
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
         }
     }
 }
