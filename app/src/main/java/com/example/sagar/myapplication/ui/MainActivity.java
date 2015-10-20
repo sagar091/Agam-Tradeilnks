@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 TouchImageView bigImage = (TouchImageView) dialog.findViewById(R.id.bigImage);
-                Glide.with(MainActivity.this).load(imageURL).thumbnail(0.1f).placeholder(R.drawable.loading).into(bigImage);
+                Glide.with(MainActivity.this).load(imageURL).thumbnail(0.1f).placeholder(R.drawable.ic_progress_image).into(bigImage);
 
                 dialog.show();
             }
@@ -368,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
 
         txtBrand.setText(Functions.getText(edtCompany));
         txtName.setText(mainProduct.product.name);
-        Glide.with(this).load(mainProduct.product.product_image).thumbnail(0.1f).placeholder(R.drawable.loading).into(imgProduct);
+        Glide.with(this).load(mainProduct.product.product_image).thumbnail(0.1f).placeholder(R.drawable.ic_progress_image).into(imgProduct);
 
         if (mainProduct.product.featuredData.battery.equals("")) {
             batteryLayout.setVisibility(View.GONE);
