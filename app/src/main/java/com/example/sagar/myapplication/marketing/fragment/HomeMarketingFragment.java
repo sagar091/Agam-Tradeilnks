@@ -212,7 +212,7 @@ public class HomeMarketingFragment extends Fragment {
             pd.dismiss();
             if (modelError == 0) {
                 noData.setVisibility(View.GONE);
-                Log.e("modelData.model size", modelData.model.size() + "--");
+                //Log.e("modelData.model size", modelData.model.size() + "--");
 
                 final SearchAdapter adapter = new MyAdapter(modelData.model, getActivity());
                 productsListView.setAdapter(adapter);
