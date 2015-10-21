@@ -5,7 +5,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
+import com.flyco.animation.Attention.Flash;
+import com.flyco.animation.Attention.RubberBand;
+import com.flyco.animation.Attention.Tada;
+import com.flyco.animation.BounceEnter.BounceBottomEnter;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
 import com.flyco.animation.FadeEnter.FadeEnter;
+import com.flyco.animation.FallEnter.FallEnter;
+import com.flyco.animation.Jelly;
 import com.flyco.dialog.widget.base.BaseDialog;
 import com.rey.material.widget.Button;
 

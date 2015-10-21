@@ -18,8 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.AskDialog;
 import com.example.sagar.myapplication.customComponent.SettingDialog;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
+import com.example.sagar.myapplication.helper.DatabaseHandler;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.marketing.fragment.DownloadSheetFragment;
 import com.example.sagar.myapplication.model.Retailer;
@@ -213,5 +215,18 @@ public class RetailerDrawerActivity extends AppCompatActivity {
             });
             dialog.show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        final AskDialog askDialog = new AskDialog(this, "Are you sure want to exit?");
+        askDialog.setOnYesListener(new AskDialog.OnYesClickListener() {
+            @Override
+            public void clickYes() {
+                askDialog.dismiss();
+                finish();
+            }
+        });
+        askDialog.show();
     }
 }

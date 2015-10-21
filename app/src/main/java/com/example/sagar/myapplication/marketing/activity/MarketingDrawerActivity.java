@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.AskDialog;
 import com.example.sagar.myapplication.customComponent.ChangePasswordDialog;
 import com.example.sagar.myapplication.customComponent.SettingDialog;
 import com.example.sagar.myapplication.customComponent.ToolHelper;
@@ -285,7 +286,14 @@ public class MarketingDrawerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        final AskDialog askDialog = new AskDialog(this, "Are you sure want to exit?");
+        askDialog.setOnYesListener(new AskDialog.OnYesClickListener() {
+            @Override
+            public void clickYes() {
+                askDialog.dismiss();
+                finish();
+            }
+        });
+        askDialog.show();
     }
 }

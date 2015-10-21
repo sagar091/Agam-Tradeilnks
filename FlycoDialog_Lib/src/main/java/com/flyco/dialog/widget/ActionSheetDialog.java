@@ -408,6 +408,7 @@ public class ActionSheetDialog extends BottomBaseDialog {
 
     /**
      * set layoutAnimation(设置layout动画 ,传入null将不显示layout动画)
+     *
      * @param lac
      * @return ActionSheetDialog
      */

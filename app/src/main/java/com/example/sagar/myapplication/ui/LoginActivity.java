@@ -164,6 +164,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 loginError = statusObject.getInt("error");
                 if (loginError == 0) {
+                    Log.e("login", "success");
                     userProfile = new GsonBuilder().create().fromJson(statusObject.toString(), UserProfile.class);
 
                     userProfile.password = Functions.getText(edtPassword);
@@ -178,6 +179,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.commit();
 
                 } else {
+                    Log.e("login", "un-success");
                     Snackbar.make(loginButton, "Invalid Login Credentials", Snackbar.LENGTH_LONG).show();
                 }
 
@@ -199,7 +201,7 @@ public class LoginActivity extends AppCompatActivity {
 
             } else {
 
-                if (userProfile.is_new == null) {
+                if (userProfile.is_new == null || userProfile.is_new.equals("0")) {
                     Intent intent = new Intent(LoginActivity.this, RetailerDrawerActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
