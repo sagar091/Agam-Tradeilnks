@@ -1,76 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFE4E1"
-    android:orientation="vertical">
+    android:background="#FFE4E1">
 
     <TextView
+        android:id="@+id/txtNoScheme"
         android:layout_width="match_parent"
+        android:padding="30dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Scheme for this product:"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:text="No Scheme for this product" />
 
     <LinearLayout
-        android:id="@+id/viewLayout"
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="10dp">
-
-        <LinearLayout
-            android:id="@+id/schemeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        </LinearLayout>
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="You can apply any scheme to the products from Cart Page."
+            android:text="Scheme for this product:"
             android:textSize="18sp" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/selectLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="10dp">
-
-        <RadioGroup
-            android:id="@+id/rGroup"
+        <LinearLayout
+            android:id="@+id/viewLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
 
-        </RadioGroup>
+            <LinearLayout
+                android:id="@+id/schemeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <com.rey.material.widget.Button
-            android:id="@+id/btnApply"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp"
-            android:background="@color/button_bg"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:text="Apply"
-            android:textColor="#ffffff"
-            app:rd_enable="true"
-            app:rd_rippleColor="@color/button_ripple"
-            app:rd_rippleType="touch" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="You can apply any scheme to the products from Cart Page."
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/selectLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
+
+            <RadioGroup
+                android:id="@+id/rGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:orientation="vertical">
+
+            </RadioGroup>
+
+            <com.rey.material.widget.Button
+                android:id="@+id/btnApply"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="6dp"
+                android:background="@color/button_bg"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="Apply"
+                android:textColor="#ffffff"
+                app:rd_enable="true"
+                app:rd_rippleColor="@color/button_ripple"
+                app:rd_rippleType="touch" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-
-</LinearLayout>
+</RelativeLayout>

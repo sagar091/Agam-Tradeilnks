@@ -1,6 +1,7 @@
 package com.example.sagar.myapplication.customComponent;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -23,8 +24,8 @@ import java.util.List;
 public class SchemeViewDialog extends BaseDialog {
 
     View parentView;
-    private LinearLayout viewLayout, selectLayout, schemeLayout;
-    private TextView txtNote;
+    private LinearLayout viewLayout, selectLayout, schemeLayout, mainLayout;
+    private TextView txtNote, txtNoScheme;
     List<Scheme> schemes;
     Button btnApply;
     String type, schemeText;
@@ -62,47 +63,56 @@ public class SchemeViewDialog extends BaseDialog {
             }
         });
 
-        if (type.equals("home")) {
-            viewLayout.setVisibility(View.VISIBLE);
-            selectLayout.setVisibility(View.GONE);
-
-            txtNote.setVisibility(View.VISIBLE);
-            for (int i = 0; i < schemes.size(); i++) {
-                TextView txtScheme = new TextView(context);
-                txtScheme.setTextSize(18);
-
-                txtScheme.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bullet, 0, 0, 0);
-                txtScheme.setText("Buy " + schemes.get(i).quantity + " at  " + context.getResources().getString(R.string.Rs) + " " + schemes.get(i).price + " (per 1 quantity)");
-                schemeLayout.addView(txtScheme);
-            }
-
+        if (schemes.size() == 0) {
+            txtNoScheme.setVisibility(View.VISIBLE);
+            mainLayout.setVisibility(View.GONE);
         } else {
-            viewLayout.setVisibility(View.GONE);
-            selectLayout.setVisibility(View.VISIBLE);
+            txtNoScheme.setVisibility(View.GONE);
+            mainLayout.setVisibility(View.VISIBLE);
 
-            for (int i = 0; i < schemes.size(); i++) {
+            if (type.equals("home")) {
+                viewLayout.setVisibility(View.VISIBLE);
+                selectLayout.setVisibility(View.GONE);
+
+                txtNote.setVisibility(View.VISIBLE);
+                for (int i = 0; i < schemes.size(); i++) {
+                    TextView txtScheme = new TextView(context);
+                    txtScheme.setTextSize(18);
+
+                    txtScheme.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bullet, 0, 0, 0);
+                    txtScheme.setText("Buy " + schemes.get(i).quantity + " at  " + context.getResources().getString(R.string.Rs) + " " + schemes.get(i).price + " (per 1 quantity)");
+                    txtScheme.setGravity(Gravity.START | Gravity.LEFT);
+                    schemeLayout.addView(txtScheme);
+                }
+
+            } else {
+                viewLayout.setVisibility(View.GONE);
+                selectLayout.setVisibility(View.VISIBLE);
+
+                for (int i = 0; i < schemes.size(); i++) {
+                    RadioButton rButton = new RadioButton(context);
+                    rButton.setTextSize(18);
+                    rButton.setId(schemes.get(i).scheme_id);
+                    rButton.setText(schemes.get(i).scheme + " (per 1 quantity)");
+                    rGroup.addView(rButton);
+                }
+
                 RadioButton rButton = new RadioButton(context);
                 rButton.setTextSize(18);
-                rButton.setId(schemes.get(i).scheme_id);
-                rButton.setText(schemes.get(i).scheme + " (per 1 quantity)");
+                rButton.setId(0);
+                rButton.setText("No Scheme");
                 rGroup.addView(rButton);
+
+                rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        selectedSchemeId = checkedId;
+                        RadioButton selected = (RadioButton) rGroup.findViewById(checkedId);
+                        schemeText = (String) selected.getText();
+                        Functions.showSnack(parentView, selectedSchemeId + " -> " + schemeText);
+                    }
+                });
             }
-
-            RadioButton rButton = new RadioButton(context);
-            rButton.setTextSize(18);
-            rButton.setId(0);
-            rButton.setText("No Scheme");
-            rGroup.addView(rButton);
-
-            rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    selectedSchemeId = checkedId;
-                    RadioButton selected = (RadioButton) rGroup.findViewById(checkedId);
-                    schemeText = (String) selected.getText();
-                    Functions.showSnack(parentView, selectedSchemeId + " -> " + schemeText);
-                }
-            });
         }
 
         parentView.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +126,8 @@ public class SchemeViewDialog extends BaseDialog {
     }
 
     private void init(final View parentView) {
+        txtNoScheme = (TextView) parentView.findViewById(R.id.txtNoScheme);
+        mainLayout = (LinearLayout) parentView.findViewById(R.id.mainLayout);
         viewLayout = (LinearLayout) parentView.findViewById(R.id.viewLayout);
         selectLayout = (LinearLayout) parentView.findViewById(R.id.selectLayout);
         schemeLayout = (LinearLayout) parentView.findViewById(R.id.schemeLayout);

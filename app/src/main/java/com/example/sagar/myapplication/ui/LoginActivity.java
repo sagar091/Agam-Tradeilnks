@@ -163,6 +163,7 @@ public class LoginActivity extends AppCompatActivity {
                 statusObject = obj.getJSONObject("status");
 
                 loginError = statusObject.getInt("error");
+                Log.e("loginError", loginError + "");
                 if (loginError == 0) {
                     Log.e("login", "success");
                     userProfile = new GsonBuilder().create().fromJson(statusObject.toString(), UserProfile.class);

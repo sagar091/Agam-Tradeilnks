@@ -136,7 +136,7 @@ public class HomeRetailerFragment extends Fragment {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 TouchImageView bigImage = (TouchImageView) dialog.findViewById(R.id.bigImage);
-                Glide.with(getActivity()).load(imageURL).thumbnail(0.1f).placeholder(R.drawable.ic_progress_image).into(bigImage);
+                Glide.with(getActivity()).load(imageURL).thumbnail(0.1f).placeholder(R.drawable.loading).into(bigImage);
 
                 dialog.show();
             }
@@ -362,7 +362,7 @@ public class HomeRetailerFragment extends Fragment {
 
         txtBrand.setText(Functions.getText(edtCompany));
         txtName.setText(mainProduct.product.name);
-        Glide.with(this).load(mainProduct.product.product_image).thumbnail(0.1f).placeholder(R.drawable.ic_progress_image).into(imgProduct);
+        Glide.with(this).load(mainProduct.product.product_image).thumbnail(0.1f).placeholder(R.drawable.loading).into(imgProduct);
         txtRetailerPrice.setText(getResources().getString(R.string.Rs) + " " + mainProduct.product.featuredData.dp);
 
         if (mainProduct.product.featuredData.battery.equals("")) {
