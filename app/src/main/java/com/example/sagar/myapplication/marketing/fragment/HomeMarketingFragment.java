@@ -20,11 +20,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sagar.myapplication.R;
-import com.example.sagar.myapplication.customComponent.CheckInDialog;
 import com.example.sagar.myapplication.customComponent.CartDialog;
+import com.example.sagar.myapplication.customComponent.CheckInDialog;
 import com.example.sagar.myapplication.customComponent.SchemeViewDialog;
 import com.example.sagar.myapplication.customComponent.SearchAdapter;
-import com.example.sagar.myapplication.customComponent.ToolHelper;
 import com.example.sagar.myapplication.customComponent.TouchImageView;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
@@ -213,7 +212,7 @@ public class HomeMarketingFragment extends Fragment {
             if (modelError == 0) {
                 noData.setVisibility(View.GONE);
                 productsListView.setVisibility(View.VISIBLE);
-               // Log.e("modelData.model size", modelData.model.size() + "--");
+                // Log.e("modelData.model size", modelData.model.size() + "--");
 
                 final SearchAdapter adapter = new MyAdapter(modelData.model, getActivity());
                 productsListView.setAdapter(adapter);
