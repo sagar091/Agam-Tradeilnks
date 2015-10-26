@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -24,12 +25,17 @@ import com.example.sagar.myapplication.customComponent.AskDialog;
 import com.example.sagar.myapplication.customComponent.SchemeViewDialog;
 import com.example.sagar.myapplication.customComponent.UpdateCartDialog;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
+import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.DatabaseHandler;
 import com.example.sagar.myapplication.helper.Functions;
+import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.model.ProductCart;
 import com.example.sagar.myapplication.model.Scheme;
 import com.example.sagar.myapplication.model.UserProfile;
+import com.google.gson.GsonBuilder;
 import com.rey.material.widget.Button;
+
+import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -336,6 +342,38 @@ public class CartActivity extends AppCompatActivity {
             map.put("order_total", total + "");
 
             Log.e("place_order", map.toString());
+
+            /*try {
+                HttpRequest req = new HttpRequest(Constants.BASE_URL);
+                JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
+                Log.e("place_order_response", obj.toString());
+                *//*statusObject = obj.getJSONObject("status");
+
+                loginError = statusObject.getInt("error");
+                Log.e("loginError", loginError + "");
+                if (loginError == 0) {
+                    Log.e("login", "success");
+                    userProfile = new GsonBuilder().create().fromJson(statusObject.toString(), UserProfile.class);
+
+                    userProfile.password = Functions.getText(edtPassword);
+
+                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginActivity.this, "user_pref", 0);
+                    complexPreferences.putObject("current-user", userProfile);
+                    complexPreferences.commit();
+
+                    SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("isUserLogin", true);
+                    editor.commit();
+
+                } else {
+                    Log.e("login", "un-success");
+                    Snackbar.make(loginButton, "Invalid Login Credentials", Snackbar.LENGTH_LONG).show();
+                }*//*
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
 
             return null;
         }
