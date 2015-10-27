@@ -1,129 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="7dp">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="7dp">
 
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintTextAppearance="@style/TextInputLayout">
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edtFeedback"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top"
-                android:hint="Your Feedback Here"
-                android:inputType="textMultiLine|textCapSentences"
-                android:minLines="4"
-                android:textColorHint="@color/primaryColor" />
-        </android.support.design.widget.TextInputLayout>
+                app:hintTextAppearance="@style/TextInputLayout">
 
-        <LinearLayout
-            android:id="@+id/cb1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/feedback"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/edtFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:hint="Your Feedback Here"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:minLines="4"
+                    android:textColorHint="@color/primaryColor" />
+            </android.support.design.widget.TextInputLayout>
 
-            <com.rey.material.widget.CheckBox
-                android:id="@+id/cbPoster"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/cb1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center_vertical"
-                android:paddingLeft="4dp"
-                android:text="Posters"
-                android:theme="@style/CheckBoxCustom" />
+                android:layout_below="@+id/feedback"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
 
-            <com.rey.material.widget.CheckBox
-                android:id="@+id/cbBanner"
-                android:layout_width="0dp"
+                <com.rey.material.widget.CheckBox
+                    android:id="@+id/cbPoster"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="4dp"
+                    android:text="Posters"
+                    android:theme="@style/CheckBoxCustom" />
+
+                <com.rey.material.widget.CheckBox
+                    android:id="@+id/cbBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="4dp"
+                    android:text="Banners"
+                    android:theme="@style/CheckBoxCustom" />
+
+                <com.rey.material.widget.CheckBox
+                    android:id="@+id/cbDummy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="4dp"
+                    android:text="Dummy Mobiles"
+                    android:theme="@style/CheckBoxCustom" />
+
+                <com.rey.material.widget.CheckBox
+                    android:id="@+id/cbEtc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="4dp"
+                    android:text="Et cetra"
+                    android:theme="@style/CheckBoxCustom" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttons"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center_vertical"
-                android:paddingLeft="4dp"
-                android:text="Banners"
-                android:theme="@style/CheckBoxCustom" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/cb2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/cb1"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <com.rey.material.widget.CheckBox
-                android:id="@+id/cbDummy"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center_vertical"
-                android:paddingLeft="4dp"
-                android:text="Dummy Mobiles"
-                android:theme="@style/CheckBoxCustom" />
-
-            <com.rey.material.widget.CheckBox
-                android:id="@+id/cbEtc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center_vertical"
-                android:paddingLeft="4dp"
-                android:text="Et cetra"
-                android:theme="@style/CheckBoxCustom" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/buttons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/cb2"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <com.rey.material.widget.Button
-                android:id="@+id/btnSend"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="6dp"
+                android:layout_below="@+id/cb1"
                 android:layout_marginTop="16dp"
-                android:layout_weight="0.5"
-                android:background="@color/button_bg"
-                android:text="Send"
-                android:textColor="#ffffff"
-                app:rd_enable="true"
-                app:rd_rippleColor="@color/button_ripple"
-                app:rd_rippleType="touch" />
+                android:orientation="horizontal">
 
-            <com.rey.material.widget.Button
-                android:id="@+id/btnReset"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_marginTop="16dp"
-                android:layout_weight="0.5"
-                android:background="@color/button_bg"
-                android:text="Reset"
-                android:textColor="#ffffff"
-                app:rd_enable="true"
-                app:rd_rippleColor="@color/button_ripple"
-                app:rd_rippleType="touch" />
+                <com.rey.material.widget.Button
+                    android:id="@+id/btnSend"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="0.5"
+                    android:background="@color/button_bg"
+                    android:text="Send"
+                    android:textColor="#ffffff"
+                    app:rd_enable="true"
+                    app:rd_rippleColor="@color/button_ripple"
+                    app:rd_rippleType="touch" />
 
+                <com.rey.material.widget.Button
+                    android:id="@+id/btnReset"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_weight="0.5"
+                    android:background="@color/button_bg"
+                    android:text="Reset"
+                    android:textColor="#ffffff"
+                    app:rd_enable="true"
+                    app:rd_rippleColor="@color/button_ripple"
+                    app:rd_rippleType="touch" />
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

@@ -20,7 +20,7 @@
             android:layout_height="100dp"
             android:layout_gravity="top"
             android:adjustViewBounds="true"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             android:src="@drawable/loading" />
 
         <LinearLayout

@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:text="Pending Payment"
-            android:textSize="16sp" />
+            android:textColor="@color/black"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:text="Completed Payment"
-            android:textSize="16sp" />
+            android:textColor="@color/black"
+            android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>
