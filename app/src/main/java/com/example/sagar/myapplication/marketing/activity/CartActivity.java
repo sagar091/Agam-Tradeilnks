@@ -126,21 +126,23 @@ public class CartActivity extends AppCompatActivity {
             for (int i = 0; i < products.size(); i++) {
                 total += Integer.parseInt(products.get(i).getPrice()) * Integer.parseInt(products.get(i).getQty());
             }
+            Log.e("total", total + "--");
+
             txtTotal.setText("Total: " + getResources().getString(R.string.Rs) + " " + total);
 
+            //productsListView.removeFooterView(footerView);
             adapter = new CartAdapter(this, products);
             productsListView.setAdapter(adapter);
-            productsListView.addFooterView(footerView);
             cartLayout.setVisibility(View.VISIBLE);
         }
     }
 
     private void init() {
         footerView = getLayoutInflater().inflate(R.layout.order_footer, null);
-
         edtRemarks = (EditText) footerView.findViewById(R.id.edtRemarks);
-        btnPlaceOrder = (Button) findViewById(R.id.btnPlaceOrder);
         txtTotal = (TextView) footerView.findViewById(R.id.txtTotal);
+
+        btnPlaceOrder = (Button) findViewById(R.id.btnPlaceOrder);
         parentView = findViewById(android.R.id.content);
         cartLayout = (RelativeLayout) findViewById(R.id.cartLayout);
         productsListView = (ListView) findViewById(R.id.productsListView);
@@ -251,7 +253,7 @@ public class CartActivity extends AppCompatActivity {
                                 scheme = "No scheme";
                             }
                             handler.addScheme(products.get(position).getProductId(), schemeId, scheme);
-                            productsListView.removeFooterView(footerView);
+                            //productsListView.removeFooterView(footerView);
                             displayProducts();
                         }
 
@@ -279,7 +281,7 @@ public class CartActivity extends AppCompatActivity {
                         @Override
                         public void onOkClick() {
                             Functions.showSnack(parentView, "Product updated");
-                            productsListView.removeFooterView(footerView);
+                           // productsListView.removeFooterView(footerView);
                             displayProducts();
 
                         }
@@ -297,7 +299,7 @@ public class CartActivity extends AppCompatActivity {
                         public void clickYes() {
                             handler = new DatabaseHandler(context);
                             handler.deleteCartProduct(products.get(position).getProductId());
-                            productsListView.removeFooterView(footerView);
+//                            productsListView.removeFooterView(footerView);
                             displayProducts();
                         }
                     });
@@ -305,6 +307,7 @@ public class CartActivity extends AppCompatActivity {
                 }
             });
 
+            productsListView.addFooterView(footerView);
             return convertView;
         }
 
