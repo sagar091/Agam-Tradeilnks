@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/footerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="2dp">
+    android:padding="6dp">
 
     <TextView
         android:id="@+id/txtTotal"
@@ -26,7 +27,7 @@
             android:id="@+id/edtRemarks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left|start"
+            android:gravity="left|start|top"
             android:hint="Remarks"
             android:inputType="textMultiLine"
             android:minLines="2"

@@ -78,17 +78,25 @@
                 android:id="@+id/productsListView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/btnPlaceOrder"
+                android:layout_above="@+id/footerLayout"
                 android:layout_margin="5dp"
                 android:divider="@null"
                 android:fadeScrollbars="false"></ListView>
+
+            <include
+                layout="@layout/order_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btnPlaceOrder"></include>
 
             <com.rey.material.widget.Button
                 android:id="@+id/btnPlaceOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="10dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:background="@color/button_bg"
                 android:text="Place Order"
                 android:textColor="#ffffff"

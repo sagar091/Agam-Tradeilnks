@@ -124,7 +124,7 @@ public class CartActivity extends AppCompatActivity {
             emptyCart.setVisibility(View.GONE);
 
             for (int i = 0; i < products.size(); i++) {
-                total += Integer.parseInt(products.get(i).getPrice()) * Integer.parseInt(products.get(i).getQty());
+                total += Integer.parseInt(products.get(i).getSubTotal());
             }
             Log.e("total", total + "--");
 
@@ -281,7 +281,7 @@ public class CartActivity extends AppCompatActivity {
                         @Override
                         public void onOkClick() {
                             Functions.showSnack(parentView, "Product updated");
-                           // productsListView.removeFooterView(footerView);
+                            // productsListView.removeFooterView(footerView);
                             displayProducts();
 
                         }

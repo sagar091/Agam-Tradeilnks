@@ -111,11 +111,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         myDataBase = this.getWritableDatabase();
 
+        int price = Integer.parseInt(cartProductDetails.get(2));
+        int qty = Integer.parseInt(cartProductDetails.get(3));
+
         ContentValues values = new ContentValues();
         values.put("product_id", Integer.parseInt(cartProductDetails.get(0))); // id
         values.put("name", cartProductDetails.get(1)); // name
-        values.put("price", Integer.parseInt(cartProductDetails.get(2))); // price
-        values.put("qty", Integer.parseInt(cartProductDetails.get(3))); // qty
+        values.put("price", price); // price
+        values.put("qty", qty); // qty
+        values.put("sub_total", price * qty); //sub_total
         values.put("colors", cartProductDetails.get(4)); // colors
         myDataBase.insert(TABLE_CART_ITEM, null, values);
 
@@ -164,6 +168,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 ProductCart cart = new ProductCart();
                 cart.setName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
                 cart.setPrice(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("price"))));
+                cart.setSubTotal(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("sub_total"))));
                 cart.setProductId(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("product_id"))));
                 cart.setQty(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("qty"))));
                 cart.setColors(cursor.getString(cursor.getColumnIndexOrThrow("colors")));

@@ -7,6 +7,16 @@ public class ProductCart {
 
     String name;
     String price;
+
+    public String getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(String subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    String subTotal;
     String productId;
     String qty;
     String colors;
