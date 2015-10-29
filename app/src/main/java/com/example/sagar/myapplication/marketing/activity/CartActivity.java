@@ -4,9 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
@@ -29,6 +28,7 @@ import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.DatabaseHandler;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
+import com.example.sagar.myapplication.model.ModelData;
 import com.example.sagar.myapplication.model.ProductCart;
 import com.example.sagar.myapplication.model.Scheme;
 import com.example.sagar.myapplication.model.UserProfile;
@@ -61,7 +61,7 @@ public class CartActivity extends AppCompatActivity {
     ComplexPreferences complexPreferences;
     private String userId, retailerId, retailerType;
     SharedPreferences preferences;
-    View footerView;
+    int schemeError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,15 +132,16 @@ public class CartActivity extends AppCompatActivity {
 
             //productsListView.removeFooterView(footerView);
             adapter = new CartAdapter(this, products);
+            adapter.notifyDataSetChanged();
             productsListView.setAdapter(adapter);
             cartLayout.setVisibility(View.VISIBLE);
         }
     }
 
     private void init() {
-        footerView = getLayoutInflater().inflate(R.layout.order_footer, null);
-        edtRemarks = (EditText) footerView.findViewById(R.id.edtRemarks);
-        txtTotal = (TextView) footerView.findViewById(R.id.txtTotal);
+
+        edtRemarks = (EditText) findViewById(R.id.edtRemarks);
+        txtTotal = (TextView) findViewById(R.id.txtTotal);
 
         btnPlaceOrder = (Button) findViewById(R.id.btnPlaceOrder);
         parentView = findViewById(android.R.id.content);
@@ -214,6 +215,7 @@ public class CartActivity extends AppCompatActivity {
                 mHolder.remove = (ImageView) convertView.findViewById(R.id.remove);
                 mHolder.btnScheme = (Button) convertView.findViewById(R.id.btnScheme);
                 mHolder.edit = (ImageView) convertView.findViewById(R.id.qty);
+                mHolder.txtSubtotal = (TextView) convertView.findViewById(R.id.txtSubtotal);
                 convertView.setTag(mHolder);
             } else {
                 mHolder = (ViewHolder) convertView.getTag();
@@ -223,7 +225,7 @@ public class CartActivity extends AppCompatActivity {
             mHolder.txtProductName.setText(Html.fromHtml(str));
 
             str = "<b>Price: </b>" + getResources().getString(R.string.Rs)
-                    + products.get(position).getPrice();
+                    + products.get(position).getSubTotal();
             mHolder.txtProductPrice.setText(Html.fromHtml(str));
 
             mHolder.txtQty.setText(products.get(position).getQty());
@@ -231,11 +233,18 @@ public class CartActivity extends AppCompatActivity {
             str = "<b>Colors: </b>" + products.get(position).getColors();
             mHolder.txtColors.setText(Html.fromHtml(str));
 
-            if (products.get(position).getSchemeText() == null) {
+            if (products.get(position).getSchemeId() == 0) {
                 str = "<b>Sheme: </b>" + "No scheme";
+                mHolder.txtSubtotal.setVisibility(View.GONE);
+
             } else {
+                mHolder.txtSubtotal.setVisibility(View.VISIBLE);
+                String str1 = "<b>Price: </b>" + getResources().getString(R.string.Rs)
+                        + products.get(position).getSubTotal();
+                mHolder.txtSubtotal.setText(Html.fromHtml(str1));
                 str = "<b>Scheme: </b>" + products.get(position).getSchemeText();
             }
+
             mHolder.txtSelectedScheme.setText(Html.fromHtml(str));
 
             mHolder.btnScheme.setOnClickListener(new View.OnClickListener() {
@@ -251,10 +260,20 @@ public class CartActivity extends AppCompatActivity {
                             handler = new DatabaseHandler(context);
                             if (schemeId == 0) {
                                 scheme = "No scheme";
+                                mHolder.txtSubtotal.setVisibility(View.GONE);
+
+                            } else {
+                                mHolder.txtSubtotal.setVisibility(View.VISIBLE);
+                                String str = "<b>Price: </b>" + getResources().getString(R.string.Rs)
+                                        + products.get(position).getSubTotal();
+                                mHolder.txtSubtotal.setText(Html.fromHtml(str));
                             }
+
+                            new ApplyScheme().execute(position, schemeId);
+
                             handler.addScheme(products.get(position).getProductId(), schemeId, scheme);
-                            //productsListView.removeFooterView(footerView);
                             displayProducts();
+                            adapter.notifyDataSetChanged();
                         }
 
                     });
@@ -307,16 +326,57 @@ public class CartActivity extends AppCompatActivity {
                 }
             });
 
-            productsListView.addFooterView(footerView);
+            //productsListView.addFooterView(footerView);
             return convertView;
         }
 
         private class ViewHolder {
-            TextView txtProductName, txtProductPrice, txtColors, txtSelectedScheme;
+            TextView txtProductName, txtProductPrice, txtColors, txtSelectedScheme, txtSubtotal;
             TextView txtQty;
             ImageView remove;
             ImageView edit;
             Button btnScheme;
+        }
+
+        private class ApplyScheme extends AsyncTask<Integer, Void, Integer> {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                pd = ProgressDialog.show(context, "Loading", "Please wait", false);
+            }
+
+            @Override
+            protected Integer doInBackground(Integer... params) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("form_type", "select_scheme");
+                map.put("product_id", products.get(params[0]).getProductId());
+                map.put("scheme_id", params[1] + "");
+                map.put("product_qty", products.get(params[0]).getQty());
+                map.put("price", products.get(params[0]).getPrice());
+
+                Log.e("scheme_req", map.toString());
+                try {
+                    HttpRequest req = new HttpRequest(Constants.BASE_URL);
+                    JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
+                    Log.e("scheme_response", obj.toString());
+                    schemeError = obj.getInt("error");
+                    if (schemeError == 0) {
+//                        modelData = new GsonBuilder().create().fromJson(obj.toString(), ModelData.class);
+                    }else{
+                        Functions.showSnack(parentView,obj.getString("msg"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Integer integer) {
+                super.onPostExecute(integer);
+                pd.dismiss();
+            }
         }
     }
 

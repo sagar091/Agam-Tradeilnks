@@ -111,8 +111,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         myDataBase = this.getWritableDatabase();
 
-        int price = Integer.parseInt(cartProductDetails.get(2));
-        int qty = Integer.parseInt(cartProductDetails.get(3));
+        int price = Integer.parseInt(cartProductDetails.get(2)); // price
+        int qty = Integer.parseInt(cartProductDetails.get(3)); // qty
 
         ContentValues values = new ContentValues();
         values.put("product_id", Integer.parseInt(cartProductDetails.get(0))); // id
