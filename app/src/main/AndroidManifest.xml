@@ -64,6 +64,7 @@
         <activity
             android:name=".retailer.activity.RetailerPaymentOrderActivity"
             android:label="@string/title_activity_retailer_order_detail"></activity>
+        <activity android:name=".marketing.activity.ConfirmOrderActivity"></activity>
     </application>
 
 </manifest>

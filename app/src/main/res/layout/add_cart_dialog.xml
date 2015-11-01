@@ -25,7 +25,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="Pricing"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -79,22 +79,22 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:text="Colors"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
-                android:layout_marginTop="12dp"
                 android:text="(type any color then press enter to add)"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
@@ -110,7 +110,8 @@
             app:atg_dashBorderColor="@color/button_bg"
             app:atg_inputHint="Add Color"
             app:atg_isAppendMode="true"
-            app:atg_textColor="@color/black" />
+            app:atg_textColor="@color/black"
+            app:atg_textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"

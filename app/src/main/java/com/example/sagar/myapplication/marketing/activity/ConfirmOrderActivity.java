@@ -2,9 +2,11 @@ package com.example.sagar.myapplication.marketing.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -28,11 +30,11 @@ import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.DatabaseHandler;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
-import com.example.sagar.myapplication.model.ModelData;
 import com.example.sagar.myapplication.model.ProductCart;
 import com.example.sagar.myapplication.model.Scheme;
 import com.example.sagar.myapplication.model.UserProfile;
-import com.google.gson.GsonBuilder;
+import com.example.sagar.myapplication.retailer.activity.RetailerDrawerActivity;
+import com.example.sagar.myapplication.ui.MainActivity;
 import com.rey.material.widget.Button;
 
 import org.json.JSONObject;
@@ -42,7 +44,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CartActivity extends AppCompatActivity {
+public class ConfirmOrderActivity extends AppCompatActivity {
 
     DatabaseHandler handler;
     private EditText edtRemarks;
@@ -59,14 +61,14 @@ public class CartActivity extends AppCompatActivity {
     private Button btnPlaceOrder;
     ProgressDialog pd;
     ComplexPreferences complexPreferences;
-    private String userId, retailerId, retailerType;
+    private String userId, retailerId, retailerType, selectedSchemeText, errorMsg;
     SharedPreferences preferences;
-    int schemeError;
+    int schemeError, selectedSchemeId, sub_total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
+        setContentView(R.layout.activity_confirm_order);
 
         init();
 
@@ -75,11 +77,12 @@ public class CartActivity extends AppCompatActivity {
         userProfile = complexPreferences.getObject("current-user", UserProfile.class);
         userId = userProfile.user_id;
 
+        displayProducts();
+
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Functions.fireIntent(CartActivity.this, ConfirmOrderActivity.class);
-                /*preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
                 retailerId = preferences.getString("offline", null);
                 retailerType = preferences.getString("retailer_type", null);
 
@@ -87,30 +90,24 @@ public class CartActivity extends AppCompatActivity {
 
                 products = new ArrayList<>();
                 products.clear();
-                handler = new DatabaseHandler(CartActivity.this);
+                handler = new DatabaseHandler(ConfirmOrderActivity.this);
                 try {
                     handler.openDataBase();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
                 products = handler.getProducts();
-                new PlaceOrder().execute();*/
+                new PlaceOrder().execute();
             }
         });
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        displayProducts();
     }
 
     private void displayProducts() {
 
         products = new ArrayList<>();
         products.clear();
-        handler = new DatabaseHandler(CartActivity.this);
+        handler = new DatabaseHandler(ConfirmOrderActivity.this);
         try {
             handler.openDataBase();
         } catch (SQLException e) {
@@ -155,7 +152,7 @@ public class CartActivity extends AppCompatActivity {
         emptyCart = (TextView) findViewById(R.id.emptyCart);
         toolbar = (Toolbar) findViewById(R.id.toolbar2);
         if (toolbar != null) {
-            toolbar.setTitle("Your Cart");
+            toolbar.setTitle("Confirm Order");
             setSupportActionBar(toolbar);
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -217,15 +214,13 @@ public class CartActivity extends AppCompatActivity {
                         .findViewById(R.id.txtColors);
                 mHolder.txtQty = (TextView) convertView.findViewById(R.id.txtQty);
                 mHolder.txtSelectedScheme = (TextView) convertView.findViewById(R.id.txtSelectedScheme);
-                mHolder.txtSelectedScheme.setVisibility(View.GONE);
 
                 mHolder.remove = (ImageView) convertView.findViewById(R.id.remove);
                 mHolder.btnScheme = (Button) convertView.findViewById(R.id.btnScheme);
-                mHolder.btnScheme.setVisibility(View.GONE);
 
                 mHolder.edit = (ImageView) convertView.findViewById(R.id.qty);
+                mHolder.edit.setVisibility(View.GONE);
                 mHolder.txtSubtotal = (TextView) convertView.findViewById(R.id.txtSubtotal);
-                mHolder.txtSubtotal.setVisibility(View.GONE);
 
                 convertView.setTag(mHolder);
             } else {
@@ -244,31 +239,70 @@ public class CartActivity extends AppCompatActivity {
             str = "<b>Colors: </b>" + products.get(position).getColors();
             mHolder.txtColors.setText(Html.fromHtml(str));
 
-            mHolder.edit.setOnClickListener(new View.OnClickListener() {
+            if (products.get(position).getSchemeId() == 0) {
+                str = "<b>Sheme: </b>" + "No scheme";
+                mHolder.txtSubtotal.setVisibility(View.GONE);
+
+            } else {
+                mHolder.txtSubtotal.setVisibility(View.VISIBLE);
+                String str1 = "<b>Price: </b>" + getResources().getString(R.string.Rs)
+                        + products.get(position).getSubTotal();
+                mHolder.txtSubtotal.setText(Html.fromHtml(str1));
+                str = "<b>Scheme: </b>" + products.get(position).getSchemeText();
+            }
+
+            mHolder.txtSelectedScheme.setText(Html.fromHtml(str));
+
+            mHolder.btnScheme.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String productId = products.get(position).getProductId();
-                    String colors = products.get(position).getColors();
-                    String qty = products.get(position).getQty();
-                    String price = products.get(position).getPrice();
+                    handler = new DatabaseHandler(context);
+                    List<Scheme> schemes = handler.getScheme(products.get(position).getProductId());
 
-                    String[] diff = colors.split(", ");
-                    List<String> diffColors = new ArrayList<String>();
-                    for (int k = 0; k < diff.length; k++) {
-                        diffColors.add(diff[k]);
-                    }
-
-                    UpdateCartDialog updateCartDialog = new UpdateCartDialog(context, productId, diffColors, qty, price);
-                    updateCartDialog.setOnCartAddListener(new UpdateCartDialog.OnCartAddListener() {
+                    SchemeViewDialog dialog = new SchemeViewDialog(context, schemes, "cart");
+                    dialog.setOnApplyListener(new SchemeViewDialog.OnApplyListener() {
                         @Override
-                        public void onOkClick() {
-                            Functions.showSnack(parentView, "Product updated");
-                            // productsListView.removeFooterView(footerView);
-                            displayProducts();
+                        public void onApplyClick(int schemeId, String scheme) {
+                            selectedSchemeId = schemeId;
+                            selectedSchemeText = scheme;
+                            new ApplyScheme().execute(position, selectedSchemeId);
+
+                            new CountDownTimer(3000, 100) {
+                                @Override
+                                public void onTick(long l) {
+
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    pd.dismiss();
+                                    if (schemeError == 0) {
+                                        handler = new DatabaseHandler(context);
+                                        if (selectedSchemeId == 0) {
+                                            selectedSchemeText = "No scheme";
+                                            mHolder.txtSubtotal.setVisibility(View.GONE);
+
+                                        } else {
+                                            mHolder.txtSubtotal.setVisibility(View.VISIBLE);
+                                            String str = "<b>Net Price: </b>" + getResources().getString(R.string.Rs)
+                                                    + products.get(position).getSubTotal();
+                                            mHolder.txtSubtotal.setText(Html.fromHtml(str));
+                                        }
+
+                                        handler.addScheme(products.get(position).getProductId(), selectedSchemeId, selectedSchemeText, sub_total);
+                                        displayProducts();
+                                        adapter.notifyDataSetChanged();
+
+                                    } else {
+                                        Functions.showSnack(parentView, errorMsg);
+                                    }
+                                }
+                            }.start();
 
                         }
+
                     });
-                    updateCartDialog.show();
+                    dialog.show();
                 }
             });
 
@@ -326,8 +360,9 @@ public class CartActivity extends AppCompatActivity {
                     schemeError = obj.getInt("error");
                     if (schemeError == 0) {
 //                        modelData = new GsonBuilder().create().fromJson(obj.toString(), ModelData.class);
+                        sub_total = obj.getInt("sub_total");
                     } else {
-                        Functions.showSnack(parentView, obj.getString("msg"));
+                        errorMsg = obj.getString("msg");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -338,7 +373,7 @@ public class CartActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                pd.dismiss();
+
             }
         }
     }
@@ -347,7 +382,7 @@ public class CartActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pd = ProgressDialog.show(CartActivity.this, "Loading", "Please wait..", false);
+            pd = ProgressDialog.show(ConfirmOrderActivity.this, "Loading", "Please wait..", false);
         }
 
         @Override

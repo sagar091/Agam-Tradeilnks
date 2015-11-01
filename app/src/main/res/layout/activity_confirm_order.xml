@@ -98,7 +98,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@color/button_bg"
-                android:text="Confirm Order and Apply Scheme"
+                android:text="Place Order"
                 android:textColor="#ffffff"
                 app:rd_enable="true"
                 app:rd_rippleColor="@color/button_ripple"

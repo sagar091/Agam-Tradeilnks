@@ -202,9 +202,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return schemes;
     }
 
-    public void addScheme(String productId, int schemeId, String scheme) {
+    public void addScheme(String productId, int schemeId, String scheme, int sub_total) {
         myDataBase = this.getWritableDatabase();
-        String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET scheme_id='" + schemeId + "',scheme='" + scheme + "' WHERE product_id='" + productId + "'";
+        String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET scheme_id='" + schemeId + "',scheme='" + scheme + "',sub_total='" + sub_total + "' WHERE product_id='" + productId + "'";
         myDataBase.execSQL(selectQuery);
     }
 
@@ -215,9 +215,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateCart(String productId, String qty, String colors) {
+    public boolean updateCart(String productId, String qty, String colors, int subtotal) {
         myDataBase = this.getWritableDatabase();
-        String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET qty='" + qty + "',colors='" + colors + "' WHERE product_id='" + productId + "'";
+        String selectQuery = "UPDATE " + TABLE_CART_ITEM + " SET qty='" + qty + "',colors='" + colors + "',sub_total='" + subtotal + "' WHERE product_id='" + productId + "'";
         myDataBase.execSQL(selectQuery);
         return true;
     }

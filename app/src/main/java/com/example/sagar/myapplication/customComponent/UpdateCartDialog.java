@@ -36,7 +36,7 @@ public class UpdateCartDialog extends BaseDialog {
     View customView;
     View parentView;
     List<Scheme> schemes;
-    int qty;
+    int qty, subtotal;
 
     String productId, quantity, price;
     List<String> diffColors;
@@ -98,7 +98,7 @@ public class UpdateCartDialog extends BaseDialog {
                     String colors = sb.toString().substring(0, sb.toString().length() - 2);
                     try {
                         handler.openDataBase();
-                        boolean save = handler.updateCart(productId, quantity, colors);
+                        boolean save = handler.updateCart(productId, quantity, colors, subtotal);
                         if (save) {
                             if (onCartAddListener != null) {
                                 onCartAddListener.onOkClick();
@@ -137,7 +137,8 @@ public class UpdateCartDialog extends BaseDialog {
 
         int q = Integer.parseInt(quantity);
         int t = Integer.parseInt(price);
-        unitTotalPrice.setText("= " + context.getResources().getString(R.string.Rs) + (q * t));
+        subtotal = q * t;
+        unitTotalPrice.setText("= " + context.getResources().getString(R.string.Rs) + subtotal);
     }
 
     @Override
@@ -148,7 +149,8 @@ public class UpdateCartDialog extends BaseDialog {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 qty = progress;
                 unitQty.setText("x " + progress + " Qty");
-                unitTotalPrice.setText("= " + context.getResources().getString(R.string.Rs) + " " + String.valueOf(Integer.parseInt(price) * progress));
+                subtotal = Integer.parseInt(price) * progress;
+                unitTotalPrice.setText("= " + context.getResources().getString(R.string.Rs) + " " + subtotal);
                 quantity = String.valueOf(qty);
             }
 
