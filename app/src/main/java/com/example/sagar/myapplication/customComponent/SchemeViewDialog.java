@@ -30,7 +30,7 @@ public class SchemeViewDialog extends BaseDialog {
     Button btnApply;
     String type, schemeText;
     RadioGroup rGroup;
-    int selectedSchemeId = 0;
+    int selectedSchemeId = -1;
     OnApplyListener onApplyListener;
 
     public void setOnApplyListener(OnApplyListener onApplyListener) {
@@ -54,12 +54,16 @@ public class SchemeViewDialog extends BaseDialog {
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (onApplyListener != null) {
-                    onApplyListener.onApplyClick(selectedSchemeId, schemeText);
+                if (selectedSchemeId == -1) {
+                    Functions.showSnack(parentView, "Select any scheme or Select no scheme");
+                } else {
+                    if (onApplyListener != null) {
+                        onApplyListener.onApplyClick(selectedSchemeId, schemeText);
+                    }
+                    Functions.showSnack(parentView, "Selected scheme " + selectedSchemeId);
+                    dismiss();
                 }
-                Functions.showSnack(parentView, "Selected scheme " + selectedSchemeId);
-                dismiss();
+
             }
         });
 

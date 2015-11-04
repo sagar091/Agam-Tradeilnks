@@ -2,7 +2,6 @@ package com.example.sagar.myapplication.marketing.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.AskDialog;
 import com.example.sagar.myapplication.customComponent.SchemeViewDialog;
-import com.example.sagar.myapplication.customComponent.UpdateCartDialog;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.DatabaseHandler;
@@ -33,8 +31,6 @@ import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.model.ProductCart;
 import com.example.sagar.myapplication.model.Scheme;
 import com.example.sagar.myapplication.model.UserProfile;
-import com.example.sagar.myapplication.retailer.activity.RetailerDrawerActivity;
-import com.example.sagar.myapplication.ui.MainActivity;
 import com.rey.material.widget.Button;
 
 import org.json.JSONObject;
@@ -162,9 +158,33 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                removeScheme();
             }
         });
+
+    }
+
+    private void removeScheme() {
+
+        if (products.size() == 0) {
+            finish();
+
+        } else {
+            AskDialog askDialog = new AskDialog(ConfirmOrderActivity.this, "If you will go back, applied schemes removed from all products. Want go back?");
+            askDialog.setOnYesListener(new AskDialog.OnYesClickListener() {
+                @Override
+                public void clickYes() {
+                    handler = new DatabaseHandler(ConfirmOrderActivity.this);
+
+                    for (int i = 0; i < products.size(); i++) {
+                        sub_total = Integer.parseInt(products.get(i).getQty()) * Integer.parseInt(products.get(i).getPrice());
+                        handler.addScheme(products.get(i).getProductId(), 0, "No Scheme", sub_total);
+                    }
+                    finish();
+                }
+            });
+            askDialog.show();
+        }
 
     }
 
@@ -174,6 +194,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         Context context;
         List<ProductCart> products;
         LayoutInflater mInflater;
+        int originalPrice;
 
         public CartAdapter(Context context, List<ProductCart> products) {
             this.context = context;
@@ -230,8 +251,9 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             String str = "<b>Name: </b>" + products.get(position).getName();
             mHolder.txtProductName.setText(Html.fromHtml(str));
 
+            originalPrice = Integer.parseInt(products.get(position).getQty()) * Integer.parseInt(products.get(position).getPrice());
             str = "<b>Price: </b>" + getResources().getString(R.string.Rs)
-                    + products.get(position).getSubTotal();
+                    + originalPrice;
             mHolder.txtProductPrice.setText(Html.fromHtml(str));
 
             mHolder.txtQty.setText(products.get(position).getQty());
@@ -292,6 +314,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                                         handler.addScheme(products.get(position).getProductId(), selectedSchemeId, selectedSchemeText, sub_total);
                                         displayProducts();
                                         adapter.notifyDataSetChanged();
+                                        mHolder.txtProductPrice.setText("Price: " + getResources().getString(R.string.Rs) + originalPrice);
 
                                     } else {
                                         Functions.showSnack(parentView, errorMsg);
@@ -351,6 +374,8 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                 map.put("scheme_id", params[1] + "");
                 map.put("product_qty", products.get(params[0]).getQty());
                 map.put("price", products.get(params[0]).getPrice());
+
+                originalPrice = Integer.parseInt(products.get(params[0]).getQty()) * Integer.parseInt(products.get(params[0]).getPrice());
 
                 Log.e("scheme_req", map.toString());
                 try {
@@ -444,5 +469,10 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             super.onPostExecute(s);
             pd.dismiss();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        removeScheme();
     }
 }

@@ -129,7 +129,8 @@ public class CartActivity extends AppCompatActivity {
             emptyCart.setVisibility(View.GONE);
 
             for (int i = 0; i < products.size(); i++) {
-                total += Integer.parseInt(products.get(i).getSubTotal());
+                int subPrice = Integer.parseInt(products.get(i).getQty()) * Integer.parseInt(products.get(i).getPrice());
+                total += subPrice;
             }
             Log.e("total", total + "--");
 
@@ -146,6 +147,7 @@ public class CartActivity extends AppCompatActivity {
     private void init() {
 
         edtRemarks = (EditText) findViewById(R.id.edtRemarks);
+        edtRemarks.setVisibility(View.GONE);
         txtTotal = (TextView) findViewById(R.id.txtTotal);
 
         btnPlaceOrder = (Button) findViewById(R.id.btnPlaceOrder);
@@ -171,12 +173,12 @@ public class CartActivity extends AppCompatActivity {
 
     }
 
-
     private class CartAdapter extends BaseAdapter {
 
         Context context;
         List<ProductCart> products;
         LayoutInflater mInflater;
+        int originalPrice;
 
         public CartAdapter(Context context, List<ProductCart> products) {
             this.context = context;
@@ -235,8 +237,9 @@ public class CartActivity extends AppCompatActivity {
             String str = "<b>Name: </b>" + products.get(position).getName();
             mHolder.txtProductName.setText(Html.fromHtml(str));
 
+            originalPrice = Integer.parseInt(products.get(position).getQty()) * Integer.parseInt(products.get(position).getPrice());
             str = "<b>Price: </b>" + getResources().getString(R.string.Rs)
-                    + products.get(position).getSubTotal();
+                    + originalPrice;
             mHolder.txtProductPrice.setText(Html.fromHtml(str));
 
             mHolder.txtQty.setText(products.get(position).getQty());

@@ -68,6 +68,21 @@ public class CartDialog extends BaseDialog {
             }
         });
 
+        if(mTagGroup.getInputTagText().contains("\n")){
+            Log.e("key2", "enter");
+            mTagGroup.submitTag();
+        }
+
+        mTagGroup.setOnTagClickListener(new TagGroup.OnTagClickListener() {
+            @Override
+            public void onTagClick(String tag) {
+                if(tag.contains("\n")){
+                    Log.e("key1", "enter");
+                    mTagGroup.submitTag();
+                }
+            }
+        });
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
