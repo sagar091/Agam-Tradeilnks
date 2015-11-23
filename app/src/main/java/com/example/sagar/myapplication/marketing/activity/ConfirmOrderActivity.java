@@ -2,10 +2,12 @@ package com.example.sagar.myapplication.marketing.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -31,6 +33,7 @@ import com.example.sagar.myapplication.helper.HttpRequest;
 import com.example.sagar.myapplication.model.ProductCart;
 import com.example.sagar.myapplication.model.Scheme;
 import com.example.sagar.myapplication.model.UserProfile;
+import com.example.sagar.myapplication.ui.CheckInActivity;
 import com.rey.material.widget.Button;
 
 import org.json.JSONObject;
@@ -59,7 +62,8 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     ComplexPreferences complexPreferences;
     private String userId, retailerId, retailerType, selectedSchemeText, errorMsg;
     SharedPreferences preferences;
-    int schemeError, selectedSchemeId, sub_total;
+    int schemeError, selectedSchemeId, sub_total, orderError;
+    JSONObject statusObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,7 +293,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                             selectedSchemeText = scheme;
                             new ApplyScheme().execute(position, selectedSchemeId);
 
-                            new CountDownTimer(3000, 100) {
+                            new CountDownTimer(4000, 100) {
                                 @Override
                                 public void onTick(long l) {
 
@@ -429,37 +433,25 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
             Log.e("place_order", map.toString());
 
-            /*try {
+            try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = req.preparePost().withData(map).sendAndReadJSON();
                 Log.e("place_order_response", obj.toString());
-                *//*statusObject = obj.getJSONObject("status");
+                statusObject = obj.getJSONObject("status");
 
-                loginError = statusObject.getInt("error");
-                Log.e("loginError", loginError + "");
-                if (loginError == 0) {
-                    Log.e("login", "success");
-                    userProfile = new GsonBuilder().create().fromJson(statusObject.toString(), UserProfile.class);
-
-                    userProfile.password = Functions.getText(edtPassword);
-
-                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginActivity.this, "user_pref", 0);
-                    complexPreferences.putObject("current-user", userProfile);
-                    complexPreferences.commit();
-
-                    SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean("isUserLogin", true);
-                    editor.commit();
+                orderError = statusObject.getInt("error");
+                Log.e("orderError", orderError + "");
+                if (orderError == 0) {
+                    Log.e("order place", "success");
 
                 } else {
-                    Log.e("login", "un-success");
-                    Snackbar.make(loginButton, "Invalid Login Credentials", Snackbar.LENGTH_LONG).show();
-                }*//*
+                    Log.e("order place", "un-success");
+                    Snackbar.make(parentView, "Invalid Login Credentials", Snackbar.LENGTH_LONG).show();
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
-            }*/
+            }
 
             return null;
         }
@@ -468,6 +460,48 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             pd.dismiss();
+            if (orderError == 0) {
+                Functions.showSnack(parentView, "Thank you! Your order placed successfully.");
+
+                new CountDownTimer(3000, 100) {
+                    @Override
+                    public void onTick(long l) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        handler = new DatabaseHandler(ConfirmOrderActivity.this);
+                        try {
+                            handler.openDataBase();
+                            handler.deleteCart();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+
+                        Intent i = null;
+                        if (retailerType.equals("0")) {
+                            i = new Intent(ConfirmOrderActivity.this, MarketingDrawerActivity.class);
+                        } else {
+                            SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.remove("offline");
+                            editor.remove("retailer_type");
+                            editor.commit();
+
+                            i = new Intent(ConfirmOrderActivity.this, CheckInActivity.class);
+                        }
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                | Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
+                    }
+                }.start();
+
+
+            } else {
+                Functions.showSnack(parentView, "Sorry!, something went wrong. Please try to place order again.");
+            }
         }
     }
 

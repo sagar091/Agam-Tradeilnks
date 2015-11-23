@@ -221,4 +221,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         myDataBase.execSQL(selectQuery);
         return true;
     }
+
+    public void deleteCart() {
+        myDataBase = this.getWritableDatabase();
+        String selectQuery = "DELETE FROM " + TABLE_CART_ITEM;
+        myDataBase.execSQL(selectQuery);
+    }
 }

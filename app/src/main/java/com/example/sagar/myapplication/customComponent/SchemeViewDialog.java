@@ -60,7 +60,7 @@ public class SchemeViewDialog extends BaseDialog {
                     if (onApplyListener != null) {
                         onApplyListener.onApplyClick(selectedSchemeId, schemeText);
                     }
-                    Functions.showSnack(parentView, "Selected scheme " + selectedSchemeId);
+                    //Functions.showSnack(parentView, "Selected scheme " + selectedSchemeId);
                     dismiss();
                 }
 
@@ -113,7 +113,7 @@ public class SchemeViewDialog extends BaseDialog {
                         selectedSchemeId = checkedId;
                         RadioButton selected = (RadioButton) rGroup.findViewById(checkedId);
                         schemeText = (String) selected.getText();
-                        Functions.showSnack(parentView, selectedSchemeId + " -> " + schemeText);
+                        //Functions.showSnack(parentView, selectedSchemeId + " -> " + schemeText);
                     }
                 });
             }
