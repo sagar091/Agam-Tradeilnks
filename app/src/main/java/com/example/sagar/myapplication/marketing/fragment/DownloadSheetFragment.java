@@ -110,7 +110,7 @@ public class DownloadSheetFragment extends Fragment {
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.e("url", "https://docs.google.com/viewer?embedded=true&url=" + sheetURL);
                 webView.loadUrl("https://docs.google.com/viewer?embedded=true&url=" + sheetURL);
             }
         });
