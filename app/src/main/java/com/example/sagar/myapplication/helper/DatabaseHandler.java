@@ -29,7 +29,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_CART_ITEM = "Cart";
     private static final String TABLE_SCHEME = "Scheme";
 
-    private static final String DATABASE_PATH = "/data/data/com.example.app.agamtradelinks/databases/";
+    private static final String DATABASE_PATH = "/data/data/com.app.agamtradelinks/databases/";
     private Context context;
     private SQLiteDatabase myDataBase = null;
 

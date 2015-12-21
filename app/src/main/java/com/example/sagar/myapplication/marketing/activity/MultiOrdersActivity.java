@@ -4,13 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -20,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
@@ -120,7 +116,9 @@ public class MultiOrdersActivity extends AppCompatActivity {
 
     private void processContinue() {
 
-        if (last == 0) {
+        Functions.showSnack(parentView, "In Progress..");
+
+        /*if (last == 0) {
             Functions.showSnack(parentView, "Select payment method");
 
         } else if (last == R.id.radioCash) {
@@ -158,7 +156,7 @@ public class MultiOrdersActivity extends AppCompatActivity {
             } else {
                 Functions.showSnack(parentView, "Proceed");
             }
-        }
+        }*/
     }
 
     private void init() {

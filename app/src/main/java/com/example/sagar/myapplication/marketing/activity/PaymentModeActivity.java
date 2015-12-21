@@ -4,8 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +19,6 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.AskDialog;
@@ -189,7 +188,6 @@ public class PaymentModeActivity extends AppCompatActivity {
         askDialog.setOnYesListener(new AskDialog.OnYesClickListener() {
             @Override
             public void clickYes() {
-                Functions.showSnack(parentView, "proceed");
                 new PaymentProcess().execute();
             }
         });
@@ -411,17 +409,19 @@ public class PaymentModeActivity extends AppCompatActivity {
 
             Log.e("payement_req", map.toString());
 
-            /*try {
+            try {
                 HttpRequest request = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = request.preparePost().withData(map).sendAndReadJSON();
                 Log.e("payment_response", obj.toString());
                 orderError = obj.getString("error");
                 if (orderError.equals("0")) {
                     orderData = new GsonBuilder().create().fromJson(obj.toString(), Products.class);
+                    Functions.showSnack(parentView, "Order update");
+                    finish();
                 }
             } catch (Exception e) {
                 Functions.showSnack(parentView, e.getMessage());
-            }*/
+            }
             return null;
         }
 
