@@ -3,10 +3,10 @@ package com.example.sagar.myapplication.marketing.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +20,8 @@ import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.HttpRequest;
+import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.marketing.activity.OrderDetailsActivity;
-import com.example.sagar.myapplication.model.ModelClass;
 import com.example.sagar.myapplication.model.OrderMarketingData;
 import com.example.sagar.myapplication.model.OrderModel;
 import com.example.sagar.myapplication.model.UserProfile;
@@ -29,6 +29,7 @@ import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,6 +44,13 @@ public class OrderPendingFragment extends Fragment {
     OrderMarketingData orderData;
     PendingOrderAdapter adapter;
     String orderId, orderStatus;
+
+    TextView txtNoData;
+    List<OrderModel> listOrders;
+
+    String checkInRetailorId;
+    String checkInRetailorName;
+    SharedPreferences preferences;
 
     public static OrderPendingFragment newInstance() {
         OrderPendingFragment fragment = new OrderPendingFragment();
@@ -87,16 +95,21 @@ public class OrderPendingFragment extends Fragment {
     private void init(View parentView) {
         findViewById(parentView);
 
+        preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+        checkInRetailorId = preferences.getString("offline", null);
+
         UserProfile userProfile = new UserProfile();
         complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "user_pref", 0);
         userProfile = complexPreferences.getObject("current-user", UserProfile.class);
         userId = userProfile.user_id;
 
+        listOrders = new ArrayList<>();
         new GetPendingOrder().execute();
 
     }
 
     private void findViewById(View parentView) {
+        txtNoData = (TextView) parentView.findViewById(R.id.txtNoData);
         listView = (ListView) parentView.findViewById(R.id.listView);
     }
 
@@ -121,6 +134,23 @@ public class OrderPendingFragment extends Fragment {
                 if (orderError == 0) {
                     orderData = new GsonBuilder().create().fromJson(obj.toString(), OrderMarketingData.class);
                 }
+
+                if (orderData.orders.size() > 0) {
+
+                    if (checkInRetailorId == null || checkInRetailorId.equals("")) {
+                        listOrders.addAll(orderData.orders);
+                    } else {
+                        for (OrderModel order : orderData.orders) {
+                            checkInRetailorName = order.order.retailor_name;
+                            if (order.order.retailor_id.equals(checkInRetailorId)) {
+                                listOrders.add(order);
+
+                            }
+                        }
+                    }
+
+                }
+
             } catch (Exception e) {
                 Log.e("error", e.getMessage());
             }
@@ -131,9 +161,17 @@ public class OrderPendingFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             pd.dismiss();
-            if (orderData.orders.size() > 0) {
-                adapter = new PendingOrderAdapter(getActivity(), orderData.orders);
+
+            if (checkInRetailorName != null && !checkInRetailorName.equals(""))
+                ((MarketingDrawerActivity) getActivity()).setSubtitle(checkInRetailorName);
+
+            if (listOrders.size() > 0) {
+                txtNoData.setVisibility(View.GONE);
+                adapter = new PendingOrderAdapter(getActivity(), listOrders);
                 listView.setAdapter(adapter);
+            } else {
+                txtNoData.setVisibility(View.VISIBLE);
+                txtNoData.setText("No Records");
             }
 
         }
@@ -188,7 +226,7 @@ public class OrderPendingFragment extends Fragment {
             }
 
             mHolder.orderid.setText(orders.get(position).order.order_id);
-            mHolder.retailer.setText(orders.get(position).order.retailor_id);
+            mHolder.retailer.setText(orders.get(position).order.retailor_name);
             mHolder.orderdate
                     .setText(orders.get(position).order.order_date);
 

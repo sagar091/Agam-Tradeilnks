@@ -6,7 +6,7 @@
     tools:context="com.example.sagar.myapplication.marketing.fragment.OrderPendingFragment">
 
     <TextView
-        android:id="@+id/noData"
+        android:id="@+id/txtNoData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

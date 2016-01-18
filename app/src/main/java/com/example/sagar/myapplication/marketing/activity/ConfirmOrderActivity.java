@@ -422,6 +422,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             for (int i = 0; i < products.size(); i++) {
                 map.put("product[" + i + "]", products.get(i).getProductId());
                 map.put("qty[" + i + "]", products.get(i).getQty());
+                map.put("color[" + i + "]", products.get(i).getColors());
                 map.put("scheme[" + i + "]", products.get(i).getSchemeId() + "");
             }
 
