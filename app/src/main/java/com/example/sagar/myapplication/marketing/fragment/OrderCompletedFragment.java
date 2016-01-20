@@ -53,8 +53,11 @@ public class OrderCompletedFragment extends Fragment {
     String checkInRetailorId;
     SharedPreferences preferences;
 
-    public static OrderCompletedFragment newInstance() {
+    static String filterStr;
+
+    public static OrderCompletedFragment newInstance(String filter) {
         OrderCompletedFragment fragment = new OrderCompletedFragment();
+        filterStr = filter;
         return fragment;
     }
 
@@ -123,6 +126,7 @@ public class OrderCompletedFragment extends Fragment {
         protected Void doInBackground(Void... params) {
             HashMap<String, String> map = new HashMap<>();
             map.put("form_type", "get_completed_orders");
+            map.put("filter", filterStr);
             map.put("user_id", userId);
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);
@@ -132,23 +136,24 @@ public class OrderCompletedFragment extends Fragment {
                 if (orderError == 0) {
                     orderData = new GsonBuilder().create().fromJson(obj.toString(), OrderMarketingData.class);
                 }
-            } catch (Exception e) {
-                Log.e("error", e.getMessage());
-            }
 
-            if (orderData.orders.size() > 0) {
+                if (orderData.orders.size() > 0) {
 
-                if (checkInRetailorId == null || checkInRetailorId.equals("")) {
-                    listOrders.addAll(orderData.orders);
-                } else {
-                    for (OrderModel order : orderData.orders) {
-                        if (order.order.retailor_id.equals(checkInRetailorId)) {
-                            checkInRetailorName = order.order.retailor_name;
-                            listOrders.add(order);
+                    if (checkInRetailorId == null || checkInRetailorId.equals("")) {
+                        listOrders.addAll(orderData.orders);
+                    } else {
+                        for (OrderModel order : orderData.orders) {
+                            if (order.order.retailor_id.equals(checkInRetailorId)) {
+                                checkInRetailorName = order.order.retailor_name;
+                                listOrders.add(order);
+                            }
                         }
                     }
+
                 }
 
+            } catch (Exception e) {
+                Log.e("error", e.getMessage());
             }
 
             return null;

@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.FilterDialog;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
@@ -42,8 +45,9 @@ public class MultiOrdersActivity extends AppCompatActivity {
     private Toolbar toolbar;
     View parentView;
     OrderMarketingData orderData;
-    private String userId, selectRetailerId, selectRetailerName, orderError;
-    private ImageView imgCart;
+    private String userId, filter = "0", selectRetailerId, selectRetailerName, orderError;
+    private ImageView imgCart, imgFilter;
+    TextView txtFilter;
     ComplexPreferences complexPreferences;
     OrdersAdapter adapter;
     private TextView noData, txtAmount;
@@ -68,6 +72,9 @@ public class MultiOrdersActivity extends AppCompatActivity {
     EditText edtOtherAmount, edtOtherDesc;
     LinearLayout otherLayout;
     private String enteredOtherAmount, enteredOtherDesc;
+
+    private TextView txtClear;
+    private RelativeLayout filterLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +117,30 @@ public class MultiOrdersActivity extends AppCompatActivity {
         complexPreferences = ComplexPreferences.getComplexPreferences(this, "user_pref", 0);
         userProfile = complexPreferences.getObject("current-user", UserProfile.class);
         userId = userProfile.user_id;
+
+        imgFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final FilterDialog dialog = new FilterDialog(MultiOrdersActivity.this, filter);
+                dialog.setOnFilterChangeListener(new FilterDialog.FilterChangeListener() {
+                    @Override
+                    public void onFilter(String filterType) {
+                        filter = filterType;
+                        dialog.dismiss();
+                        new GetRetailerOrders().execute();
+                    }
+                });
+                dialog.show();
+            }
+        });
+
+        txtClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filter = "0";
+                new GetRetailerOrders().execute();
+            }
+        });
 
         new GetRetailerOrders().execute();
     }
@@ -160,6 +191,9 @@ public class MultiOrdersActivity extends AppCompatActivity {
     }
 
     private void init() {
+        filterLayout = (RelativeLayout) findViewById(R.id.filterLayout);
+        txtClear = (TextView) findViewById(R.id.txtClear);
+        txtFilter = (TextView) findViewById(R.id.txtFilter);
         edtChequeNo = (EditText) findViewById(R.id.edtChequeNo);
         edtBankname = (EditText) findViewById(R.id.edtBankname);
         edtBankAmount = (EditText) findViewById(R.id.edtBankAmount);
@@ -188,6 +222,9 @@ public class MultiOrdersActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imgCart = (ImageView) findViewById(R.id.imgCart);
+        imgFilter = (ImageView) findViewById(R.id.imgFilter);
+        imgFilter.setVisibility(View.VISIBLE);
+
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,6 +243,7 @@ public class MultiOrdersActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            setFilterLayout();
             pd = ProgressDialog.show(MultiOrdersActivity.this, "Loading", "Please wait..", false);
         }
 
@@ -214,7 +252,11 @@ public class MultiOrdersActivity extends AppCompatActivity {
             HashMap<String, String> map = new HashMap<>();
             map.put("form_type", "retailor_order");
             map.put("user_id", userId);
+            map.put("filter", filter);
             map.put("retailor_id", selectRetailerId);
+
+            Log.e(getClass().getSimpleName(), map.toString());
+
             try {
                 HttpRequest request = new HttpRequest(Constants.BASE_URL);
                 JSONObject obj = request.preparePost().withData(map).sendAndReadJSON();
@@ -250,6 +292,25 @@ public class MultiOrdersActivity extends AppCompatActivity {
             } else {
                 noData.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    private void setFilterLayout() {
+        if (filter.equals("0")) {
+            filterLayout.setVisibility(View.GONE);
+        } else {
+            filterLayout.setVisibility(View.VISIBLE);
+            txtFilter.setText("Orders from: " + getFilterText(filter));
+        }
+    }
+
+    private String getFilterText(String filter) {
+        if (filter.equals("1")) {
+            return "1 Week";
+        } else if (filter.equals("2")) {
+            return "2 Week";
+        } else {
+            return "3 Week";
         }
     }
 

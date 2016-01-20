@@ -65,6 +65,7 @@ public class MultipleOrdersPaymentFragment extends Fragment {
     private void init(View customView) {
         ((MarketingDrawerActivity) getActivity()).setTitle("Multiple Orders Payment");
         ((MarketingDrawerActivity) getActivity()).setSubtitle("Select Retailer");
+        ((MarketingDrawerActivity) getActivity()).setFilterImage(false);
 
         parentView = (View) customView.findViewById(android.R.id.content);
 

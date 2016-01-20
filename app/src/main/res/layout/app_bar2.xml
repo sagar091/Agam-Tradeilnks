@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relative2"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relative2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -23,6 +23,16 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/ic_cart"
             android:tint="#fff" />
+
+        <ImageView
+            android:id="@+id/imgFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="6dp"
+            android:visibility="gone"
+            android:src="@drawable/ic_filter"
+            android:tint="@color/white" />
 
     </android.support.v7.widget.Toolbar>
 </RelativeLayout>

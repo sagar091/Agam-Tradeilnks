@@ -52,9 +52,11 @@ public class OrderPendingFragment extends Fragment {
     String checkInRetailorName;
     SharedPreferences preferences;
 
-    public static OrderPendingFragment newInstance() {
-        OrderPendingFragment fragment = new OrderPendingFragment();
+    static String filterStr;
 
+    public static OrderPendingFragment newInstance(String filter) {
+        OrderPendingFragment fragment = new OrderPendingFragment();
+        filterStr = filter;
         return fragment;
     }
 
@@ -125,6 +127,7 @@ public class OrderPendingFragment extends Fragment {
         protected Void doInBackground(Void... params) {
             HashMap<String, String> map = new HashMap<>();
             map.put("form_type", "get_orders");
+            map.put("filter", filterStr);
             map.put("user_id", userId);
             try {
                 HttpRequest req = new HttpRequest(Constants.BASE_URL);

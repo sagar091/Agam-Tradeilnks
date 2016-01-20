@@ -12,7 +12,37 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/relative2">
 
-        <include layout="@layout/linear_colors"></include>
+        <RelativeLayout
+            android:id="@+id/filterLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relative2"
+            android:layout_margin="6dp">
+
+            <TextView
+                android:id="@+id/txtFilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/txtClear" />
+
+            <TextView
+                android:id="@+id/txtClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="4dp"
+                android:text="Clear Filter" />
+
+        </RelativeLayout>
+
+        <include
+            layout="@layout/linear_colors2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_below="@+id/filterLayout"></include>
 
         <TextView
             android:id="@+id/noData"

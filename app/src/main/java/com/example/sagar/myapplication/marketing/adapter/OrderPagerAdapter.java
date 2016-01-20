@@ -12,23 +12,25 @@ import com.example.sagar.myapplication.marketing.fragment.OrderPendingFragment;
  */
 public class OrderPagerAdapter extends FragmentStatePagerAdapter {
     int numOfTabs;
+    String filter;
 
-    public OrderPagerAdapter(FragmentManager fm, int numOfTabs) {
+    public OrderPagerAdapter(FragmentManager fm, int numOfTabs, String filter) {
         super(fm);
         this.numOfTabs = numOfTabs;
+        this.filter = filter;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return OrderPendingFragment.newInstance();
+                return OrderPendingFragment.newInstance(filter);
 
             case 1:
-                return OrderCompletedFragment.newInstance();
+                return OrderCompletedFragment.newInstance(filter);
 
             default:
-                return OrderPendingFragment.newInstance();
+                return OrderPendingFragment.newInstance(filter);
         }
     }
 

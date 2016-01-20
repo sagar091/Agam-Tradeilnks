@@ -304,6 +304,7 @@ public class AddNewRetailerFragment extends Fragment {
     private void init(View parentView) {
         ((MarketingDrawerActivity) getActivity()).setTitle("Add New Retailer");
         ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
+        ((MarketingDrawerActivity) getActivity()).setFilterImage(false);
 
         findViewById(parentView);
 

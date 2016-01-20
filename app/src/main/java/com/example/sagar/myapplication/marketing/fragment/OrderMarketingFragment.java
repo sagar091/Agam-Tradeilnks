@@ -7,11 +7,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.marketing.activity.MarketingDrawerActivity;
 import com.example.sagar.myapplication.marketing.adapter.OrderPagerAdapter;
-
 
 public class OrderMarketingFragment extends Fragment {
 
@@ -19,6 +20,8 @@ public class OrderMarketingFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager viewPager;
     OrderPagerAdapter adapter;
+    RelativeLayout filterLayout;
+    private TextView txtFilter, txtClear;
 
     public static OrderMarketingFragment newInstance(String param1, String param2) {
         OrderMarketingFragment fragment = new OrderMarketingFragment();
@@ -42,13 +45,25 @@ public class OrderMarketingFragment extends Fragment {
 
         init(customView);
 
+        txtClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filterLayout.setVisibility(View.GONE);
+                ((MarketingDrawerActivity) getActivity()).clearFilter();
+            }
+        });
+
         return customView;
     }
 
     private void init(View customView) {
         ((MarketingDrawerActivity) getActivity()).setTitle("Orders");
         ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
+        ((MarketingDrawerActivity) getActivity()).setFilterImage(true);
 
+        filterLayout = (RelativeLayout) customView.findViewById(R.id.filterLayout);
+        txtFilter = (TextView) customView.findViewById(R.id.txtFilter);
+        txtClear = (TextView) customView.findViewById(R.id.txtClear);
         tabLayout = (TabLayout) customView.findViewById(R.id.tab_layout);
         viewPager = (ViewPager) customView.findViewById(R.id.pager);
 
@@ -57,9 +72,16 @@ public class OrderMarketingFragment extends Fragment {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         adapter = new OrderPagerAdapter
-                (getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+                (getActivity().getSupportFragmentManager(), tabLayout.getTabCount(), ((MarketingDrawerActivity) getActivity()).getDrawerFilter());
 
         viewPager.setAdapter(adapter);
+
+        if (((MarketingDrawerActivity) getActivity()).getDrawerFilter().equals("0")) {
+            filterLayout.setVisibility(View.GONE);
+        } else {
+            filterLayout.setVisibility(View.VISIBLE);
+            txtFilter.setText("Orders from: " + setFilterText(((MarketingDrawerActivity) getActivity()).getDrawerFilter()));
+        }
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
@@ -80,6 +102,16 @@ public class OrderMarketingFragment extends Fragment {
             }
         });
 
+    }
+
+    private String setFilterText(String filter) {
+        if (filter.equals("1")) {
+            return "1 Week";
+        } else if (filter.equals("2")) {
+            return "2 Week";
+        } else {
+            return "3 Week";
+        }
     }
 
 }

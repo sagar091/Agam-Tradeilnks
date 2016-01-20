@@ -176,6 +176,7 @@ public class DownloadSheetFragment extends Fragment {
         if (activity instanceof MarketingDrawerActivity) {
             ((MarketingDrawerActivity) getActivity()).setTitle("Download Sheet");
             ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
+            ((MarketingDrawerActivity) getActivity()).setFilterImage(false);
 
         } else if (activity instanceof RetailerDrawerActivity) {
             ((RetailerDrawerActivity) getActivity()).setTitle("Download Sheet");

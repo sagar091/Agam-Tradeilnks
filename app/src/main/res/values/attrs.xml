@@ -1,0 +1,193 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="FlowLayout">
+        <attr name="android:gravity" />
+    </declare-styleable>
+    <declare-styleable name="FlowLayout_Layout">
+        <attr name="android:layout_gravity" />
+    </declare-styleable>
+
+    <declare-styleable name="NiceTabLayout">
+        <attr name="ntlTabDistributeEvenly" format="boolean" />
+        <attr name="ntlDrawOrder" format="enum">
+            <enum name="indicatorUnderlineDivider" value="0" />
+            <enum name="indicatorDividerUnderline" value="1" />
+            <enum name="underlineIndicatorDivider" value="2" />
+            <enum name="underlineDividerIndicator" value="3" />
+            <enum name="dividerIndicatorUnderline" value="4" />
+            <enum name="dividerUnderlineIndicator" value="5" />
+        </attr>
+
+        <attr name="ntlTabMode" format="enum">
+            <!-- Show title only -->
+            <enum name="titleOnly" value="0" />
+            <!-- Show icon only(notice: your pager adapter must implements NiceTabLayout.IconProvider) -->
+            <enum name="iconOnly" value="1" />
+            <!-- Show both title and icon(notice: your pager adapter must implements NiceTabLayout.IconProvider) -->
+            <enum name="both" value="2" />
+        </attr>
+        <attr name="ntlTabColorBlendMode" format="enum">
+            <enum name="none" value="0" />
+            <!-- Default color and selected color -->
+            <enum name="defaultSelected" value="1" />
+            <!-- Selected color and next selected color -->
+            <enum name="nextSelected" value="2" />
+        </attr>
+        <attr name="ntlTabBackground" format="reference|color" />
+        <attr name="ntlTabOffset" format="dimension" />
+        <attr name="ntlTabSelectedCenter" format="boolean" />
+
+        <!-- Underline attrs -->
+        <attr name="ntlShowUnderline" format="boolean" />
+        <attr name="ntlUnderlineInFront" format="boolean" />
+        <attr name="ntlUnderlineGravity" format="enum">
+            <enum name="top" value="0" />
+            <enum name="bottom" value="1" />
+        </attr>
+        <attr name="ntlUnderlineColor" format="color" />
+        <attr name="ntlUnderlineHeight" format="dimension" />
+        <attr name="ntlUnderlinePaddingTop" format="dimension" />
+        <attr name="ntlUnderlinePaddingBottom" format="dimension" />
+
+        <!-- Divider attrs -->
+        <attr name="ntlShowDivider" format="boolean" />
+        <attr name="ntlDividerColor" format="color" />
+        <attr name="ntlDividerColors" format="reference" />
+        <attr name="ntlDividerWidth" format="dimension" />
+        <attr name="ntlDividerPadding" format="dimension" />
+        <attr name="ntlDividerPaddingTop" format="dimension" />
+        <attr name="ntlDividerPaddingBottom" format="dimension" />
+        <attr name="ntlDividerPaddingLeft" format="dimension" />
+        <attr name="ntlDividerPaddingRight" format="dimension" />
+
+        <!-- Indicator attrs -->
+        <attr name="ntlShowIndicator" format="boolean" />
+        <attr name="ntlIndicatorGravity" format="enum">
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+        <attr name="ntlIndicatorColor" format="color" />
+        <attr name="ntlIndicatorColors" format="reference" />
+        <attr name="ntlIndicatorHeight" format="dimension" />
+        <attr name="ntlIndicatorCornerRadius" format="dimension" />
+        <attr name="ntlIndicatorPaddingTop" format="dimension" />
+        <attr name="ntlIndicatorPaddingBottom" format="dimension" />
+
+        <!-- Tab attrs(for title and icon) -->
+        <attr name="ntlDefaultTabColor" format="color" />
+        <attr name="ntlDefaultTabColors" format="reference" />
+        <attr name="ntlSelectedTabColor" format="color" />
+        <attr name="ntlSelectedTabColors" format="reference" />
+        <attr name="ntlTabPadding" format="dimension" />
+        <attr name="ntlTabPaddingTop" format="dimension" />
+        <attr name="ntlTabPaddingBottom" format="dimension" />
+        <attr name="ntlTabPaddingLeft" format="dimension" />
+        <attr name="ntlTabPaddingRight" format="dimension" />
+        <attr name="ntlTabViewLayoutId" format="reference" />
+        <attr name="ntlTabViewTextOrImageViewId" format="reference" />
+        <!-- Used when tab shows title and icon -->
+        <attr name="ntlDrawablePadding" format="dimension" />
+
+        <!-- Title text attrs -->
+        <attr name="ntlTextSize" format="dimension" />
+        <attr name="ntlTextAllCaps" format="boolean" />
+        <attr name="ntlTextStyle" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+            <enum name="boldItalic" value="3" />
+        </attr>
+
+        <!-- Icon cross fade effect(only if you set icon drawable with selector(StateListDrawable), this will effect) -->
+        <attr name="ntlIconCrossFade" format="boolean" />
+        <!-- If you set icon drawable with selector, set false gives better performance -->
+        <attr name="ntlIconTint" format="boolean" />
+
+        <!-- Blur -->
+        <attr name="ntlBlurRadius" format="integer" />
+        <attr name="ntlDownSampleFactor" format="integer" />
+        <attr name="ntlOverlayColor" format="color" />
+
+        <!-- Badge -->
+        <attr name="ntlBadgeGravity" format="enum">
+            <enum name="left" value="0" />
+            <enum name="center_left" value="1" />
+            <enum name="center_right" value="2" />
+            <enum name="right" value="3" />
+        </attr>
+        <attr name="ntlBadgeTextColor" format="color" />
+        <attr name="ntlBadgeTextSize" format="dimension" />
+        <attr name="ntlBadgeHeight" format="dimension" />
+        <attr name="ntlBadgeCornerRadius" format="dimension" />
+        <attr name="ntlBadgeMinWidth" format="dimension" />
+        <attr name="ntlBadgeMaxWidth" format="dimension" />
+        <attr name="ntlBadgeMarginLeft" format="dimension" />
+        <attr name="ntlBadgeMarginRight" format="dimension" />
+        <attr name="ntlBadgeMarginTop" format="dimension" />
+        <attr name="ntlBadgePaddingLeftRight" format="dimension" />
+        <attr name="ntlBadgeSmallSize" format="dimension" />
+        <attr name="ntlBadgeBackground" format="reference|color" />
+    </declare-styleable>
+
+
+    <!-- Spannable Grid Layout -->
+    <declare-styleable name="twowayview_TwoWayView">
+        <attr name="twowayview_layoutManager" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="twowayview_DividerItemDecoration">
+        <attr name="android:divider" tools:ignore="ResourceName" />
+        <attr name="twowayview_verticalDivider" format="reference" />
+        <attr name="twowayview_horizontalDivider" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="twowayview_GridLayoutManager">
+        <attr name="twowayview_numColumns" format="integer" />
+        <attr name="twowayview_numRows" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="twowayview_SpannableGridViewChild">
+        <attr name="twowayview_colSpan" format="integer" />
+        <attr name="twowayview_rowSpan" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="twowayview_SpacingItemDecoration">
+        <attr name="android:verticalSpacing" tools:ignore="ResourceName" />
+        <attr name="android:horizontalSpacing" tools:ignore="ResourceName" />
+    </declare-styleable>
+
+    <declare-styleable name="twowayview_StaggeredGridViewChild">
+        <attr name="twowayview_span" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="twowayview_TwoWayLayoutManager">
+        <attr name="android:orientation" tools:ignore="ResourceName" />
+    </declare-styleable>
+
+    <!-- FamiliarRecyclerView -->
+    <declare-styleable name="FamiliarRecyclerView">
+        <attr name="frv_divider" format="reference|color" />
+        <attr name="frv_dividerVertical" format="reference|color" />
+        <attr name="frv_dividerHorizontal" format="reference|color" />
+        <attr name="frv_dividerHeight" format="dimension" />
+        <attr name="frv_dividerVerticalHeight" format="dimension" />
+        <attr name="frv_dividerHorizontalHeight" format="dimension" />
+        <attr name="frv_itemViewBothSidesMargin" format="dimension" />
+        <attr name="frv_emptyView" format="reference" />
+        <attr name="frv_isEmptyViewKeepShowHeadOrFooter" format="boolean" />
+        <attr name="frv_layoutManager" format="enum">
+            <enum name="linear" value="0" />
+            <enum name="grid" value="1" />
+            <enum name="staggeredGrid" value="2" />
+        </attr>
+        <attr name="frv_layoutManagerOrientation" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="frv_spanCount" format="integer" />
+        <attr name="frv_isReverseLayout" format="boolean" />
+        <attr name="frv_headerDividersEnabled" format="boolean" />
+        <attr name="frv_footerDividersEnabled" format="boolean" />
+    </declare-styleable>
+</resources>

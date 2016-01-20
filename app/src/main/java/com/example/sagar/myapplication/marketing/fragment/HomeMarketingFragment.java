@@ -172,6 +172,8 @@ public class HomeMarketingFragment extends Fragment {
     private void init(View view) {
         ((MarketingDrawerActivity) getActivity()).setTitle("Products");
         ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
+        ((MarketingDrawerActivity) getActivity()).setFilterImage(false);
+
         productsListView = (ListView) view.findViewById(R.id.productsListView);
         edtCompany = (EditText) view.findViewById(R.id.edtCompany);
         noData = (TextView) view.findViewById(R.id.noData);

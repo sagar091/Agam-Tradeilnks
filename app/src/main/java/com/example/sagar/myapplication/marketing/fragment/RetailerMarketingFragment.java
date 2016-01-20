@@ -89,6 +89,7 @@ public class RetailerMarketingFragment extends Fragment {
     private void init(View customView) {
         ((MarketingDrawerActivity) getActivity()).setTitle("Retailers");
         ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
+        ((MarketingDrawerActivity) getActivity()).setFilterImage(false);
 
         parentView = (View) customView.findViewById(android.R.id.content);
 

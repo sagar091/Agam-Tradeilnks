@@ -97,7 +97,7 @@ public class OrderPendingFragment extends Fragment {
     }
 
     private void findViewById(View parentView) {
-        noData = (TextView) parentView.findViewById(R.id.noData);
+        noData = (TextView) parentView.findViewById(R.id.txtNoData);
         listView = (ListView) parentView.findViewById(R.id.listView);
     }
 

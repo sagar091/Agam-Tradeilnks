@@ -16,9 +16,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.FilterDialog;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
@@ -40,15 +42,19 @@ public class PaymentOrdersActivity extends AppCompatActivity {
     private TextView noData;
     String orderError;
     private Toolbar toolbar;
-    private ImageView imgCart;
+    private ImageView imgCart, imgFilter;
     View parentView;
-    private String userId;
+    private String userId, filter = "0";
     ComplexPreferences complexPreferences;
     ProgressDialog pd;
     OrderMarketingData orderData;
     OrdersAdapter adapter;
     ListView listview;
     String orderStatus, orderId;
+
+    private TextView txtClear;
+    TextView txtFilter;
+    private RelativeLayout filterLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +87,37 @@ public class PaymentOrdersActivity extends AppCompatActivity {
             }
         });
 
+        imgFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final FilterDialog dialog = new FilterDialog(PaymentOrdersActivity.this, filter);
+                dialog.setOnFilterChangeListener(new FilterDialog.FilterChangeListener() {
+                    @Override
+                    public void onFilter(String filterType) {
+                        filter = filterType;
+                        dialog.dismiss();
+                        new GetOrders().execute();
+                    }
+                });
+                dialog.show();
+            }
+        });
+
+        txtClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filter = "0";
+                new GetOrders().execute();
+            }
+        });
+
     }
 
     private void init() {
+        filterLayout = (RelativeLayout) findViewById(R.id.filterLayout);
+        txtClear = (TextView) findViewById(R.id.txtClear);
+        txtFilter = (TextView) findViewById(R.id.txtFilter);
+
         listview = (ListView) findViewById(R.id.listview);
         parentView = findViewById(android.R.id.content);
         noData = (TextView) findViewById(R.id.noData);
@@ -95,6 +129,9 @@ public class PaymentOrdersActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imgCart = (ImageView) findViewById(R.id.imgCart);
+        imgFilter = (ImageView) findViewById(R.id.imgFilter);
+        imgFilter.setVisibility(View.VISIBLE);
+
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,10 +147,30 @@ public class PaymentOrdersActivity extends AppCompatActivity {
 
     }
 
+    private void setFilterLayout() {
+        if (filter.equals("0")) {
+            filterLayout.setVisibility(View.GONE);
+        } else {
+            filterLayout.setVisibility(View.VISIBLE);
+            txtFilter.setText("Orders from: " + getFilterText(filter));
+        }
+    }
+
+    private String getFilterText(String filter) {
+        if (filter.equals("1")) {
+            return "1 Week";
+        } else if (filter.equals("2")) {
+            return "2 Week";
+        } else {
+            return "3 Week";
+        }
+    }
+
     private class GetOrders extends AsyncTask<String, String, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            setFilterLayout();
             pd = ProgressDialog.show(PaymentOrdersActivity.this, "Loading", "Please wait..", false);
         }
 
@@ -122,7 +179,9 @@ public class PaymentOrdersActivity extends AppCompatActivity {
             HashMap<String, String> map = new HashMap<>();
             map.put("form_type", "retailor_order");
             map.put("user_id", userId);
+            map.put("filter", filter);
             map.put("retailor_id", selectRetailerId);
+
             Log.e("req", map.toString());
             try {
                 HttpRequest request = new HttpRequest(Constants.BASE_URL);

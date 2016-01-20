@@ -136,6 +136,7 @@ public class AgentFragment extends Fragment {
     private void init(View customView) {
         ((MarketingDrawerActivity) getActivity()).setTitle("Agents Activity");
         ((MarketingDrawerActivity) getActivity()).setSubtitle("no");
+        ((MarketingDrawerActivity) getActivity()).setFilterImage(false);
 
         edtFeedback = (EditText) customView.findViewById(R.id.edtFeedback);
         cbPoster = (CheckBox) customView.findViewById(R.id.cbPoster);

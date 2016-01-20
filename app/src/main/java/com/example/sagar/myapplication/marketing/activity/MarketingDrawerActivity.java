@@ -3,6 +3,7 @@ package com.example.sagar.myapplication.marketing.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,7 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.AskDialog;
 import com.example.sagar.myapplication.customComponent.ChangePasswordDialog;
+import com.example.sagar.myapplication.customComponent.FilterDialog;
 import com.example.sagar.myapplication.customComponent.SettingDialog;
 import com.example.sagar.myapplication.customComponent.ToolHelper;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
@@ -33,7 +34,6 @@ import com.example.sagar.myapplication.marketing.fragment.OrderMarketingFragment
 import com.example.sagar.myapplication.marketing.fragment.PaymentFragment;
 import com.example.sagar.myapplication.marketing.fragment.RetailerMarketingFragment;
 import com.example.sagar.myapplication.marketing.fragment.StockFragment;
-import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.ui.CheckInActivity;
 import com.example.sagar.myapplication.ui.MainActivity;
 
@@ -43,10 +43,12 @@ public class MarketingDrawerActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private NavigationView navigationView;
-    private ImageView imgCart;
+    private ImageView imgCart, imgFilter;
     SharedPreferences preferences;
     private ComplexPreferences complexPreferences;
     ToolHelper helper;
+
+    String filter = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,26 @@ public class MarketingDrawerActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        imgFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final FilterDialog dialog = new FilterDialog(MarketingDrawerActivity.this, filter);
+                dialog.setOnFilterChangeListener(new FilterDialog.FilterChangeListener() {
+                    @Override
+                    public void onFilter(String filterType) {
+                        filter = filterType;
+                        dialog.dismiss();
+
+                        FragmentManager manager = getSupportFragmentManager();
+                        FragmentTransaction ft = manager.beginTransaction();
+                        ft.replace(R.id.content, new OrderMarketingFragment(), "Orders");
+                        ft.commit();
+                    }
+                });
+                dialog.show();
+            }
+        });
     }
 
     @Override
@@ -90,6 +112,10 @@ public class MarketingDrawerActivity extends AppCompatActivity {
             });
             dialog.show();
         }
+    }
+
+    public String getDrawerFilter() {
+        return filter;
     }
 
     private void setDrawerClick(int itemId) {
@@ -197,7 +223,14 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         } else {
             toolbar.setSubtitle(subtitle);
         }
+    }
 
+    public void setFilterImage(boolean isVisible) {
+        if (isVisible) {
+            imgFilter.setVisibility(View.VISIBLE);
+        } else {
+            imgFilter.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -268,6 +301,8 @@ public class MarketingDrawerActivity extends AppCompatActivity {
         }
 
         imgCart = (ImageView) findViewById(R.id.imgCart);
+        imgFilter = (ImageView) findViewById(R.id.imgFilter);
+
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -295,5 +330,13 @@ public class MarketingDrawerActivity extends AppCompatActivity {
             }
         });
         askDialog.show();
+    }
+
+    public void clearFilter() {
+        filter = "0";
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.replace(R.id.content, new OrderMarketingFragment(), "Orders");
+        ft.commit();
     }
 }

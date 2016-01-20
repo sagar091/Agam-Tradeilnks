@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
 import com.example.sagar.myapplication.customComponent.FirstTimeDialog;
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     UserProfile userProfile;
     private int loginError;
     JSONObject statusObject;
+    TextView txtForget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        txtForget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: 20-01-2016  
+            }
+        });
+
     }
 
     private void init() {
@@ -88,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        txtForget = (TextView) findViewById(R.id.txtForget);
         imgCart = (ImageView) findViewById(R.id.imgCart);
         imgCart.setVisibility(View.GONE);
 
@@ -195,52 +205,53 @@ public class LoginActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             pd.dismiss();
 
-            if (userProfile.user_type.equals("1")) {
-                Intent intent = new Intent(LoginActivity.this, CheckInActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-
-            } else {
-
-                if (userProfile.is_new == null || userProfile.is_new.equals("0")) {
-                    Intent intent = new Intent(LoginActivity.this, RetailerDrawerActivity.class);
+            if (loginError == 0)
+                if (userProfile.user_type.equals("1")) {
+                    Intent intent = new Intent(LoginActivity.this, CheckInActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
 
-                } else if (userProfile.is_new.equals("1")) {
+                } else {
 
-                    HomeWatcher mHomeWatcher = new HomeWatcher(LoginActivity.this);
-                    mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
-                        @Override
-                        public void onHomePressed() {
-                            // do something here...
-                            Functions.closeSession(LoginActivity.this);
+                    if (userProfile.is_new == null || userProfile.is_new.equals("0")) {
+                        Intent intent = new Intent(LoginActivity.this, RetailerDrawerActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
 
-                        }
+                    } else if (userProfile.is_new.equals("1")) {
 
-                        @Override
-                        public void onHomeLongPressed() {
-                        }
-                    });
+                        HomeWatcher mHomeWatcher = new HomeWatcher(LoginActivity.this);
+                        mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
+                            @Override
+                            public void onHomePressed() {
+                                // do something here...
+                                Functions.closeSession(LoginActivity.this);
 
-                    mHomeWatcher.startWatch();
+                            }
 
-                    FirstTimeDialog dialog = new FirstTimeDialog(LoginActivity.this);
-                    dialog.setOnChangePasswordListener(new FirstTimeDialog.onChangePasswordListener() {
-                        @Override
-                        public void setPassword(String password) {
-                            userProfile = new GsonBuilder().create().fromJson(statusObject.toString(), UserProfile.class);
+                            @Override
+                            public void onHomeLongPressed() {
+                            }
+                        });
 
-                            userProfile.password = password;
+                        mHomeWatcher.startWatch();
 
-                            ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginActivity.this, "user_pref", 0);
-                            complexPreferences.putObject("current-user", userProfile);
-                            complexPreferences.commit();
-                        }
-                    });
-                    dialog.show();
+                        FirstTimeDialog dialog = new FirstTimeDialog(LoginActivity.this);
+                        dialog.setOnChangePasswordListener(new FirstTimeDialog.onChangePasswordListener() {
+                            @Override
+                            public void setPassword(String password) {
+                                userProfile = new GsonBuilder().create().fromJson(statusObject.toString(), UserProfile.class);
+
+                                userProfile.password = password;
+
+                                ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginActivity.this, "user_pref", 0);
+                                complexPreferences.putObject("current-user", userProfile);
+                                complexPreferences.commit();
+                            }
+                        });
+                        dialog.show();
+                    }
                 }
-            }
 
             loginButton.setText("Login");
         }
