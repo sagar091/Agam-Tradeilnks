@@ -30,7 +30,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.LoginActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".marketing.activity.MarketingDrawerActivity"
             android:windowSoftInputMode="stateHidden" />

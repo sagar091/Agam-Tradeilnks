@@ -188,7 +188,13 @@ public class MarketingDrawerActivity extends AppCompatActivity {
                 break;
 
             case R.id.drawer_password:
-                final ChangePasswordDialog dialog = new ChangePasswordDialog(MarketingDrawerActivity.this);
+                final ChangePasswordDialog dialog = new ChangePasswordDialog(MarketingDrawerActivity.this, 1, "");
+                dialog.setOnSuccessListener(new ChangePasswordDialog.SuccessListener() {
+                    @Override
+                    public void onSucces() {
+                        Functions.showSnack(findViewById(android.R.id.content), "Password has been changed successfully.");
+                    }
+                });
                 dialog.show();
                 break;
 

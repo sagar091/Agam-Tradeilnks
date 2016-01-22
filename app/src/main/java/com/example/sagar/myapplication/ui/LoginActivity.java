@@ -1,7 +1,6 @@
 package com.example.sagar.myapplication.ui;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -19,13 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sagar.myapplication.R;
+import com.example.sagar.myapplication.customComponent.ChangePasswordDialog;
 import com.example.sagar.myapplication.customComponent.FirstTimeDialog;
 import com.example.sagar.myapplication.customComponent.HomeWatcher;
 import com.example.sagar.myapplication.helper.ComplexPreferences;
 import com.example.sagar.myapplication.helper.Constants;
 import com.example.sagar.myapplication.helper.Functions;
 import com.example.sagar.myapplication.helper.HttpRequest;
-import com.example.sagar.myapplication.model.RetailerProfileModel;
 import com.example.sagar.myapplication.model.UserProfile;
 import com.example.sagar.myapplication.retailer.activity.RetailerDrawerActivity;
 import com.google.gson.GsonBuilder;
@@ -38,6 +37,7 @@ import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private View parentView;
     private Toolbar toolbar;
     private String userName, password;
     private EditText edtUserName, edtPassword;
@@ -78,13 +78,25 @@ public class LoginActivity extends AppCompatActivity {
         txtForget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 20-01-2016  
+                if (Functions.getLength(edtUserName) == 0) {
+                    Functions.showSnack(parentView, "Enter username");
+                } else {
+                    ChangePasswordDialog dialog = new ChangePasswordDialog(LoginActivity.this, 0, Functions.getText(edtUserName));
+                    dialog.setOnSuccessListener(new ChangePasswordDialog.SuccessListener() {
+                        @Override
+                        public void onSucces() {
+                            Functions.showSnack(parentView, "Password has been changed successfully.");
+                        }
+                    });
+                    dialog.show();
+                }
             }
         });
 
     }
 
     private void init() {
+        parentView = findViewById(android.R.id.content);
         toolbar = (Toolbar) findViewById(R.id.toolbar2);
         toolbar.setTitle("Login");
         setSupportActionBar(toolbar);
